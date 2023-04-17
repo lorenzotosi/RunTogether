@@ -1,14 +1,17 @@
 package com.app.runtogether
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -28,7 +31,8 @@ fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
         NavigationBar (modifier = Modifier.padding(vertical = 64.dp)) {
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
-                    icon = { Icon(Icons.Filled.Favorite, contentDescription = item) },
+                    icon = { Icon(painter = painterResource(id = R.drawable.baseline_run_circle_24),
+                                    contentDescription = item) },
                     label = { Text(item) },
                     selected = selectedItem == index,
                     onClick = { selectedItem = index }
