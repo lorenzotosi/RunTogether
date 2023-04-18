@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 
@@ -21,37 +24,67 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
     Scaffold(
-        topBar = {GenerateTopBar()}
+        topBar = {GenerateTopBar(navController)}
     ) {pValues ->
         NavigationGraph(navController, pValues)
-
-        var selectedItem by remember { mutableStateOf(0) }
-        val map = mapOf("Run" to R.drawable.baseline_run_circle_24,
-                        "Today's Runs" to R.drawable.baseline_today_24,
-                        "Challenges" to R.drawable.round_stars_24)
-
-        NavigationBar (modifier = Modifier.padding(vertical = 64.dp)) {
-            map.entries.forEachIndexed { k, v -> NavigationBarItem(
-                icon = { Icon(painter = painterResource(id = v.value),
-                    contentDescription = v.key) },
-                label = { Text(v.key) },
-                selected = selectedItem == k,
-                onClick = { selectedItem = k /* todo */}
-            ) }
-        }
+        CreateNavigationBar(navController)
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenerateTopBar(){
+fun GenerateTopBar(navController: NavHostController){
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.destination?.route?: Screens.Home.name
     CenterAlignedTopAppBar(
-        title = { Text(text = "Run") },
-        
-
+        title = { Text(text = currentScreen) }
     )
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, padding: PaddingValues){}
+fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
+    NavHost(navController = navController,
+        startDestination = Screens.Home.name,
+        modifier = Modifier.padding(padding)) {
+        composable(route = Screens.TodaysRun.name){
+            //todo
+        }
+        composable(route = Screens.Home.name){
+            //todo
+        }
+        composable(route = Screens.Settings.name){
+            //todo
+        }
+        composable(route = Screens.TodaysRun.name){
+            //todo
+        }
+        composable(route = Screens.Challenges.name){
+            //todo
+        }
+    }
+}
+
+@Composable
+fun CreateNavigationBar(navController: NavHostController){
+    var selectedItem by remember { mutableStateOf(0) }
+    val map = mapOf(Screens.Home.name to R.drawable.baseline_run_circle_24,
+        Screens.TodaysRun.name to R.drawable.baseline_today_24,
+        Screens.Challenges.name to R.drawable.round_stars_24)
+
+    NavigationBar (modifier = Modifier.padding(vertical = 64.dp)) {
+        map.entries.forEachIndexed { k, v ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        painter = painterResource(id = v.value),
+                        contentDescription = v.key
+                    )
+                },
+                label = { Text(v.key) },
+                selected = selectedItem == k,
+                onClick = { selectedItem = k
+                            navController.navigate(v.key)}
+            )
+        }
+    }
+}
