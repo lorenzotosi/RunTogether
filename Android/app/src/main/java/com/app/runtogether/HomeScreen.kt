@@ -26,18 +26,18 @@ fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
         NavigationGraph(navController, pValues)
 
         var selectedItem by remember { mutableStateOf(0) }
-        val items = listOf("Run", "Today's Runs", "Challenges")
+        val map = mapOf("Run" to R.drawable.baseline_run_circle_24,
+                        "Today's Runs" to R.drawable.baseline_today_24,
+                        "Challenges" to R.drawable.round_stars_24)
 
         NavigationBar (modifier = Modifier.padding(vertical = 64.dp)) {
-            items.forEachIndexed { index, item ->
-                NavigationBarItem(
-                    icon = { Icon(painter = painterResource(id = R.drawable.baseline_run_circle_24),
-                                    contentDescription = item) },
-                    label = { Text(item) },
-                    selected = selectedItem == index,
-                    onClick = { selectedItem = index }
-                )
-            }
+            map.entries.forEachIndexed { k, v -> NavigationBarItem(
+                icon = { Icon(painter = painterResource(id = v.value),
+                    contentDescription = v.key) },
+                label = { Text(v.key) },
+                selected = selectedItem == k,
+                onClick = { selectedItem = k /* todo */}
+            ) }
         }
     }
 
