@@ -55,9 +55,6 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
         composable(route = Screens.Settings.name){
             //todo
         }
-        composable(route = Screens.TodaysRun.name){
-            //todo
-        }
         composable(route = Screens.Challenges.name){
             //todo
         }
