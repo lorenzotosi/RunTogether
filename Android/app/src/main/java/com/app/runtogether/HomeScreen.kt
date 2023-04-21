@@ -1,13 +1,7 @@
 package com.app.runtogether
 
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -35,7 +29,7 @@ fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
 @Composable
 fun GenerateTopBar(navController: NavHostController){
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination?.route?: Screens.Home.name
+    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
     CenterAlignedTopAppBar(
         title = { Text(text = currentScreen) }
     )
@@ -44,12 +38,12 @@ fun GenerateTopBar(navController: NavHostController){
 @Composable
 fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
     NavHost(navController = navController,
-        startDestination = Screens.Home.name,
+        startDestination = Screens.RunScreen.name,
         modifier = Modifier.padding(padding)) {
         composable(route = Screens.TodaysRun.name){
             //todo
         }
-        composable(route = Screens.Home.name){
+        composable(route = Screens.RunScreen.name){
             //todo
         }
         composable(route = Screens.Settings.name){
@@ -64,7 +58,7 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
 @Composable
 fun CreateNavigationBar(navController: NavHostController){
     var selectedItem by remember { mutableStateOf(0) }
-    val map = mapOf(Screens.Home.name to R.drawable.baseline_run_circle_24,
+    val map = mapOf(Screens.RunScreen.name to R.drawable.baseline_run_circle_24,
         Screens.TodaysRun.name to R.drawable.baseline_today_24,
         Screens.Challenges.name to R.drawable.round_stars_24)
 
