@@ -86,3 +86,4 @@ lint/tmp/
 # lint/reports/
 
 apikey.properties
+.DS_Store
