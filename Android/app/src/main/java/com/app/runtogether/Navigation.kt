@@ -5,4 +5,5 @@ sealed class Screens(val name: String) {
     object Settings : Screens("Settings")
     object Challenges : Screens("Challenges")
     object TodaysRun : Screens("Today's Run")
+    object SignUp : Screens("Sign Up")
 }
