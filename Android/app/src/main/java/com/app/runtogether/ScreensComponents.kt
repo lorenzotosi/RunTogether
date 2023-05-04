@@ -26,7 +26,6 @@ fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
 
 @Composable
 fun TopAndNavigationBarHandler(navController: NavHostController){
-
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
     GenerateTopBar(currentScreen)
@@ -38,6 +37,7 @@ fun TopAndNavigationBarHandler(navController: NavHostController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateTopBar(currentScreen : String){
+    //missing hamburger and "go back" arrows
     CenterAlignedTopAppBar(
         title = { Text(text = currentScreen) }
     )
