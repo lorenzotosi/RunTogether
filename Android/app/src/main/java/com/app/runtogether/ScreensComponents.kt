@@ -52,7 +52,7 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
             ShowButton(navController)
         }
         composable(route = Screens.RunScreen.name){
-            //todo
+            ShowRunScreen()
         }
         composable(route = Screens.Settings.name){
             //todo
