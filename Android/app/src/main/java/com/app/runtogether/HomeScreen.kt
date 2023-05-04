@@ -41,7 +41,7 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
         startDestination = Screens.RunScreen.name,
         modifier = Modifier.padding(padding)) {
         composable(route = Screens.TodaysRun.name){
-            //todo
+
         }
         composable(route = Screens.RunScreen.name){
             //todo
@@ -51,6 +51,9 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
         }
         composable(route = Screens.Challenges.name){
             //todo
+        }
+        composable(route = Screens.SignUp.name) {
+            ShowSignUpPage(navController)
         }
     }
 }
@@ -74,7 +77,8 @@ fun CreateNavigationBar(navController: NavHostController){
                 label = { Text(v.key) },
                 selected = selectedItem == k,
                 onClick = { selectedItem = k
-                            navController.navigate(v.key)}
+                            navController.navigate(v.key)
+                }
             )
         }
     }
