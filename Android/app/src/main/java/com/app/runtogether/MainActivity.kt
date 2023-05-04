@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Greeting("Android")
-                    ShowSignUpPage()
+                    //ShowSignUpPage()
+                    ShowHomeScreen()
                 }
             }
         }
