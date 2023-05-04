@@ -4,12 +4,15 @@ package com.app.runtogether
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,13 +32,13 @@ fun TextField(name:String, spacing: Int){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowSignUpPage(){
+fun ShowSignUpPage(navController : NavHostController){
     val textName = remember { mutableStateOf(TextFieldValue("Name")) }
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-            Text(
+            /*Text(
                 text = "SignUp Page",
                 style = MaterialTheme.typography.titleLarge
-            )
+            )*/
             Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text = "Please enter your details below",
@@ -50,7 +53,7 @@ fun ShowSignUpPage(){
             Spacer(modifier = Modifier.height(5.dp))
             TextField(name="*Re-Type Pass", spacing = 5)
             Spacer(modifier = Modifier.height(50.dp))
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { navController.navigate(Screens.RunScreen.name) }) {
                 Text(text = "Sign Up")
             }
     }

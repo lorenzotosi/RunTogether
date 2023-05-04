@@ -18,18 +18,26 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
     Scaffold(
-        topBar = {GenerateTopBar(navController)}
+        topBar = { TopAndNavigationBarHandler(navController) }
     ) {pValues ->
         NavigationGraph(navController, pValues)
+    }
+}
+
+@Composable
+fun TopAndNavigationBarHandler(navController: NavHostController){
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
+    GenerateTopBar(currentScreen)
+    if(currentScreen!=Screens.SignUp.name) {
         CreateNavigationBar(navController)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenerateTopBar(navController: NavHostController){
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
+fun GenerateTopBar(currentScreen : String){
     CenterAlignedTopAppBar(
         title = { Text(text = currentScreen) }
     )
@@ -41,7 +49,7 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
         startDestination = Screens.RunScreen.name,
         modifier = Modifier.padding(padding)) {
         composable(route = Screens.TodaysRun.name){
-
+            ShowButton(navController)
         }
         composable(route = Screens.RunScreen.name){
             //todo
