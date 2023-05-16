@@ -58,7 +58,8 @@ fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
             //todo
         }
         composable(route = Screens.Challenges.name){
-            //todo
+            //index andra sostituito con il numero di challenge nel database
+            CreateGrid(index = 10, navController = navController)
         }
         composable(route = Screens.SignUp.name) {
             ShowSignUpPage(navController)
