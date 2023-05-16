@@ -1,7 +1,6 @@
 package com.app.runtogether
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -19,8 +18,8 @@ import androidx.navigation.compose.rememberNavController
 fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
     Scaffold(
         topBar = { TopAndNavigationBarHandler(navController) }
-    ) {pValues ->
-        NavigationGraph(navController, pValues)
+    ) {
+        NavigationGraph(navController, it)
     }
 }
 
@@ -44,10 +43,10 @@ fun GenerateTopBar(currentScreen : String){
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, padding: PaddingValues){
+fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues){
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
-        modifier = Modifier.padding(padding)) {
+        modifier = Modifier.padding(top = 160.dp, bottom = 15.dp)) {
         composable(route = Screens.TodaysRun.name){
             ShowButton(navController)
         }
