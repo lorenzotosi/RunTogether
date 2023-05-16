@@ -48,7 +48,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         startDestination = Screens.RunScreen.name,
         modifier = Modifier.padding(top = 155.dp)) {
         composable(route = Screens.TodaysRun.name){
-            ShowButton(navController)
+            CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
             ShowRunScreen()
