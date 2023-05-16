@@ -46,7 +46,7 @@ fun GenerateTopBar(currentScreen : String){
 fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues){
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
-        modifier = Modifier.padding(top = 160.dp, bottom = 15.dp)) {
+        modifier = Modifier.padding(top = 155.dp)) {
         composable(route = Screens.TodaysRun.name){
             ShowButton(navController)
         }

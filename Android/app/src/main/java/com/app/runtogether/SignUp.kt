@@ -53,8 +53,15 @@ fun ShowSignUpPage(navController : NavHostController){
             Spacer(modifier = Modifier.height(5.dp))
             TextField(name="*Re-Type Pass", spacing = 5)
             Spacer(modifier = Modifier.height(50.dp))
-            Button(onClick = { navController.navigate(Screens.RunScreen.name) }) {
-                Text(text = "Sign Up")
+            Row() {
+                Button(onClick = {  },
+                    modifier = Modifier.padding(end = 9.dp)) {
+                    Text(text = "Sign Up")
+                }
+                Button(onClick = { navController.navigate(Screens.RunScreen.name) }) {
+                    Text(text = "Go Back")
+                }
             }
+
     }
 }

@@ -32,7 +32,7 @@ fun CreateGrid(index: Int, navController: NavHostController){
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-                    onClick = {  }
+                    onClick = { navController.navigate(Screens.SignUp.name) }
                 ) {
                     Column(
                         modifier = Modifier
