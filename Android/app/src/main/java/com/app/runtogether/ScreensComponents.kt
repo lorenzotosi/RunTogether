@@ -1,6 +1,10 @@
 package com.app.runtogether
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,16 +15,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
     Scaffold(
-        topBar = { TopAndNavigationBarHandler(navController) }
+        topBar = { TopAndNavigationBarHandler(navController) },
+        bottomBar = {bottomAppBar()}
+
     ) {
         NavigationGraph(navController, it)
     }
+
 }
 
 @Composable
@@ -89,5 +98,29 @@ fun CreateNavigationBar(navController: NavHostController){
                 }
             )
         }
+    }
+}
+
+@Composable
+fun bottomAppBar(){
+    var selectedItem by remember { mutableStateOf(0) }
+    val map = mapOf(Screens.Running.name to Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Menu"),
+        Screens.Friends.name to Icons.Filled.Person,
+        Screens.Notify.name to Icons.Filled.Notifications)
+    BottomAppBar(){
+        /*IconButton(onClick = { /* doSomething() */ }) {
+            Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Localized description")
+
+        }*/
+
+            map.entries.forEachIndexed { k, v ->
+                NavigationBarItem(
+                    icon = {v.value},
+                    label = { Text(v.key) },
+                    selected = selectedItem == k,
+                    onClick = { selectedItem = k
+                    }
+                )
+            }
     }
 }
