@@ -24,7 +24,7 @@ import androidx.compose.material3.Icon
 fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
     Scaffold(
         topBar = { TopAndNavigationBarHandler(navController) },
-        bottomBar = {bottomAppBar()}
+        bottomBar = {BottomAppBar()}
 
     ) {
         NavigationGraph(navController, it)
@@ -102,12 +102,12 @@ fun CreateNavigationBar(navController: NavHostController){
 }
 
 @Composable
-fun bottomAppBar(){
+fun BottomAppBar(){
     var selectedItem by remember { mutableStateOf(0) }
     val map = mapOf(Screens.Running.name to Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Menu"),
         Screens.Friends.name to Icons.Filled.Person,
         Screens.Notify.name to Icons.Filled.Notifications)
-    BottomAppBar(){
+    BottomAppBar(modifier = Modifier.fillMaxWidth().height(80.dp)){
         /*IconButton(onClick = { /* doSomething() */ }) {
             Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Localized description")
 
