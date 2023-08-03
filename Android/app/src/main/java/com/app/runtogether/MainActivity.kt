@@ -88,45 +88,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Greeting("Android")
-                    //ShowSignUpPage()
                     val snackbarHostState = remember { SnackbarHostState() }
-                    /*Scaffold(
+                    Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         content = { innerPadding ->
-                            Column(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(innerPadding)
-                                    .padding(15.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
                             ) {
-                                /*Button(onClick = {
-                                    startLocationUpdates()
-                                }) {
-                                    Text(text = "Get current location")
-                                }*/
-
-                                //Text(text = "Latitude : " + location.value.latitude)
-                                //Text(text = "Longitude : " + location.value.longitude)
-
+                                startLocationUpdates()
+                                ShowHomeScreen(location.value)
                             }
                         }
-                    )*/
-
-
-                    //SnackbarHost(snackbarHostState)
-                    startLocationUpdates()
-                    //
-
+                    )
                     if (showSnackBar.value) {
                         SnackBarComposable(snackbarHostState, this, showSnackBar)
                     }
                     if (showAlertDialog.value) {
                         AlertDialogComposable(this, showAlertDialog)
                     }
-                    ShowHomeScreen(location.value)
                 }
             }
         }

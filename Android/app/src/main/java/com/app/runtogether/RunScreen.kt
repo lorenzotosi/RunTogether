@@ -23,8 +23,7 @@ fun ShowRunScreen(locationDetails: LocationDetails){
 
     GoogleMap(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp),
+            .fillMaxSize().padding(bottom = 90.dp),
         cameraPositionState = cameraPositionState
     ) {
         Marker(
