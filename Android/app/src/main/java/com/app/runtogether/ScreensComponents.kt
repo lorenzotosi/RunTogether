@@ -21,13 +21,13 @@ import androidx.compose.material3.Icon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowHomeScreen(navController : NavHostController = rememberNavController()){
+fun ShowHomeScreen( locationDetails: LocationDetails, navController : NavHostController = rememberNavController()){
     Scaffold(
         topBar = { TopAndNavigationBarHandler(navController) },
         bottomBar = {BottomAppBar()}
 
     ) {
-        NavigationGraph(navController, it)
+        NavigationGraph(navController, it, locationDetails)
     }
 
 }
@@ -52,7 +52,7 @@ fun GenerateTopBar(currentScreen : String){
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues){
+fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails){
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
         modifier = Modifier.padding(top = 155.dp)) {
@@ -60,7 +60,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
-            ShowRunScreen()
+            ShowRunScreen(locationDetails)
         }
         composable(route = Screens.Settings.name){
             //todo
