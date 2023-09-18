@@ -61,8 +61,9 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
     val scope = rememberCoroutineScope()
     // icons to mimic drawer destinations
     val items = listOf(
-        MenuItems(id = "settings", title = "Settings", Icons.Default.Settings, contentDescription = "go to settings"),
-        MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile")
+        MenuItems(id = "settings", title = "Settings", Icons.Default.Settings, contentDescription = "go to settings", Screens.Settings),
+
+        //MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile", Screens.Settings)
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
@@ -79,7 +80,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                             scope.launch { drawerState.close() }
                             selectedItem.value = item
                             /* --------------------------------------- */
-                            navController.navigate(Screens.SignUp.name)
+                            navController.navigate(item.screens.name)
                             /* --------------------------------------- */
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
