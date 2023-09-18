@@ -78,6 +78,9 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                         onClick = {
                             scope.launch { drawerState.close() }
                             selectedItem.value = item
+                            /* --------------------------------------- */
+                            navController.navigate(Screens.SignUp.name)
+                            /* --------------------------------------- */
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
