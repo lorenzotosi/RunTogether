@@ -98,7 +98,11 @@ class MainActivity : ComponentActivity() {
                                     .padding(innerPadding)
                             ) {
                                 startLocationUpdates()
-                                ShowHomeScreen(location.value)
+
+                                //ShowHomeScreen(location.value)
+                                /////////////////////////
+                                ModalNavigationDrawerSample(location.value)
+                                /////////////////////////
                             }
                         }
                     )
