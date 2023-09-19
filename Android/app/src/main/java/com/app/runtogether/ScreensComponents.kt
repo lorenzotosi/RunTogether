@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.FloatAnimationSpec
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,6 +19,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.drawerlayout.widget.DrawerLayout
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -61,16 +63,22 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
     val scope = rememberCoroutineScope()
     // icons to mimic drawer destinations
     val items = listOf(
-        MenuItems(id = "settings", title = "Settings", Icons.Default.Settings, contentDescription = "go to settings", Screens.Settings),
+        MenuItems(id = "settings",
+            title = "Settings",
+            Icons.Default.Settings,
+            contentDescription = "go to settings",
+            Screens.Settings),
 
         //MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile", Screens.Settings)
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
+
     ModalNavigationDrawer(
         gesturesEnabled = false,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
+                Text("Drawer title", modifier = Modifier.padding(16.dp))
                 Spacer(Modifier.height(12.dp))
                 items.forEach { item ->
                     NavigationDrawerItem(
@@ -78,7 +86,9 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                         label = { Text(item.title) },
                         selected = item == selectedItem.value,
                         onClick = {
-                            scope.launch { drawerState.close() }
+                            scope.launch { drawerState.apply {
+                                if (isClosed) open() else close()
+                            } }
                             selectedItem.value = item
                             /* --------------------------------------- */
                             navController.navigate(item.screens.name)
@@ -107,8 +117,8 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                     )
                     if(currentScreen!=Screens.SignUp.name) {
                         CreateNavigationBar(navController)
-                    } },
-                bottomBar = {BottomAppBar()}
+                    } }
+                //,bottomBar = {BottomAppBar()}
             ) {
                 NavigationGraph(navController, it, locationDetails)
             }
