@@ -1,7 +1,5 @@
 package com.app.runtogether
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.core.FloatAnimationSpec
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,50 +13,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.drawerlayout.widget.DrawerLayout
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ShowHomeScreen( locationDetails: LocationDetails, navController : NavHostController = rememberNavController()){
-    Scaffold(
-        topBar = { TopAndNavigationBarHandler(navController) },
-        bottomBar = {BottomAppBar()}
-    ) {
-        NavigationGraph(navController, it, locationDetails)
-    }
-
-}
-
-@Composable
-fun TopAndNavigationBarHandler(navController: NavHostController){
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
-    //GenerateTopBar(currentScreen)
-    if(currentScreen!=Screens.SignUp.name) {
-        CreateNavigationBar(navController)
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun GenerateTopBar(currentScreen: String){
-    //missing hamburger and "go back" arrows
-    CenterAlignedTopAppBar(
-        title = { Text(text = currentScreen) }
-    )
-}
-*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController : NavHostController = rememberNavController()) {
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     // icons to mimic drawer destinations
@@ -72,7 +36,6 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
         //MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile", Screens.Settings)
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -85,9 +48,11 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                         label = { Text(item.title) },
                         selected = item == selectedItem.value,
                         onClick = {
-                            scope.launch { drawerState.apply {
-                                if (isClosed) open() else close()
-                            } }
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
                             selectedItem.value = item
                             /* --------------------------------------- */
                             navController.navigate(item.screens.name)
@@ -101,27 +66,27 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
         content = {
             Scaffold(
                 topBar = {
-                    val backStackEntry by navController.currentBackStackEntryAsState()
-                    val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
                     CenterAlignedTopAppBar(
                         title = { Text(text = currentScreen) },
                         navigationIcon = {
-                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Menu,
-                                    contentDescription = "Toggle drawer"
-                                )
+                            if (currentScreen !=  Screens.SignUp.name) {
+                                IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Menu,
+                                        contentDescription = "Toggle drawer"
+                                    )
+                                }
                             }
                         }
                     )
                     if(currentScreen!=Screens.SignUp.name) {
                         CreateNavigationBar(navController)
                     } }
-                //,bottomBar = {BottomAppBar()}
             ) {
                 NavigationGraph(navController, it, locationDetails)
             }
-        }
+        },
+        gesturesEnabled = currentScreen != Screens.SignUp.name
     )
 }
 
@@ -134,7 +99,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
-            ShowRunScreen(locationDetails)
+            ShowRunScreen(locationDetails) { navController.navigate(Screens.SignUp.name) }
         }
         composable(route = Screens.Settings.name){
             //todo
@@ -173,31 +138,5 @@ fun CreateNavigationBar(navController: NavHostController){
                 }
             )
         }
-    }
-}
-
-@Composable
-fun BottomAppBar(){
-    var selectedItem by remember { mutableStateOf(0) }
-    val map = mapOf(Screens.Running.name to Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Menu"),
-        Screens.Friends.name to Icons.Filled.Person,
-        Screens.Notify.name to Icons.Filled.Notifications)
-    BottomAppBar(modifier = Modifier
-        .fillMaxWidth()
-        .height(80.dp)){
-        /*IconButton(onClick = { /* doSomething() */ }) {
-            Icon(painter= painterResource(id = R.drawable.baseline_run_circle_24), contentDescription = "Localized description")
-
-        }*/
-
-            map.entries.forEachIndexed { k, v ->
-                NavigationBarItem(
-                    icon = {v.value},
-                    label = { Text(v.key) },
-                    selected = selectedItem == k,
-                    onClick = { selectedItem = k
-                    }
-                )
-            }
     }
 }
