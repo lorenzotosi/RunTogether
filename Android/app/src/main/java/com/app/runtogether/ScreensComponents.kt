@@ -32,9 +32,18 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
             Icons.Default.Settings,
             contentDescription = "go to settings",
             Screens.Settings),
+        MenuItems(id = "friends",
+            title = "Friends",
+            Icons.Default.Person,
+            contentDescription = "go to friends",
+            Screens.Friends),
 
-        //MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile", Screens.Settings)
-        )
+        MenuItems(id = "notify",
+            title = "Notify",
+            Icons.Default.Notifications,
+            contentDescription = "go to notifications",
+            Screens.Notify)
+    )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
