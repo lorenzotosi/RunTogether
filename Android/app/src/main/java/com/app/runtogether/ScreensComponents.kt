@@ -168,6 +168,7 @@ fun CreateNavigationBar(navController: NavHostController){
                 label = { Text(v.key) },
                 selected = selectedItem == k,
                 onClick = { selectedItem = k
+                            navController.popBackStack(navController.graph.id, inclusive = true)
                             navController.navigate(v.key)
                 }
             )
