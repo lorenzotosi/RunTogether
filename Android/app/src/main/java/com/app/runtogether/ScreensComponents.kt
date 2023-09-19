@@ -34,7 +34,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
             Screens.Settings),
 
         //MenuItems(id = "profile", title = "Profile", Icons.Default.Person, contentDescription = "go to profile", Screens.Settings)
-    )
+        )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -80,7 +80,15 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                         }
                     )
                     if(currentScreen!=Screens.SignUp.name) {
-                        CreateNavigationBar(navController)
+                        if (currentScreen == Screens.RunScreen.name)
+                            CreateNavigationBar(navController, 0)
+
+                        if (currentScreen == Screens.Challenges.name)
+                            CreateNavigationBar(navController, 2)
+
+                        if (currentScreen == Screens.TodaysRun.name)
+                            CreateNavigationBar(navController, 1)
+
                     } }
             ) {
                 NavigationGraph(navController, it, locationDetails)
@@ -115,8 +123,8 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
 }
 
 @Composable
-fun CreateNavigationBar(navController: NavHostController){
-    var selectedItem by remember { mutableStateOf(0) }
+fun CreateNavigationBar(navController: NavHostController, i: Int){
+    var selectedItem by remember { mutableStateOf(i) }
     val map = mapOf(Screens.RunScreen.name to R.drawable.baseline_run_circle_24,
         Screens.TodaysRun.name to R.drawable.baseline_today_24,
         Screens.Challenges.name to R.drawable.round_stars_24)
