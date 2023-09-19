@@ -67,6 +67,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
+        gesturesEnabled = false,
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
