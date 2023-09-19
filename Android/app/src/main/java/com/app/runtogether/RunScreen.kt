@@ -25,7 +25,7 @@ fun ShowRunScreen(locationDetails: LocationDetails){
 
     GoogleMap(
         modifier = Modifier
-            .fillMaxSize()),
+            .fillMaxSize(),
         cameraPositionState = cameraPositionState,
         uiSettings = MapUiSettings(compassEnabled = false,
             indoorLevelPickerEnabled = false,
