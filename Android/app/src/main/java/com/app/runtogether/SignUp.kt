@@ -17,43 +17,38 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextField(name:String, spacing: Int){
-    Row(verticalAlignment = Alignment.CenterVertically) {
+fun TextField(name:String){
         val textState = remember { mutableStateOf(TextFieldValue()) }
-        Text("$name:")
-        Spacer(modifier = Modifier.width(spacing.dp))
-        TextField(
+        OutlinedTextField(
             value = textState.value,
+            placeholder = { Text("$name") },
+            label = { Text("$name:") },
             onValueChange = { textState.value = it }
         )
-
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowSignUpPage(navController : NavHostController){
     val textName = remember { mutableStateOf(TextFieldValue("Name")) }
-    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
-            /*Text(
-                text = "SignUp Page",
-                style = MaterialTheme.typography.titleLarge
-            )*/
-            Spacer(modifier = Modifier.height(40.dp))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
             Text(
                 text = "Please enter your details below",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 16.dp)
             )
-            Spacer(modifier = Modifier.height(50.dp))
-            TextField(name = "*Name", spacing = 62)
+            Spacer(modifier = Modifier.height(35.dp))
+            TextField(name = "Name")
             Spacer(modifier = Modifier.height(5.dp))
-            TextField(name = "*Email", spacing = 64)
+            TextField(name = "Email")
             Spacer(modifier = Modifier.height(5.dp))
-            TextField(name = "*Password", spacing = 32)
+            TextField(name = "Password")
             Spacer(modifier = Modifier.height(5.dp))
-            TextField(name="*Re-Type Pass", spacing = 5)
-            Spacer(modifier = Modifier.height(50.dp))
-            Row() {
+            TextField(name="Re-Type Pass")
+            Spacer(modifier = Modifier.height(35.dp))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(onClick = {  },
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Sign Up")
@@ -62,6 +57,6 @@ fun ShowSignUpPage(navController : NavHostController){
                     Text(text = "Go Back")
                 }
             }
-
     }
+
 }
