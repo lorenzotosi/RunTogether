@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -62,25 +63,59 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             .padding(bottom = 60.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        IconButton(
-            onClick =  onClickActionNavigation,
-            modifier = Modifier
-                .size(120.dp)
-                .zIndex(1f)
-                .clickable { }
-                .then(Modifier.padding(8.dp))
-        ) {
-            Icon(
-                painter = painterResource(id = myId),
-                contentDescription = "Start run",
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+        Row(
+            modifier = Modifier.fillMaxWidth(1f),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.CenterStart // Align text to the start (left) within the Box
+            ) {
+                if (mapSettings) {
+                    Text(
+                        text = "15.44",
+                        fontSize = 24.sp, // Increase the font size as desired
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
+
+
+
+            IconButton(
+                onClick =  onClickActionNavigation,
                 modifier = Modifier
                     .size(120.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .padding(8.dp)
-            )
+                    .zIndex(1f)
+            ) {
+                Icon(
+                    painter = painterResource(id = myId),
+                    contentDescription = "Start run",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(8.dp)
+                )
+            }
 
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.CenterEnd // Align text to the end (right) within the Box
+            ) {
+                if (mapSettings) {
+                    Text(
+                        text = "10 km/h",
+                        fontSize = 24.sp, // Increase the font size as desired
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
+            }
         }
+
     }
 }
