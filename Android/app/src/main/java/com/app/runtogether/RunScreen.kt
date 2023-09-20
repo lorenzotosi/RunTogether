@@ -28,6 +28,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
+    val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
     
     GoogleMap(
         modifier = Modifier
@@ -70,7 +71,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
                 .then(Modifier.padding(8.dp))
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.baseline_run_circle_24),
+                painter = painterResource(id = myId),
                 contentDescription = "Start run",
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier
