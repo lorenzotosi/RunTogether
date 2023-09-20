@@ -1,12 +1,17 @@
 package com.app.runtogether
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -50,16 +55,28 @@ fun ShowRunScreen(locationDetails: LocationDetails, onClickActionNavigation: () 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight().padding(bottom = 90.dp),
+            .fillMaxHeight().padding(bottom = 60.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        Button(
-            onClick =  onClickActionNavigation ,
+        IconButton(
+            onClick =  onClickActionNavigation,
             modifier = Modifier
                 .size(120.dp)
                 .zIndex(1f)
+                .clickable {  }
+                .then(Modifier.padding(8.dp))
         ) {
-            Text(text = "Cliccami")
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_run_circle_24),
+                contentDescription = "Start run",
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(8.dp)
+            )
+
         }
     }
 }
