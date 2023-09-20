@@ -15,12 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 
 @Composable
 fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, onClickActionNavigation: () -> Unit){
@@ -30,7 +28,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
-    
+
     GoogleMap(
         modifier = Modifier
             .fillMaxSize()
@@ -45,13 +43,10 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             scrollGesturesEnabledDuringRotateOrZoom = mapSettings,
             tiltGesturesEnabled = false,
             zoomControlsEnabled = false,
-            zoomGesturesEnabled = mapSettings)
+            zoomGesturesEnabled = mapSettings),
+        properties = MapProperties(isMyLocationEnabled = true)
     ) {
-        Marker(
-            position = myPosition,
-            title = "Your position",
-            snippet = "You are here"
-        )
+        
         val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
         cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
