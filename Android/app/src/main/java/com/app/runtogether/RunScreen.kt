@@ -22,27 +22,28 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun ShowRunScreen(locationDetails: LocationDetails, onClickActionNavigation: () -> Unit){
+fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, onClickActionNavigation: () -> Unit){
 
     val myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
-
+    
     GoogleMap(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(top = padding.dp),
         cameraPositionState = cameraPositionState,
         uiSettings = MapUiSettings(compassEnabled = false,
-            indoorLevelPickerEnabled = false,
+            indoorLevelPickerEnabled = mapSettings,
             mapToolbarEnabled = false,
-            myLocationButtonEnabled = true,
-            rotationGesturesEnabled = false,
-            scrollGesturesEnabled = false,
-            scrollGesturesEnabledDuringRotateOrZoom = false,
+            myLocationButtonEnabled = mapSettings,
+            rotationGesturesEnabled = mapSettings,
+            scrollGesturesEnabled = mapSettings,
+            scrollGesturesEnabledDuringRotateOrZoom = mapSettings,
             tiltGesturesEnabled = false,
             zoomControlsEnabled = false,
-            zoomGesturesEnabled = false)
+            zoomGesturesEnabled = mapSettings)
     ) {
         Marker(
             position = myPosition,
@@ -51,11 +52,13 @@ fun ShowRunScreen(locationDetails: LocationDetails, onClickActionNavigation: () 
         )
         val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
         cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
+
     }
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight().padding(bottom = 60.dp),
+            .fillMaxHeight()
+            .padding(bottom = 60.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         IconButton(
@@ -63,7 +66,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, onClickActionNavigation: () 
             modifier = Modifier
                 .size(120.dp)
                 .zIndex(1f)
-                .clickable {  }
+                .clickable { }
                 .then(Modifier.padding(8.dp))
         ) {
             Icon(

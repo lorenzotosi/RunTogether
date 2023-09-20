@@ -78,7 +78,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                     CenterAlignedTopAppBar(
                         title = { Text(text = currentScreen) },
                         navigationIcon = {
-                            if (currentScreen !=  Screens.SignUp.name) {
+                            if (currentScreen !=  Screens.Running.name) {
                                 IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                     Icon(
                                         imageVector = Icons.Filled.Menu,
@@ -88,7 +88,9 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                             }
                         }
                     )
-                    if(currentScreen!=Screens.SignUp.name) {
+                    if(currentScreen==Screens.RunScreen.name ||
+                        currentScreen==Screens.Challenges.name ||
+                        currentScreen==Screens.TodaysRun.name) {
                         if (currentScreen == Screens.RunScreen.name)
                             CreateNavigationBar(navController, 0)
 
@@ -97,13 +99,13 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
 
                         if (currentScreen == Screens.TodaysRun.name)
                             CreateNavigationBar(navController, 1)
-
-                    } }
+                    }
+                }
             ) {
                 NavigationGraph(navController, it, locationDetails)
             }
         },
-        gesturesEnabled = currentScreen != Screens.SignUp.name
+        gesturesEnabled = currentScreen != Screens.Running.name
     )
 }
 
@@ -111,12 +113,12 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
 fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails){
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
-        modifier = Modifier.padding(top = 155.dp)) {
+        modifier = Modifier) {
         composable(route = Screens.TodaysRun.name){
             CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
-            ShowRunScreen(locationDetails) { navController.navigate(Screens.SignUp.name) }
+            ShowRunScreen(locationDetails, 155, false) { navController.navigate(Screens.Running.name) }
         }
         composable(route = Screens.Settings.name){
             //todo
@@ -127,6 +129,9 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         }
         composable(route = Screens.SignUp.name) {
             ShowSignUpPage(navController)
+        }
+        composable(route = Screens.Running.name){
+            ShowRunScreen(locationDetails, 0, true) { navController.navigate(Screens.SignUp.name) }
         }
     }
 }
