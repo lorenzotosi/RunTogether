@@ -28,11 +28,14 @@ class MainActivity : ComponentActivity() {
 
     private var requestingLocationUpdates = false
 
-    private lateinit var locationPermissionRequest: ActivityResultLauncher<String>
+    //private lateinit var locationPermissionRequest: ActivityResultLauncher<String>
+    private lateinit var locationPermissionRequest : ActivityResultLauncher<Array<String>>
 
     private var showSnackBar = mutableStateOf(false)
     private var showAlertDialog = mutableStateOf(false)
     private val location = mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
+
+    private var loc = false
 
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -42,13 +45,27 @@ class MainActivity : ComponentActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
+            ActivityResultContracts.RequestMultiplePermissions()
         ) { isGranted ->
-            if (isGranted) {
+
+            when{
+                isGranted.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    startLocationUpdates()
+                }
+                isGranted.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    startLocationUpdates()
+                } else -> {
+                    showSnackBar.value = true
+                }
+            }
+
+            /*if (isGranted) {
+                loc = true
                 startLocationUpdates()
             } else {
+                loc = false
                 showSnackBar.value = true
-            }
+            }*/
         }
 
         locationRequest =
@@ -63,8 +80,9 @@ class MainActivity : ComponentActivity() {
                     p0.locations.last().latitude,
                     p0.locations.last().longitude
                 )
-                stopLocationUpdates()
-                requestingLocationUpdates = false
+                loc = true
+                //stopLocationUpdates()
+                //requestingLocationUpdates = false
             }
         }
 
@@ -86,10 +104,8 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 startLocationUpdates()
 
-                                //ShowHomeScreen(location.value)
-                                /////////////////////////
-                                ModalNavigationDrawerSample(location.value)
-                                /////////////////////////
+                                ModalNavigationDrawerSample(location.value, loc)
+
                             }
                         }
                     )
@@ -132,7 +148,9 @@ class MainActivity : ComponentActivity() {
             else -> {
                 //first time: ask for permissions
                 locationPermissionRequest.launch(
-                    permission
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
                 )
             }
         }

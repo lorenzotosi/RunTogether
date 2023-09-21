@@ -1,11 +1,14 @@
 package com.app.runtogether
 
+import android.content.Context
+import android.location.LocationManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
@@ -21,7 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
-fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, onClickActionNavigation: () -> Unit){
+fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, myLocation : Boolean,  onClickActionNavigation: () -> Unit){
 
     val myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
@@ -44,9 +48,9 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             tiltGesturesEnabled = false,
             zoomControlsEnabled = false,
             zoomGesturesEnabled = mapSettings),
-        properties = MapProperties(isMyLocationEnabled = true)
+        properties = MapProperties(isMyLocationEnabled = myLocation)
     ) {
-        
+        println(myLocation)
         val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
         cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
@@ -112,5 +116,10 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             }
         }
 
+    }
+
+    LaunchedEffect(Unit) {
+        cameraPositionState.animate(CameraUpdateFactory.newCameraPosition(cameraPositionState.position))
+        //cameraPositionState.animate(CameraUpdateFactory)
     }
 }

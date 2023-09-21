@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController : NavHostController = rememberNavController()) {
+fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolean, navController : NavHostController = rememberNavController()) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
@@ -102,7 +102,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
                     }
                 }
             ) {
-                NavigationGraph(navController, it, locationDetails)
+                NavigationGraph(navController, it, locationDetails, mygps)
             }
         },
         gesturesEnabled = currentScreen != Screens.Running.name
@@ -110,7 +110,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, navController
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails){
+fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails, b : Boolean){
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
         modifier = Modifier) {
@@ -118,7 +118,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
-            ShowRunScreen(locationDetails, 155, false) { navController.navigate(Screens.Running.name) }
+            ShowRunScreen(locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }
         }
         composable(route = Screens.Settings.name){
             //todo
@@ -131,7 +131,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowSignUpPage(navController)
         }
         composable(route = Screens.Running.name){
-            ShowRunScreen(locationDetails, 0, true) { navController.navigate(Screens.SignUp.name) }
+            ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
         }
     }
 }
