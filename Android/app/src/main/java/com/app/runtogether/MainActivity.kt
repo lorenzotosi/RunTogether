@@ -3,6 +3,7 @@ package com.app.runtogether
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
@@ -20,7 +21,7 @@ import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), DeviceLocationTracker.DeviceLocationListener {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -30,16 +31,18 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var locationPermissionRequest: ActivityResultLauncher<String>
 
-    private var showSnackBar = mutableStateOf(false)
-    private var showAlertDialog = mutableStateOf(false)
+     var showSnackBar = mutableStateOf(false)
+     var showAlertDialog = mutableStateOf(false)
     private val location = mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
 
+
+    private lateinit var deviceLocationTracker: DeviceLocationTracker
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        /*fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -66,7 +69,7 @@ class MainActivity : ComponentActivity() {
                 stopLocationUpdates()
                 requestingLocationUpdates = false
             }
-        }
+        }*/
 
         setContent {
             RunTogetherTheme {
@@ -75,7 +78,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val snackbarHostState = remember { SnackbarHostState() }
+                    ModalNavigationDrawerSample(location.value)
+                    /*val snackbarHostState = remember { SnackbarHostState() }
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         content = { innerPadding ->
@@ -84,12 +88,11 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .padding(innerPadding)
                             ) {
-                                startLocationUpdates()
+                                //startLocationUpdates()
 
-                                //ShowHomeScreen(location.value)
-                                /////////////////////////
+
                                 ModalNavigationDrawerSample(location.value)
-                                /////////////////////////
+
                             }
                         }
                     )
@@ -98,12 +101,13 @@ class MainActivity : ComponentActivity() {
                     }
                     if (showAlertDialog.value) {
                         AlertDialogComposable(this, showAlertDialog)
-                    }
+                    }*/
                 }
             }
         }
+        deviceLocationTracker= DeviceLocationTracker(this, this)
     }
-    private fun startLocationUpdates() {
+    /*private fun startLocationUpdates() {
         requestingLocationUpdates = true
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
 
@@ -155,5 +159,12 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         if (requestingLocationUpdates) startLocationUpdates()
+    }*/
+
+    override fun onDeviceLocationChanged(
+        results: List<Address>?,
+        resultLocationDetails: LocationDetails
+    ) {
+        location.value = resultLocationDetails
     }
 }
