@@ -6,10 +6,8 @@ sealed class Screens(val name: String) {
     object Challenges : Screens("Challenges")
     object TodaysRun : Screens("Today's Run")
     object SignUp : Screens("Sign Up")
-
-    object Friends : Screens("Friends")
-
+    object Profile : Screens("Profile")
     object Notify : Screens("Notify")
-
     object Running : Screens("Running")
+
 }

@@ -32,11 +32,11 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
             Icons.Default.Settings,
             contentDescription = "go to settings",
             Screens.Settings),
-        MenuItems(id = "friends",
-            title = "Friends",
+        MenuItems(id = "Profile",
+            title = "Profile",
             Icons.Default.Person,
-            contentDescription = "go to friends",
-            Screens.Friends),
+            contentDescription = "go to profile",
+            Screens.Profile),
 
         MenuItems(id = "notify",
             title = "Notify",
@@ -133,8 +133,14 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         composable(route = Screens.Running.name){
             ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
         }
+        composable(route = Screens.Profile.name){
+            ShowProfilePage()
+        }
+
+
     }
 }
+
 
 @Composable
 fun CreateNavigationBar(navController: NavHostController, i: Int){
