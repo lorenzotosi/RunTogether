@@ -1,6 +1,6 @@
 package com.app.runtogether
 
-import ThemeSettingsScreen
+import ShowSettingsScreen
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -142,7 +142,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowRunScreen(locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }
         }
         composable(route = Screens.Settings.name){
-            ThemeSettingsScreen(
+            ShowSettingsScreen(
                 currentUsername = currentUsername,
                 onSaveClicked = { navController.popBackStack() },
                 onThemeChanged =  { mode ->
@@ -154,7 +154,8 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
                 },
                 onDismiss = { navController.popBackStack() },
                 isDarkTheme = false,
-                onUsernameChanged = onUsernameChanged
+                onUsernameChanged = onUsernameChanged,
+                navController = navController
             )
         }
         composable(route = Screens.Challenges.name){
@@ -169,6 +170,12 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         }
         composable(route = Screens.Profile.name){
             ShowProfilePage()
+        }
+        composable(route = Screens.Notify.name){
+            ShowNotifyPage()
+        }
+        composable(route = Screens.Login.name){
+            ShowLoginPage(navController)
         }
 
 

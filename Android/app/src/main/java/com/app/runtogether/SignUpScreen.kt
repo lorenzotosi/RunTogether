@@ -36,7 +36,6 @@ fun TextField(name:String, isPassword: Boolean = false){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowSignUpPage(navController : NavHostController){
-    val textName = remember { mutableStateOf(TextFieldValue("Name")) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -46,7 +45,7 @@ fun ShowSignUpPage(navController : NavHostController){
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             Spacer(modifier = Modifier.height(35.dp))
-            TextField(name = "Name")
+            TextField(name = "Username")
             Spacer(modifier = Modifier.height(5.dp))
             TextField(name = "Email")
             Spacer(modifier = Modifier.height(5.dp))
@@ -55,12 +54,9 @@ fun ShowSignUpPage(navController : NavHostController){
             TextField(name="Re-Type Pass", true)
             Spacer(modifier = Modifier.height(35.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Button(onClick = {  },
+                Button(onClick = { navController.navigate(Screens.Login.name) },
                     modifier = Modifier.padding(end = 9.dp)) {
-                    Text(text = "Sign Up")
-                }
-                Button(onClick = { navController.navigate(Screens.RunScreen.name) }) {
-                    Text(text = "Go Back")
+                    Text(text = "Go to Login")
                 }
             }
     }

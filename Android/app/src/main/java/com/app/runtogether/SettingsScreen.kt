@@ -4,15 +4,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.app.runtogether.Screens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ThemeSettingsScreen(
+fun ShowSettingsScreen(
     isDarkTheme: Boolean,
     currentUsername: String,
     onThemeChanged: (Boolean) -> Unit,
     onUsernameChanged: (String) -> Unit,
-    onSaveClicked: () -> Unit, // Callback for applying the modification
+    onSaveClicked: () -> Unit, // Callback for applying the modification,
+    navController: NavHostController,
     onDismiss: () -> Unit
 ) {
     Column(
@@ -54,5 +57,18 @@ fun ThemeSettingsScreen(
                 Text("Apply") // Change the label as needed
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = { navController.navigate(Screens.Login.name) }) {
+                Text("Logout") // Change the label as needed
+            }
+        }
+
     }
 }
