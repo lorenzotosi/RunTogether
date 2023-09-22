@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity() {
 
                                 ModalNavigationDrawerSample(location.value, loc)
 
+
                             }
                         }
                     )

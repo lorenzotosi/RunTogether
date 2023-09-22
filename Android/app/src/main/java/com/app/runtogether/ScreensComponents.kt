@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
+import androidx.compose.ui.Alignment
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +80,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
+                        actions= {GoHome(navController)},
                         title = { Text(text = currentScreen) },
                         navigationIcon = {
                             if (currentScreen !=  Screens.Running.name) {
@@ -91,6 +93,7 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
                             }
                         }
                     )
+
                     if(currentScreen==Screens.RunScreen.name ||
                         currentScreen==Screens.Challenges.name ||
                         currentScreen==Screens.TodaysRun.name) {
@@ -110,6 +113,16 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
         },
         gesturesEnabled = currentScreen != Screens.Running.name
     )
+}
+
+@Composable
+fun GoHome(navController : NavHostController) {
+    IconButton(onClick = { navController.navigate(Screens.RunScreen.name) }) {
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_home_24),
+            contentDescription = "Home",
+        )
+    }
 }
 
 @Composable
