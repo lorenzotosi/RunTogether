@@ -1,9 +1,6 @@
 package com.app.runtogether
 
-import android.content.Context
-import android.location.LocationManager
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -11,31 +8,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.compose.*
+
 
 @Composable
 fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, myLocation : Boolean,  onClickActionNavigation: () -> Unit){
 
-    val myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
+    var myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
-    val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
-    val waypoints = remember { mutableStateListOf<LatLng>() }
 
+    val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
+    var waypoints by remember {mutableStateOf<List<LatLng>>(value = listOf())}
+
+    LaunchedEffect(Unit) {
+        cameraPositionState.centerOnLocation(myPosition)
+    }
 
     GoogleMap(
         modifier = Modifier
@@ -54,25 +51,18 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             zoomGesturesEnabled = mapSettings),
         properties = MapProperties(isMyLocationEnabled = myLocation),
     ) {
+
+
         val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
+        myPosition = newPos
+
         cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
-
         if (!waypoints.contains(newPos)){
-            waypoints.add(newPos)
-            //PolylineOptions().add(newPos)
-
+            waypoints = waypoints + newPos
         }
 
-        for (p in waypoints){
-            println(p.toString())
-            println(waypoints.size)
-            //PolylineOptions().points.add(newPos)
-            Polyline(points = waypoints)
-        }
-
-        
-
+        UpdatePolyline(waypoints = waypoints)
     }
     Box(
         modifier = Modifier
@@ -99,8 +89,6 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
                     )
                 }
             }
-
-
 
             IconButton(
                 onClick =  onClickActionNavigation,
@@ -137,7 +125,17 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
 
     }
 
-    LaunchedEffect(Unit) {
-        cameraPositionState.animate(CameraUpdateFactory.newCameraPosition(cameraPositionState.position))
-    }
 }
+
+suspend fun CameraPositionState.centerOnLocation(location: LatLng) = animate(
+    update = CameraUpdateFactory.newLatLngZoom(
+        location,
+        15f
+    )
+)
+
+@Composable
+fun UpdatePolyline(waypoints : List<LatLng>){
+    Polyline(points = waypoints)
+}
+

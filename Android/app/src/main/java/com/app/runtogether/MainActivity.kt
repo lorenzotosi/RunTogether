@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
         }
 
         locationRequest =
-            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000).apply {
+            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1500).apply {
                 setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
             }.build()
 
