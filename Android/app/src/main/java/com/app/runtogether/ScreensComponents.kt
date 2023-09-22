@@ -1,5 +1,7 @@
 package com.app.runtogether
 
+import ThemeSettingsScreen
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -42,7 +44,8 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
             title = "Notify",
             Icons.Default.Notifications,
             contentDescription = "go to notifications",
-            Screens.Notify)
+            Screens.Notify),
+
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
@@ -111,6 +114,11 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
 
 @Composable
 fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails, b : Boolean){
+    // Define a mutable state variable for the username
+    var currentUsername by remember { mutableStateOf("InitialUsername") }
+    val onUsernameChanged: (String) -> Unit = { newUsername ->
+        currentUsername = newUsername
+    }
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
         modifier = Modifier) {
@@ -121,7 +129,20 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowRunScreen(locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }
         }
         composable(route = Screens.Settings.name){
-            //todo
+            ThemeSettingsScreen(
+                currentUsername = currentUsername,
+                onSaveClicked = { navController.popBackStack() },
+                onThemeChanged =  { mode ->
+                    if(mode){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }else{
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
+                },
+                onDismiss = { navController.popBackStack() },
+                isDarkTheme = false,
+                onUsernameChanged = onUsernameChanged
+            )
         }
         composable(route = Screens.Challenges.name){
             //index andra sostituito con il numero di challenge nel database
