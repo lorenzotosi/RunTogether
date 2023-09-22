@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import android.location.Location
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import java.lang.Math.*
+import kotlin.math.pow
 
 
 @Composable
@@ -49,20 +52,25 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             tiltGesturesEnabled = false,
             zoomControlsEnabled = false,
             zoomGesturesEnabled = mapSettings),
-        properties = MapProperties(isMyLocationEnabled = myLocation),
+        properties = MapProperties(isMyLocationEnabled = myLocation)
     ) {
 
+        if (myLocation){
+            val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
+            cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
-        val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
-        myPosition = newPos
+            if (mapSettings){
+                if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())){
+                    waypoints = waypoints + newPos
+                    println(waypoints.size)
+                }
+                UpdatePolyline(waypoints = waypoints)
 
-        cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
-
-        if (!waypoints.contains(newPos)){
-            waypoints = waypoints + newPos
+                val x = calculateTotalDistance(waypoints)
+                //println(x)
+            }
         }
 
-        UpdatePolyline(waypoints = waypoints)
     }
     Box(
         modifier = Modifier
@@ -114,7 +122,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             ) {
                 if (mapSettings) {
                     Text(
-                        text = "10 km/h",
+                        text = "${calculateTotalDistance(waypoints)} km",
                         fontSize = 24.sp, // Increase the font size as desired
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp)
@@ -139,3 +147,27 @@ fun UpdatePolyline(waypoints : List<LatLng>){
     Polyline(points = waypoints)
 }
 
+fun calculateTotalDistance(points: List<LatLng>): Double {
+    var totalDistance = 0.0
+
+    for (i in 0 until points.size - 1) {
+        val lat1 = points[i].latitude
+        val lon1 = points[i].longitude
+        val lat2 = points[i + 1].latitude
+        val lon2 = points[i + 1].longitude
+
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+
+        val a = sin(dLat / 2).pow(2) + cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        val radiusOfEarth = 6371.0 // Radius of the Earth in kilometers
+
+        val distance = radiusOfEarth * c // Distance in kilometers
+        totalDistance += distance
+    }
+
+    return totalDistance
+}
