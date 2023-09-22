@@ -172,7 +172,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowProfilePage()
         }
         composable(route = Screens.Notify.name){
-            ShowNotifyPage()
+            ShowNotifyPage(navController)
         }
         composable(route = Screens.Login.name){
             ShowLoginPage(navController)

@@ -21,7 +21,10 @@ fun ShowSettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 50.dp),
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 50.dp),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         // Dark Theme switch
@@ -38,7 +41,7 @@ fun ShowSettingsScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Apply button
         Row(
