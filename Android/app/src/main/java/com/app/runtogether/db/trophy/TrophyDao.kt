@@ -1,25 +1,25 @@
-package com.app.runtogether.db.user
+package com.app.runtogether.db.trophy
 
 import android.content.Context
 import androidx.room.*
 import com.app.runtogether.db.Database
 
 @Dao
-interface UserDao {
-    @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+interface TrophyDao {
+    @Query("SELECT * FROM trophy")
+    fun getAll(): List<Trophy>
 
-    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<User>
+    @Query("SELECT * FROM trophy WHERE uid IN (:trophyIds)")
+    fun loadAllByIds(trophyIds: IntArray): List<Trophy>
 
-    @Query("SELECT * FROM user WHERE username LIKE :first LIMIT 1")
-    fun findByUsername(first: String): User
+    @Query("SELECT * FROM trophy WHERE name LIKE :first LIMIT 1")
+    fun findByName(first: String): Trophy
 
     @Insert
-    fun insertAll(vararg users: User)
+    fun insertAll(vararg trophies: Trophy)
 
     @Delete
-    fun delete(user: User)
+    fun delete(trophy: Trophy)
 
     companion object{
         private var INSTANCE: Database? = null

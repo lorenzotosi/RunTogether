@@ -16,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.room.Room
+import com.app.runtogether.db.Database
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 
@@ -37,10 +39,20 @@ class MainActivity : ComponentActivity() {
 
     private var loc = false
 
-
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            Database::class.java, "database-name"
+        ).build()
+
+
+
+
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
