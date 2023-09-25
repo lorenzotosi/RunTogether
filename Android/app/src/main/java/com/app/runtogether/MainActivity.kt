@@ -17,7 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.room.Room
-import com.app.runtogether.db.Database
+import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
         val db = Room.databaseBuilder(
             applicationContext,
-            Database::class.java, "database-name"
+            MyDatabase::class.java, "database-name"
         ).build()
 
 

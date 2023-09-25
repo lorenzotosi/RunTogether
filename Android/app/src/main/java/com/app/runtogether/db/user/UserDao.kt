@@ -2,7 +2,7 @@ package com.app.runtogether.db.user
 
 import android.content.Context
 import androidx.room.*
-import com.app.runtogether.db.Database
+import com.app.runtogether.db.MyDatabase
 
 @Dao
 interface UserDao {
@@ -22,13 +22,13 @@ interface UserDao {
     fun delete(user: User)
 
     companion object{
-        private var INSTANCE: Database? = null
+        private var INSTANCE: MyDatabase? = null
 
-        private fun buildDatabase(context: Context) : Database {
-            return Room.databaseBuilder(context, Database::class.java, "user-db").build()
+        private fun buildDatabase(context: Context) : MyDatabase {
+            return Room.databaseBuilder(context, MyDatabase::class.java, "user-db").build()
         }
 
-        fun getDatabaseInstance(context: Context) : Database {
+        fun getDatabaseInstance(context: Context) : MyDatabase {
             if(INSTANCE == null){
                 INSTANCE = buildDatabase(context)
             }
