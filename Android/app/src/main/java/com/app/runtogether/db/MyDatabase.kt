@@ -8,6 +8,9 @@ import com.app.runtogether.db.trophy.Trophy
 import com.app.runtogether.db.trophy.TrophyDao
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 @Database(entities = [User::class, Trophy::class], version = 1)
@@ -45,12 +48,13 @@ abstract class MyDatabase : RoomDatabase() {
                                     )
                                 )
                         }*/
-                        INSTANCE?.userDao()?.insertAll( User(
-                            username = "nome",
-                            email = "email@email.com",
-                            password = "password"
-                        ))
-
+                        CoroutineScope(Dispatchers.IO).launch {
+                            INSTANCE?.userDao()?.insertAll(User(
+                                username = "nome",
+                                email = "email@email.com",
+                                password = "password"
+                            ))
+                        }
                     }
                 })
                 .build()
