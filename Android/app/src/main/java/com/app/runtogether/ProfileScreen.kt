@@ -24,7 +24,7 @@ import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
 
 @Composable
-fun ShowProfilePage(navController: NavController){
+fun ShowProfilePage(){
     val users = hiltViewModel<UserViewModel>()
     Box(
         modifier = Modifier
@@ -34,7 +34,7 @@ fun ShowProfilePage(navController: NavController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = /*users.users.collectAsState(initial = listOf()).value[0].username.orEmpty()*/,
+            text = users.users.collectAsState(initial = listOf()).value.getOrNull(1)?.username.toString(),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
