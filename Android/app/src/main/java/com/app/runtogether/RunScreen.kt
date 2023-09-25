@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import java.lang.Math.*
+import java.util.GregorianCalendar
 import kotlin.math.pow
 
 
@@ -56,6 +57,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
     ) {
 
         if (myLocation){
+            //var startHour : GregorianCalendar = GregorianCalendar("gmt")
             val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
             cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 

@@ -34,7 +34,7 @@ fun ShowProfilePage(){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = users.users.collectAsState(initial = listOf()).value.getOrNull(1)?.username.toString(),
+            text = users.users.collectAsState(initial = listOf()).value.getOrNull(0)?.username.toString(),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
