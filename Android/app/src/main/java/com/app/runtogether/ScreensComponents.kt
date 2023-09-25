@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
+import com.app.runtogether.di.DataModule
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
@@ -125,7 +126,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
 @HiltAndroidApp
 class RunApp : Application() {
     // lazy --> the database and the repository are only created when they're needed
-    val database by lazy { MyDatabase.getInstance(this) }
+    val database by lazy { /* DataModule.getDb(this)*/ MyDatabase.getInstance(this)}
 }
 
 @Composable
@@ -145,7 +146,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
     val onUsernameChanged: (String) -> Unit = { newUsername ->
         currentUsername = newUsername
     }
-
+    val users = hiltViewModel<UserViewModel>()
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
         modifier = Modifier) {
@@ -183,7 +184,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
         }
         composable(route = Screens.Profile.name){
-            ShowProfilePage(navController)
+            ShowProfilePage()
         }
         composable(route = Screens.Notify.name){
             ShowNotifyPage(navController)
