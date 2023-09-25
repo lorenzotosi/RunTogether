@@ -8,6 +8,7 @@ import com.app.runtogether.db.trophy.Trophy
 import com.app.runtogether.db.trophy.TrophyDao
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserDao
+import java.util.concurrent.Executors
 
 @Database(entities = [User::class, Trophy::class], version = 1)
 abstract class MyDatabase : RoomDatabase() {
@@ -24,7 +25,7 @@ abstract class MyDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
-                MyDatabase::class.java, "Sample.db")
+                MyDatabase::class.java, "nostro.db")
                 // prepopulate the database after onCreate was called
                 .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -33,6 +34,23 @@ abstract class MyDatabase : RoomDatabase() {
                         /*ioThread {
                             getInstance(context).dataDao().insertData(PREPOPULATE_DATA)
                         }*/
+
+                        /*IO_EXECUTOR.execute {
+                            INSTANCE?.userDao()
+                                ?.insertAll(
+                                    User(
+                                        username = "nome",
+                                        email = "email@email.com",
+                                        password = "password"
+                                    )
+                                )
+                        }*/
+                        INSTANCE?.userDao()?.insertAll( User(
+                            username = "nome",
+                            email = "email@email.com",
+                            password = "password"
+                        ))
+
                     }
                 })
                 .build()

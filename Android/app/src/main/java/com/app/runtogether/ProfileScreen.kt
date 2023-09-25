@@ -12,12 +12,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.room.Room
+import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.user.User
+import com.app.runtogether.db.user.UserViewModel
 
 @Composable
-fun ShowProfilePage(){
+fun ShowProfilePage(navController: NavController){
+    val users = hiltViewModel<UserViewModel>()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -26,13 +34,15 @@ fun ShowProfilePage(){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = "Andrea Zavatta",
+            text = /*users.users.collectAsState(initial = listOf()).value[0].username.orEmpty()*/,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
         )
         Row(
-            modifier = Modifier.fillMaxWidth(1f).padding(top = 50.dp),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(top = 50.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically){
             Image(
@@ -63,7 +73,8 @@ fun ShowProfilePage(){
 
 
         Row(
-            modifier = Modifier.fillMaxWidth(1f)
+            modifier = Modifier
+                .fillMaxWidth(1f)
                 .padding(start = 25.dp, top = 160.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically

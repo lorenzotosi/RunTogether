@@ -1,6 +1,8 @@
 package com.app.runtogether
 
 import ShowSettingsScreen
+import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -17,11 +19,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.user.User
+import com.app.runtogether.db.user.UserViewModel
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolean, navController : NavHostController = rememberNavController()) {
+fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean, navController : NavHostController = rememberNavController()) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
@@ -115,6 +122,12 @@ fun ModalNavigationDrawerSample( locationDetails: LocationDetails, mygps: Boolea
     )
 }
 
+@HiltAndroidApp
+class RunApp : Application() {
+    // lazy --> the database and the repository are only created when they're needed
+    val database by lazy { MyDatabase.getInstance(this) }
+}
+
 @Composable
 fun GoHome(navController : NavHostController) {
     IconButton(onClick = { navController.navigate(Screens.RunScreen.name) }) {
@@ -132,6 +145,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
     val onUsernameChanged: (String) -> Unit = { newUsername ->
         currentUsername = newUsername
     }
+
     NavHost(navController = navController,
         startDestination = Screens.RunScreen.name,
         modifier = Modifier) {
@@ -169,7 +183,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
         }
         composable(route = Screens.Profile.name){
-            ShowProfilePage()
+            ShowProfilePage(navController)
         }
         composable(route = Screens.Notify.name){
             ShowNotifyPage(navController)

@@ -20,8 +20,9 @@ import androidx.room.Room
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -44,15 +45,6 @@ class MainActivity : ComponentActivity() {
 
 
         super.onCreate(savedInstanceState)
-
-        val db = Room.databaseBuilder(
-            applicationContext,
-            MyDatabase::class.java, "database-name"
-        ).build()
-
-
-
-
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
