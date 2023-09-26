@@ -1,5 +1,6 @@
 import android.content.Context
 import android.content.SharedPreferences
+import com.app.runtogether.db.user.User
 
 class SessionManager private constructor(context: Context) {
     // Shared Preferences
@@ -42,12 +43,12 @@ class SessionManager private constructor(context: Context) {
             sessionManager.editor.apply()
         }
 
-        fun getUserDetails(context: Context): HashMap<String, String> {
-            val sessionManager = getInstance(context)
-            val user = HashMap<String, String>()
-            user[sessionManager.KEY_NAME] = sessionManager.pref.getString(sessionManager.KEY_NAME, null) ?: ""
-            user[sessionManager.KEY_EMAIL] = sessionManager.pref.getString(sessionManager.KEY_EMAIL, null) ?: ""
-            return user
+        fun getUserDetails(context: Context): User{
+            return User(
+                username = getInstance(context).pref.getString(getInstance(context).KEY_NAME, "")!!,
+                email = getInstance(context).pref.getString(getInstance(context).KEY_EMAIL, "")!!,
+                password = getInstance(context).pref.getString(getInstance(context).KEY_PASSWORD, "")!!
+            )
         }
 
         fun isLoggedIn(context: Context): Boolean {
