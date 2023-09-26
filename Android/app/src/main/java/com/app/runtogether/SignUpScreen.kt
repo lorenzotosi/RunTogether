@@ -73,7 +73,11 @@ fun ShowSignUpPage(navController : NavHostController){
                         }
                     }
 
-                    navController.navigate(Screens.Login.name)},
+                    navController.navigate(Screens.Login.name) },
+                    modifier = Modifier.padding(end = 9.dp)) {
+                    Text(text = "Sign Up")
+                }
+                Button(onClick = { navController.navigate(Screens.Login.name) },
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Go to Login")
                 }
