@@ -65,13 +65,14 @@ fun ShowSignUpPage(navController : NavHostController){
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(onClick = {
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-
                     myCoroutineScope.launch {
-                        /*if (database.userDao().findByUsername(username).username == null){
+                        if (database.userDao().findByUsername(username) == null){
                             database.userDao().insertAll(User(username = username, email = email, password = password))
-                        }*/
-                        Log.d("username", database.userDao().findByUsername(username).toString())
+                        }else{
+                            Log.d("SignUpScreen", "Username already exists")
+                        }
                     }
+
                     navController.navigate(Screens.Login.name)},
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Go to Login")

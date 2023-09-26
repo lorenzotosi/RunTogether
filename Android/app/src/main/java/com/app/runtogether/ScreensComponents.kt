@@ -184,7 +184,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
         }
         composable(route = Screens.Profile.name){
-            ShowProfilePage()
+            ShowProfilePage(navController)
         }
         composable(route = Screens.Notify.name){
             ShowNotifyPage(navController)

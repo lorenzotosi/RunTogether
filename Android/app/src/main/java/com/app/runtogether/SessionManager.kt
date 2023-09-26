@@ -14,8 +14,6 @@ class SessionManager private constructor(context: Context) {
     // All Shared Preferences Keys
     private val IS_LOGIN = "IsLoggedIn"
     val KEY_NAME = "name"
-    val KEY_EMAIL = "email"
-    val KEY_PASSWORD = "password"
 
     init {
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
@@ -34,21 +32,15 @@ class SessionManager private constructor(context: Context) {
             }
         }
 
-        fun createLoginSession(context: Context, username: String, email: String, password: String) {
+        fun createLoginSession(context: Context, username: String) {
             val sessionManager = getInstance(context)
             sessionManager.editor.putBoolean(sessionManager.IS_LOGIN, true)
             sessionManager.editor.putString(sessionManager.KEY_NAME, username)
-            sessionManager.editor.putString(sessionManager.KEY_EMAIL, email)
-            sessionManager.editor.putString(sessionManager.KEY_PASSWORD, password)
             sessionManager.editor.apply()
         }
 
-        fun getUserDetails(context: Context): User{
-            return User(
-                username = getInstance(context).pref.getString(getInstance(context).KEY_NAME, "")!!,
-                email = getInstance(context).pref.getString(getInstance(context).KEY_EMAIL, "")!!,
-                password = getInstance(context).pref.getString(getInstance(context).KEY_PASSWORD, "")!!
-            )
+        fun getUserDetails(context: Context): String{
+            return getInstance(context).pref.getString(getInstance(context).KEY_NAME, "")!!
         }
 
         fun isLoggedIn(context: Context): Boolean {

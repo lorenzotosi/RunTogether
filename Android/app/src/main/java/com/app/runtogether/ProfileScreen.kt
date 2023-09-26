@@ -18,13 +18,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.room.Room
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
 
 @Composable
-fun ShowProfilePage(){
+fun ShowProfilePage(navController: NavHostController){
     val users = hiltViewModel<UserViewModel>()
     Box(
         modifier = Modifier
@@ -34,7 +35,7 @@ fun ShowProfilePage(){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = users.users.collectAsState(initial = listOf()).value.getOrNull(0)?.username.toString(),
+            text = SessionManager.getUserDetails(navController.context),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
