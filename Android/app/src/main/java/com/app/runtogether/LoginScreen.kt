@@ -16,6 +16,7 @@ import com.app.runtogether.db.user.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ShowLoginPage(navController: NavHostController){
@@ -47,13 +48,12 @@ fun ShowLoginPage(navController: NavHostController){
                     Log.d("LoginScreen", "User: $user")
                     if((user != null) && (user?.username == username) && (user?.password == password)){
                         SessionManager.createLoginSession(navController.context, username)
+                        withContext(Dispatchers.Main) {
+                            navController.navigate(Screens.RunScreen.name)
+                        }
                     }
                 }
-                if(SessionManager.getUserDetails(navController.context) != ""){
-                    navController.navigate(Screens.RunScreen.name)
-                }else{
-                    Log.d("LoginScreen", "Username or Password is incorrect")
-                } },
+},
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Login")
 
