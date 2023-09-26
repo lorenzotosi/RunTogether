@@ -68,7 +68,10 @@ fun ShowSettingsScreen(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = { navController.navigate(Screens.Login.name) }) {
+            Button(onClick = {
+                SessionManager.logoutUser(navController.context)
+                navController.navigate(Screens.Login.name)
+            }) {
                 Text("Logout") // Change the label as needed
             }
         }
