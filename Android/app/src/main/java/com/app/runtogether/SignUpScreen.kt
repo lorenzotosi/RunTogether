@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -15,6 +16,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.user.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +43,7 @@ fun TextField(name:String, isPassword: Boolean = false) : String{
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowSignUpPage(navController : NavHostController){
-
+    val database = MyDatabase.getInstance(navController.context)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,7 +64,14 @@ fun ShowSignUpPage(navController : NavHostController){
             Spacer(modifier = Modifier.height(35.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(onClick = {
+                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
 
+                    myCoroutineScope.launch {
+                        /*if (database.userDao().findByUsername(username).username == null){
+                            database.userDao().insertAll(User(username = username, email = email, password = password))
+                        }*/
+                        Log.d("username", database.userDao().findByUsername(username).toString())
+                    }
                     navController.navigate(Screens.Login.name)},
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Go to Login")
