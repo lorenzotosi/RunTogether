@@ -92,12 +92,12 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                             }
                             selectedItem.value = item
                             /* --------------------------------------- */
-                            if (item.screens.name == Screens.Profile.name){
-                                if (!SessionManager.isLoggedIn(navController.context)){
+                            if (!SessionManager.isLoggedIn(navController.context)){
+                                if (item.screens.name == Screens.Profile.name){
                                     navController.navigate(Screens.Login.name)
                                 }
                             } else {
-                            navController.navigate(item.screens.name)
+                                navController.navigate(item.screens.name)
                             }
                             /* --------------------------------------- */
                         },
