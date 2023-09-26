@@ -43,9 +43,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
     var waypoints by remember {mutableStateOf<List<LatLng>>(value = listOf())}
 
-    LaunchedEffect(Unit) {
-        cameraPositionState.centerOnLocation(myPosition)
-    }
+
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("HH:mm")
     val current = formatter.format(time)
@@ -69,8 +67,10 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
 
         if (myLocation){
             val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
-            cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
-
+            //cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
+            LaunchedEffect(newPos) {
+                cameraPositionState.centerOnLocation(newPos)
+            }
 
             if (mapSettings){
                 if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())){
@@ -145,9 +145,8 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
 }
 
 suspend fun CameraPositionState.centerOnLocation(location: LatLng) = animate(
-    update = CameraUpdateFactory.newLatLngZoom(
-        location,
-        15f
+    update = CameraUpdateFactory.newLatLng(
+        location
     )
 )
 
