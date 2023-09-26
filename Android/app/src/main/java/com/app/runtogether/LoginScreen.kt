@@ -12,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.user.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun ShowLoginPage(navController: NavHostController){
@@ -35,17 +39,24 @@ fun ShowLoginPage(navController: NavHostController){
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
-                if((database.userDao()
-                        .findByUsername(username).username == username) && (database.userDao()
-                        .findByUsername(username).password == password)
-                ){
-                    SessionManager.createLoginSession(navController.context, username)
+                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                var user: User? = null
+                myCoroutineScope.launch {
+                    user = database.userDao()
+                        .findByUsername(username)
+                    Log.d("LoginScreen", "User: $user")
+                    if((user != null) && (user?.username == username) && (user?.password == password)){
+                        SessionManager.createLoginSession(navController.context, username)
+                    }
+                }
+                if(SessionManager.getUserDetails(navController.context) != ""){
                     navController.navigate(Screens.RunScreen.name)
                 }else{
                     Log.d("LoginScreen", "Username or Password is incorrect")
                 } },
-                modifier = Modifier.padding(end = 9.dp)) {
-                Text(text = "Login")
+                    modifier = Modifier.padding(end = 9.dp)) {
+                    Text(text = "Login")
+
             }
 
         }

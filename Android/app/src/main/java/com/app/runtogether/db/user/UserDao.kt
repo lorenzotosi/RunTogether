@@ -14,7 +14,7 @@ interface UserDao {
     fun loadAllByIds(userIds: IntArray): List<User>
 
     @Query("SELECT * FROM user WHERE username LIKE :first LIMIT 1")
-    fun findByUsername(first: String): User
+    suspend fun findByUsername(first: String): User
 
     @Insert
     suspend fun insertAll(vararg users: User)
