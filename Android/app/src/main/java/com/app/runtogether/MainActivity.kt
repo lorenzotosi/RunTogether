@@ -2,10 +2,12 @@ package com.app.runtogether
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -16,11 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.room.Room
-import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -122,6 +123,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
     }
     private fun startLocationUpdates() {
         requestingLocationUpdates = true

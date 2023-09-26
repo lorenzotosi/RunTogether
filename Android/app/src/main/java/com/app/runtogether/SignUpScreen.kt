@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextField(name:String, isPassword: Boolean = false){
+fun TextField(name:String, isPassword: Boolean = false) : String{
         val textState = remember { mutableStateOf(TextFieldValue()) }
         OutlinedTextField(
             value = textState.value,
@@ -31,11 +31,14 @@ fun TextField(name:String, isPassword: Boolean = false){
                 imeAction = ImeAction.Next
             )
             )
+    return textState.value.text
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowSignUpPage(navController : NavHostController){
+
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -45,16 +48,18 @@ fun ShowSignUpPage(navController : NavHostController){
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             Spacer(modifier = Modifier.height(35.dp))
-            TextField(name = "Username")
+            val username = TextField(name = "Username")
             Spacer(modifier = Modifier.height(5.dp))
-            TextField(name = "Email")
+            val email = TextField(name = "Email")
             Spacer(modifier = Modifier.height(5.dp))
-            TextField(name = "Password", true)
+            val password = TextField(name = "Password", true)
             Spacer(modifier = Modifier.height(5.dp))
             TextField(name="Re-Type Pass", true)
             Spacer(modifier = Modifier.height(35.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Button(onClick = { navController.navigate(Screens.Login.name) },
+                Button(onClick = {
+
+                    navController.navigate(Screens.Login.name)},
                     modifier = Modifier.padding(end = 9.dp)) {
                     Text(text = "Go to Login")
                 }

@@ -11,7 +11,6 @@ import com.app.runtogether.db.user.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 
 @Database(entities = [User::class, Trophy::class], version = 1)
 abstract class MyDatabase : RoomDatabase() {
@@ -33,21 +32,6 @@ abstract class MyDatabase : RoomDatabase() {
                 .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
-                        // insert the data on the IO Thread
-                        /*ioThread {
-                            getInstance(context).dataDao().insertData(PREPOPULATE_DATA)
-                        }*/
-
-                        /*IO_EXECUTOR.execute {
-                            INSTANCE?.userDao()
-                                ?.insertAll(
-                                    User(
-                                        username = "nome",
-                                        email = "email@email.com",
-                                        password = "password"
-                                    )
-                                )
-                        }*/
                         CoroutineScope(Dispatchers.IO).launch {
                             INSTANCE?.userDao()?.insertAll(User(
                                 username = "nome",
