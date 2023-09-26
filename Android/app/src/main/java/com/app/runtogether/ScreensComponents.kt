@@ -1,8 +1,10 @@
 package com.app.runtogether
 
+import SessionManager
 import ShowSettingsScreen
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
@@ -43,23 +46,21 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
     val scope = rememberCoroutineScope()
     // icons to mimic drawer destinations
     val items = listOf(
-        MenuItems(id = "settings",
-            title = "Settings",
-            Icons.Default.Settings,
-            contentDescription = "go to settings",
-            Screens.Settings),
         MenuItems(id = "Profile",
             title = "Profile",
             Icons.Default.Person,
             contentDescription = "go to profile",
             Screens.Profile),
-
         MenuItems(id = "notify",
             title = "Notify",
             Icons.Default.Notifications,
             contentDescription = "go to notifications",
             Screens.Notify),
-
+        MenuItems(id = "settings",
+            title = "Settings",
+            Icons.Default.Settings,
+            contentDescription = "go to settings",
+            Screens.Settings),
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
@@ -68,7 +69,9 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
             ModalDrawerSheet {
                 Image(painter = painterResource(id = R.drawable.image_profile),
                     contentDescription = "Immagine profilo",
-                    modifier = Modifier.padding(16.dp).size(150.dp, 150.dp))
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(150.dp, 150.dp))
                 Text("RUN",
                     modifier = Modifier.padding(16.dp),
                     color = Color.DarkGray,
@@ -89,7 +92,13 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                             }
                             selectedItem.value = item
                             /* --------------------------------------- */
+                            if (item.screens.name == Screens.Profile.name){
+                                if (!SessionManager.isLoggedIn(navController.context)){
+                                    navController.navigate(Screens.Login.name)
+                                }
+                            } else {
                             navController.navigate(item.screens.name)
+                            }
                             /* --------------------------------------- */
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
@@ -144,7 +153,8 @@ class RunApp : Application() {
 
 @Composable
 fun GoHome(navController : NavHostController) {
-    IconButton(onClick = { navController.navigate(Screens.RunScreen.name) }) {
+    IconButton(onClick = { navController.popBackStack()
+        navController.navigate(Screens.RunScreen.name) }) {
         Icon(
             painter = painterResource(id = R.drawable.baseline_home_24),
             contentDescription = "Home",
@@ -203,6 +213,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowNotifyPage(navController)
         }
         composable(route = Screens.Login.name){
+            Log.d("profile", "login")
             ShowLoginPage(navController)
         }
 

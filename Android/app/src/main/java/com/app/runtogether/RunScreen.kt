@@ -19,7 +19,11 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import java.lang.Math.*
-import java.util.GregorianCalendar
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
 import kotlin.math.pow
 
 
@@ -37,7 +41,9 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
     LaunchedEffect(Unit) {
         cameraPositionState.centerOnLocation(myPosition)
     }
-
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("HH:mm")
+    val current = formatter.format(time)
     GoogleMap(
         modifier = Modifier
             .fillMaxSize()
@@ -57,18 +63,17 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
     ) {
 
         if (myLocation){
-            //var startHour : GregorianCalendar = GregorianCalendar("gmt")
             val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
             cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
             if (mapSettings){
                 if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())){
                     waypoints = waypoints + newPos
-                    println(waypoints.size)
+                    //println(waypoints.size)
                 }
                 UpdatePolyline(waypoints = waypoints)
 
-                val x = calculateTotalDistance(waypoints)
+                //val x = calculateTotalDistance(waypoints)
                 //println(x)
             }
         }
@@ -92,7 +97,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             ) {
                 if (mapSettings) {
                     Text(
-                        text = "15.44",
+                        text = current.toString(),
                         fontSize = 24.sp, // Increase the font size as desired
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 8.dp)
@@ -124,7 +129,7 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             ) {
                 if (mapSettings) {
                     Text(
-                        text = "${calculateTotalDistance(waypoints)} km",
+                        text = "${(calculateTotalDistance(waypoints))} km",
                         fontSize = 24.sp, // Increase the font size as desired
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp)
@@ -170,6 +175,8 @@ fun calculateTotalDistance(points: List<LatLng>): Double {
         val distance = radiusOfEarth * c // Distance in kilometers
         totalDistance += distance
     }
+    val formattedDistance = String.format("%.3f", totalDistance)
 
-    return totalDistance
+
+    return formattedDistance.toDouble()
 }

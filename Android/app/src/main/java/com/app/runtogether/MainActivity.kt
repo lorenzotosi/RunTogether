@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import SessionManager
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        //SessionManager.logoutUser(applicationContext)
 
         super.onCreate(savedInstanceState)
 

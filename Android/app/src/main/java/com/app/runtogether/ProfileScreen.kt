@@ -26,7 +26,7 @@ import com.app.runtogether.db.user.UserViewModel
 
 @Composable
 fun ShowProfilePage(navController: NavHostController){
-    val users = hiltViewModel<UserViewModel>()
+    //val users = hiltViewModel<UserViewModel>()
     Box(
         modifier = Modifier
             .fillMaxWidth()
