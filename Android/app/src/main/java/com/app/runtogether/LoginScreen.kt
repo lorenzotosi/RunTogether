@@ -19,11 +19,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun ShowLoginPage(navController: NavHostController){
+fun ShowLoginPage(navController: NavHostController) {
     val database = MyDatabase.getInstance(navController.context)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(
             text = "Please enter your details below",
             style = MaterialTheme.typography.bodyLarge,
@@ -39,23 +39,25 @@ fun ShowLoginPage(navController: NavHostController){
                 Text(text = "Go to Sign Up")
             }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = {
-                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                var user: User? = null
-                myCoroutineScope.launch {
-                    user = database.userDao()
-                        .findByUsername(username)
-                    Log.d("LoginScreen", "User: $user")
-                    if((user != null) && (user?.username == username) && (user?.password == password)){
-                        SessionManager.createLoginSession(navController.context, username)
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(Screens.RunScreen.name)
+            Button(
+                onClick = {
+                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                    var user: User? = null
+                    myCoroutineScope.launch {
+                        user = database.userDao()
+                            .findByUsername(username)
+                        Log.d("LoginScreen", "User: $user")
+                        if ((user != null) && (user?.username == username) && (user?.password == password)) {
+                            SessionManager.createLoginSession(navController.context, username)
+                            withContext(Dispatchers.Main) {
+                                navController.navigate(Screens.RunScreen.name)
+                            }
                         }
                     }
-                }
-},
-                    modifier = Modifier.padding(end = 9.dp)) {
-                    Text(text = "Login")
+                },
+                modifier = Modifier.padding(end = 9.dp)
+            ) {
+                Text(text = "Login")
 
             }
 

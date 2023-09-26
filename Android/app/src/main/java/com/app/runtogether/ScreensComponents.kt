@@ -4,6 +4,7 @@ import ShowSettingsScreen
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -19,6 +20,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
@@ -61,7 +66,15 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Drawer title", modifier = Modifier.padding(16.dp))
+                Image(painter = painterResource(id = R.drawable.image_profile),
+                    contentDescription = "Immagine profilo",
+                    modifier = Modifier.padding(16.dp).size(150.dp, 150.dp))
+                Text("RUN",
+                    modifier = Modifier.padding(16.dp),
+                    color = Color.DarkGray,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
+                )
                 Spacer(Modifier.height(12.dp))
                 items.forEach { item ->
                     NavigationDrawerItem(
