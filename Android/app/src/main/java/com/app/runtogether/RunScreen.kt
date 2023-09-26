@@ -1,6 +1,8 @@
 package com.app.runtogether
 
 import android.location.Location
+import androidx.compose.animation.core.Animatable
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +20,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Math.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -66,15 +71,12 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
             cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
 
+
             if (mapSettings){
                 if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())){
                     waypoints = waypoints + newPos
-                    //println(waypoints.size)
                 }
                 UpdatePolyline(waypoints = waypoints)
-
-                //val x = calculateTotalDistance(waypoints)
-                //println(x)
             }
         }
 
