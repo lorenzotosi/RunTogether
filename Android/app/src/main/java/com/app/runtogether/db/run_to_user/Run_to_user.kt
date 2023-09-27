@@ -17,7 +17,7 @@ import com.app.runtogether.db.user.User
         ForeignKey(
             entity = Run::class,
             parentColumns = ["id"],
-            childColumns = ["trophy_id"],
+            childColumns = ["run_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -25,5 +25,5 @@ import com.app.runtogether.db.user.User
 data class Run_to_user(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     val user_id: Int,
-    val trophy_id: Int
+    val run_id: Int
 )
