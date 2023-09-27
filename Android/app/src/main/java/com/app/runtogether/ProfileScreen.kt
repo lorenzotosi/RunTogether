@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -23,10 +25,18 @@ import androidx.room.Room
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ShowProfilePage(navController: NavHostController){
-    //val users = hiltViewModel<UserViewModel>()
+    val users = hiltViewModel<UserViewModel>()
+    val db = MyDatabase.getInstance(navController.context)
+
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,7 +67,7 @@ fun ShowProfilePage(navController: NavHostController){
             )
 
             Text(
-                text = "3 trophies",
+                text = db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString(),
                 fontSize = 24.sp, // Increase the font size as desired
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 8.dp)
