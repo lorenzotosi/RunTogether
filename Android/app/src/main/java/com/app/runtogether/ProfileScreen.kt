@@ -13,21 +13,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.room.Room
 import com.app.runtogether.db.MyDatabase
-import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
@@ -46,7 +38,8 @@ fun ShowProfilePage(navController: NavHostController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = SessionManager.getUserDetails(navController.context),
+            text = db.userDao().usernameFromId(SessionManager.getUserDetails(navController.context)).collectAsState(
+                initial = String).value.toString(),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)

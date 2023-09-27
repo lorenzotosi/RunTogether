@@ -12,6 +12,6 @@ interface UserWithTrophiesDao {
     fun getUserWithTrophies(): Flow<List<UserWithTrophies>>
 
     @Transaction
-    @Query("SELECT COUNT(trophy_id) FROM TrophyUserCrossRef, User WHERE User.user_id = TrophyUserCrossRef.user_id and User.username = :userId")
-    fun getNumberOfTrophies(userId: String): Flow<Int>
+    @Query("SELECT COUNT(trophy_id) FROM TrophyUserCrossRef WHERE user_id = :userId")
+    fun getNumberOfTrophies(userId: Int): Flow<Int>
 }

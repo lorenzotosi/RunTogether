@@ -32,15 +32,15 @@ class SessionManager private constructor(context: Context) {
             }
         }
 
-        fun createLoginSession(context: Context, username: String) {
+        fun createLoginSession(context: Context, id: Int) {
             val sessionManager = getInstance(context)
             sessionManager.editor.putBoolean(sessionManager.IS_LOGIN, true)
-            sessionManager.editor.putString(sessionManager.KEY_NAME, username)
+            sessionManager.editor.putInt(sessionManager.KEY_NAME, id)
             sessionManager.editor.apply()
         }
 
-        fun getUserDetails(context: Context): String{
-            return getInstance(context).pref.getString(getInstance(context).KEY_NAME, "")!!
+        fun getUserDetails(context: Context): Int{
+            return getInstance(context).pref.getInt(getInstance(context).KEY_NAME, 0)
         }
 
         fun isLoggedIn(context: Context): Boolean {
