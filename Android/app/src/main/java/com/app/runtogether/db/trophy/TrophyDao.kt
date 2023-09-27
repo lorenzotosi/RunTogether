@@ -9,7 +9,7 @@ interface TrophyDao {
     @Query("SELECT * FROM trophy")
     fun getAll(): List<Trophy>
 
-    @Query("SELECT * FROM trophy WHERE id IN (:trophyIds)")
+    @Query("SELECT * FROM trophy WHERE trophy_id IN (:trophyIds)")
     fun loadAllByIds(trophyIds: IntArray): List<Trophy>
 
     @Query("SELECT * FROM trophy WHERE name LIKE :first LIMIT 1")
