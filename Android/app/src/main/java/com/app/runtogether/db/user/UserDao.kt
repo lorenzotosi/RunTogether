@@ -1,8 +1,6 @@
 package com.app.runtogether.db.user
 
-import android.content.Context
 import androidx.room.*
-import com.app.runtogether.db.MyDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a254b5f1568cc079d71215763e63b466",
+    "identityHash": "562d8567451e9b9da6bc76c564ab55e1",
     "entities": [
       {
         "tableName": "User",
@@ -79,12 +79,45 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "TrophyToUserDao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "RunToUserDao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "RunDao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a254b5f1568cc079d71215763e63b466')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '562d8567451e9b9da6bc76c564ab55e1')"
     ]
   }
 }

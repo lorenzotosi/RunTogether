@@ -2,7 +2,6 @@ package com.app.runtogether.di
 
 import android.content.Context
 import com.app.runtogether.RunApp
-import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -19,5 +18,5 @@ object DataModule {
     @Provides
     fun provideUserRepository(@ApplicationContext context: Context) =
         UserRepository((context.applicationContext as RunApp).database.userDao())
-
+    
 }

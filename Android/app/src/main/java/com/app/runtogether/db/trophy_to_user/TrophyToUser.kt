@@ -22,8 +22,9 @@ import com.app.runtogether.db.user.User
         )
     ]
 )
+
 data class TrophyToUser(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     val user_id: Int,
     val trophy_id: Int
 )

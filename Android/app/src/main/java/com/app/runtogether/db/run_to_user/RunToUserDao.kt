@@ -1,8 +1,9 @@
+package com.app.runtogether.db.run_to_user
+
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.app.runtogether.db.run_to_user.RunToUser
 
 @Dao
 interface RunToUserDao {
