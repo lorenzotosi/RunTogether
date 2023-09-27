@@ -35,6 +35,7 @@ fun ShowProfilePage(navController: NavHostController){
     val users = hiltViewModel<UserViewModel>()
     val db = MyDatabase.getInstance(navController.context)
 
+    Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
 
     Box(
@@ -67,7 +68,9 @@ fun ShowProfilePage(navController: NavHostController){
             )
 
             Text(
-                text = db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString(),
+                text = "${db.UserWithTrophiesDao().getNumberOfTrophies(SessionManager.
+                            getUserDetails(navController.context)).
+                            collectAsState(initial = Int).value} Trophies",
                 fontSize = 24.sp, // Increase the font size as desired
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 8.dp)
