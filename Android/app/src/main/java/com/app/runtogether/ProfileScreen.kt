@@ -38,7 +38,7 @@ fun ShowProfilePage(navController: NavHostController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = db.userDao().usernameFromId(SessionManager.getUserDetails(navController.context)).collectAsState(
+            text = db.userDao().usernameFromId(SessionManager.getUserDetails(navController.context).toInt()).collectAsState(
                 initial = String).value.toString(),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
@@ -62,7 +62,7 @@ fun ShowProfilePage(navController: NavHostController){
 
             Text(
                 text = "${db.UserWithTrophiesDao().getNumberOfTrophies(SessionManager.
-                            getUserDetails(navController.context)).
+                            getUserDetails(navController.context).toInt()).
                             collectAsState(initial = Int).value} Trophies",
                 fontSize = 24.sp, // Increase the font size as desired
                 fontWeight = FontWeight.Bold,
