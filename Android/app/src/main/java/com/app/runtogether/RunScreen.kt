@@ -16,9 +16,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
+import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.polylines.PolylineEntity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,16 +37,17 @@ import kotlin.math.pow
 
 
 @Composable
-fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, myLocation : Boolean,  onClickActionNavigation: () -> Unit){
+fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, myLocation : Boolean, onClickActionNavigation: () -> Unit){
 
     var myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
 
+    val gson = Gson()
+
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
     var waypoints by remember {mutableStateOf<List<LatLng>>(value = listOf())}
-
 
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("HH:mm")
@@ -108,7 +113,15 @@ fun ShowRunScreen(locationDetails: LocationDetails, padding : Int, mapSettings: 
             }
 
             IconButton(
-                onClick =  onClickActionNavigation,
+                onClick =  {
+                    if(mapSettings){
+                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                    myCoroutineScope.launch { val db = MyDatabase.getInstance(navController.context)
+                                            db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
+                                            }
+                    }
+                    onClickActionNavigation.invoke()
+                           },
                 modifier = Modifier
                     .size(120.dp)
                     .zIndex(1f)

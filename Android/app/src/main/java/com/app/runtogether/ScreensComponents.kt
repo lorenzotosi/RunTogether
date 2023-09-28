@@ -177,7 +177,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             CardRun(index = 10, navController = navController )
         }
         composable(route = Screens.RunScreen.name){
-            ShowRunScreen(locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }
+            ShowRunScreen(navController, locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }
         }
         composable(route = Screens.Settings.name){
             ShowSettingsScreen(
@@ -204,7 +204,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowSignUpPage(navController)
         }
         composable(route = Screens.Running.name){
-            ShowRunScreen(locationDetails, 0, true, b) { navController.navigate(Screens.SignUp.name) }
+            ShowRunScreen(navController, locationDetails, 0, true, b) { navController.navigate(Screens.EndRun.name) }
         }
         composable(route = Screens.Profile.name){
             ShowProfilePage(navController)
@@ -215,6 +215,9 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         composable(route = Screens.Login.name){
             Log.d("profile", "login")
             ShowLoginPage(navController)
+        }
+        composable(route = Screens.EndRun.name){
+            ShowEndRunScreen(navController = navController)
         }
 
 

@@ -11,4 +11,6 @@ sealed class Screens(val name: String) {
     object Notify : Screens("Notify")
     object Running : Screens("Running")
 
+    object EndRun : Screens("Results")
+
 }
