@@ -10,9 +10,6 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll(): Flow<List<User>>
 
-    @Query("SELECT * FROM user WHERE user_id IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<User>
-
     @Query("SELECT * FROM user WHERE username LIKE :first LIMIT 1")
     suspend fun findByUsername(first: String): User
 

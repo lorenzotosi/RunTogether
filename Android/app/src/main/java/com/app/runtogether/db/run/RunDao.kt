@@ -13,13 +13,4 @@ interface RunDao {
 
     @Delete
     suspend fun deleteRun(run: Run)
-
-    @Query("SELECT * FROM Run")
-    suspend fun getAllRuns(): List<Run>
-
-    @Query("SELECT * FROM Run WHERE run_id = :runId")
-    suspend fun getRunById(runId: Int): Run?
-
-    @Query("SELECT * FROM Run WHERE city = :city")
-    suspend fun getRunByCity(city: String): Run?
 }
