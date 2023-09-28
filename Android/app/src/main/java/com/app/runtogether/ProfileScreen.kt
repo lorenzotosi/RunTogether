@@ -34,6 +34,11 @@ import kotlinx.coroutines.withContext
 fun ShowProfilePage(navController: NavHostController){
     val users = hiltViewModel<UserViewModel>()
     val db = MyDatabase.getInstance(navController.context)
+    val userId = SessionManager.getUserDetails(navController.context)
+    val numberOfTrophies = db.UserWithTrophiesDao().getNumberOfTrophies(userId)
+        .collectAsState(initial = Int).value
+    val numberOfRuns = db.RunWithUsersDao().getNumberOfRunsJoined(userId)
+        .collectAsState(initial = Int).value
 
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
@@ -46,7 +51,7 @@ fun ShowProfilePage(navController: NavHostController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = SessionManager.getUserDetails(navController.context),
+            text = "nome utente",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
@@ -67,17 +72,16 @@ fun ShowProfilePage(navController: NavHostController){
                     .padding(8.dp)
             )
 
+
             Text(
-                text = "${db.UserWithTrophiesDao().getNumberOfTrophies(SessionManager.
-                            getUserDetails(navController.context)).
-                            collectAsState(initial = Int).value} Trophies",
+                text = "$numberOfTrophies Trophies",
                 fontSize = 24.sp, // Increase the font size as desired
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 8.dp)
             )
 
             Text(
-                text = "20 runs",
+                text = "$numberOfRuns runs",
                 fontSize = 24.sp, // Increase the font size as desired
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 8.dp)

@@ -1,8 +1,9 @@
+package com.app.runtogether.db.run
+
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.app.runtogether.db.run.Run
 
 @Dao
 interface RunDao {

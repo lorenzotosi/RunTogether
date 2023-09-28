@@ -5,12 +5,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.app.runtogether.db.run.Run
+import com.app.runtogether.db.run.RunDao
 import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.app.runtogether.db.runToUser.RunWithUsersDao
 import com.app.runtogether.db.trophy.Trophy
 import com.app.runtogether.db.trophy.TrophyDao
 import com.app.runtogether.db.trophyToUser.TrophyUserCrossRef
-import com.app.runtogether.db.trophyToUser.UserWithTrophies
 import com.app.runtogether.db.trophyToUser.UserWithTrophiesDao
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserDao
@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun trophyDao(): TrophyDao
+    abstract fun runDao(): RunDao
     abstract fun UserWithTrophiesDao(): UserWithTrophiesDao
     abstract fun RunWithUsersDao(): RunWithUsersDao
 
@@ -45,6 +46,20 @@ abstract class MyDatabase : RoomDatabase() {
                                 username = "nome",
                                 email = "email@email.com",
                                 password = "password"
+                            ))
+                            INSTANCE?.trophyDao()?.insertAll(Trophy(
+                                name = "nome",
+                                description = "descrizione",
+                                path = "path"
+                            ))
+                            INSTANCE?.runDao()?.insertRun(Run(city="Riccione", description = "la corsa di riccione", length_km = 10,  day = 1698697400000))
+                            INSTANCE?.UserWithTrophiesDao()?.insertTrophyUserCrossRef(TrophyUserCrossRef(
+                                user_id = 1,
+                                trophy_id = 1
+                            ))
+                            INSTANCE?.RunWithUsersDao()?.insertRunUserCrossRef(RunUserCrossRef(
+                                run_id = 1,
+                                user_id = 1
                             ))
                         }
                     }
