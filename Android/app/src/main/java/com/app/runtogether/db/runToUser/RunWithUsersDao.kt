@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.Flow
 interface RunWithUsersDao {
     @Transaction
     @Query("SELECT * FROM Run")
-    fun getUserFromRun(): Flow<List<RunWithUsers>>
+    fun getUserAndRuns(): Flow<List<RunWithUsers>>
+
+    @Transaction
+    @Query("SELECT * FROM User, RunUserCrossRef WHERE User.user_id = RunUserCrossRef.user_id and RunUserCrossRef.run_id = :runId")
+    fun getUsersFromRun(runId: Int): Flow<List<RunWithUsers>>
 
 }
