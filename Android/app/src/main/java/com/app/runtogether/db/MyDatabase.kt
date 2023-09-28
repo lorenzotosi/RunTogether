@@ -4,6 +4,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.app.runtogether.db.run.Run
+import com.app.runtogether.db.runToUser.RunUserCrossRef
+import com.app.runtogether.db.runToUser.RunWithUsersDao
 import com.app.runtogether.db.trophy.Trophy
 import com.app.runtogether.db.trophy.TrophyDao
 import com.app.runtogether.db.trophyToUser.TrophyUserCrossRef
@@ -15,11 +18,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class], version = 1)
+@Database(entities = [User::class, Trophy::class, Run::class, TrophyUserCrossRef::class, RunUserCrossRef::class], version = 2)
 abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun trophyDao(): TrophyDao
     abstract fun UserWithTrophiesDao(): UserWithTrophiesDao
+    abstract fun RunWithUsersDao(): RunWithUsersDao
 
     companion object {
         @Volatile private var INSTANCE: MyDatabase? = null
