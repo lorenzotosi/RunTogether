@@ -113,7 +113,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                         actions= {GoHome(navController)},
                         title = { Text(text = currentScreen) },
                         navigationIcon = {
-                            if (currentScreen !=  Screens.Running.name) {
+                            if (currentScreen !=  Screens.Running.name && currentScreen !=  Screens.EndRun.name) {
                                 IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                     Icon(
                                         imageVector = Icons.Filled.Menu,
@@ -141,7 +141,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                 NavigationGraph(navController, it, locationDetails, mygps)
             }
         },
-        gesturesEnabled = currentScreen != Screens.Running.name
+        gesturesEnabled = currentScreen != Screens.Running.name && currentScreen != Screens.EndRun.name
     )
 }
 

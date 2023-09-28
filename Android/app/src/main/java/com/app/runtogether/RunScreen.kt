@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
@@ -37,7 +38,14 @@ import kotlin.math.pow
 
 
 @Composable
-fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDetails, padding : Int, mapSettings: Boolean, myLocation : Boolean, onClickActionNavigation: () -> Unit){
+fun ShowRunScreen(
+    navController: NavHostController,
+    locationDetails: LocationDetails,
+    padding: Int,
+    mapSettings: Boolean,
+    myLocation: Boolean,
+    onClickActionNavigation: () -> Unit
+) {
 
     var myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
@@ -47,7 +55,7 @@ fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDet
     val gson = Gson()
 
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
-    var waypoints by remember {mutableStateOf<List<LatLng>>(value = listOf())}
+    var waypoints by remember { mutableStateOf<List<LatLng>>(value = listOf()) }
 
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("HH:mm")
@@ -57,7 +65,8 @@ fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDet
             .fillMaxSize()
             .padding(top = padding.dp),
         cameraPositionState = cameraPositionState,
-        uiSettings = MapUiSettings(compassEnabled = false,
+        uiSettings = MapUiSettings(
+            compassEnabled = false,
             indoorLevelPickerEnabled = mapSettings,
             mapToolbarEnabled = false,
             myLocationButtonEnabled = mapSettings,
@@ -66,19 +75,20 @@ fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDet
             scrollGesturesEnabledDuringRotateOrZoom = mapSettings,
             tiltGesturesEnabled = false,
             zoomControlsEnabled = false,
-            zoomGesturesEnabled = mapSettings),
+            zoomGesturesEnabled = mapSettings
+        ),
         properties = MapProperties(isMyLocationEnabled = myLocation)
     ) {
 
-        if (myLocation){
+        if (myLocation) {
             val newPos = LatLng(locationDetails.latitude, locationDetails.longitude)
             //cameraPositionState.move(CameraUpdateFactory.newLatLng(newPos))
             LaunchedEffect(newPos) {
                 cameraPositionState.centerOnLocation(newPos)
             }
 
-            if (mapSettings){
-                if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())){
+            if (mapSettings) {
+                if (!waypoints.contains(newPos) && newPos != LatLng(0.toDouble(), 0.toDouble())) {
                     waypoints = waypoints + newPos
                 }
                 UpdatePolyline(waypoints = waypoints)
@@ -97,7 +107,7 @@ fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDet
             modifier = Modifier.fillMaxWidth(1f),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Box(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.CenterStart // Align text to the start (left) within the Box
@@ -113,15 +123,17 @@ fun ShowRunScreen(navController: NavHostController, locationDetails: LocationDet
             }
 
             IconButton(
-                onClick =  {
-                    if(mapSettings){
-                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                    myCoroutineScope.launch { val db = MyDatabase.getInstance(navController.context)
-                                            db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
-                                            }
+                onClick = {
+                    if (mapSettings) {
+                        val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                        myCoroutineScope.launch {
+                            val db = MyDatabase.getInstance(navController.context)
+                            db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
+                            Log.e("prova", gson.toJson(waypoints))
+                        }
                     }
                     onClickActionNavigation.invoke()
-                           },
+                },
                 modifier = Modifier
                     .size(120.dp)
                     .zIndex(1f)
@@ -164,7 +176,7 @@ suspend fun CameraPositionState.centerOnLocation(location: LatLng) = animate(
 )
 
 @Composable
-fun UpdatePolyline(waypoints : List<LatLng>){
+fun UpdatePolyline(waypoints: List<LatLng>) {
     Polyline(points = waypoints)
 }
 
