@@ -16,6 +16,10 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE username LIKE :first LIMIT 1")
     suspend fun findByUsername(first: String): User
 
+    //get username from id
+    @Query("SELECT username FROM user WHERE user_id = :id")
+    fun getUsernameById(id: Int): Flow<String>
+
     @Insert
     suspend fun insertAll(vararg users: User)
 

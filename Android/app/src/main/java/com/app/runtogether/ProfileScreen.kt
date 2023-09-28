@@ -39,6 +39,8 @@ fun ShowProfilePage(navController: NavHostController){
         .collectAsState(initial = Int).value
     val numberOfRuns = db.RunWithUsersDao().getNumberOfRunsJoined(userId)
         .collectAsState(initial = Int).value
+    val username = db.userDao().getUsernameById(userId)
+        .collectAsState(initial = String).value
 
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
@@ -51,7 +53,7 @@ fun ShowProfilePage(navController: NavHostController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-            text = "nome utente",
+            text = "$username",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
