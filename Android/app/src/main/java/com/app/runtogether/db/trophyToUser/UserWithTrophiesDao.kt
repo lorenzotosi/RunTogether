@@ -16,5 +16,4 @@ interface UserWithTrophiesDao {
     @Insert
     suspend fun insertTrophyUserCrossRef(trophyUserCrossRef: TrophyUserCrossRef)
 
-
 }

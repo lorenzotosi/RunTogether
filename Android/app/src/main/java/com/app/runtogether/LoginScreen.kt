@@ -48,7 +48,9 @@ fun ShowLoginPage(navController: NavHostController) {
                             .findByUsername(username)
                         Log.d("LoginScreen", "User: $user")
                         if ((user != null) && (user?.username == username) && (user?.password == password)) {
+
                             SessionManager.createLoginSession(navController.context, user!!.user_id)
+
                             withContext(Dispatchers.Main) {
                                 navController.navigate(Screens.RunScreen.name)
                             }
