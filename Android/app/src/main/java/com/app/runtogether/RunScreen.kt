@@ -1,6 +1,9 @@
 package com.app.runtogether
 
 import DateConverter
+import android.location.Address
+import android.location.Geocoder
+import android.location.Geocoder.GeocodeListener
 import android.location.Location
 import android.util.Log
 import androidx.compose.animation.core.Animatable
@@ -131,11 +134,16 @@ fun ShowRunScreen(
             IconButton(
                 onClick = {
                     if (mapSettings) {
+
+                        var x =  Geocoder(navController.context).getFromLocation(waypoints[0].latitude,
+                            waypoints[0].longitude,
+                            1)?.get(0)?.locality.toString()
+
+                        Log.e("geocode",x)
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             val db = MyDatabase.getInstance(navController.context)
-                            //db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
-                            db.runDao().insertRun(Run(city = "cittá",
+                            db.runDao().insertRun(Run(city = x,
                                 description = "descrizione prova",
                                 length_km = 10,
                                 day = null,
@@ -216,3 +224,4 @@ fun calculateTotalDistance(points: List<LatLng>): Double {
 
     return formattedDistance.toDouble()
 }
+

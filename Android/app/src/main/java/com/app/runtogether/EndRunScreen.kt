@@ -30,6 +30,9 @@ fun ShowEndRunScreen(navController: NavHostController){
         if (points.isNotEmpty())
             cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(points.first(), 15f))
     }
+
+    //TODO pulsante per centrare la posizione sulle coordinate della polyline
+
 }
 
 @Composable
