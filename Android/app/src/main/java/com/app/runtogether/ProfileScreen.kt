@@ -31,7 +31,7 @@ fun ShowProfilePage(navController: NavHostController){
         .collectAsState(initial = Int).value
     val numberOfRuns = db.RunWithUsersDao().getNumberOfRunsJoined(userId)
         .collectAsState(initial = Int).value
-    val username = db.userDao().getUsernameById(userId)
+    val username = db.userDao().getUsernameFromId(userId)
         .collectAsState(initial = String).value
 
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())

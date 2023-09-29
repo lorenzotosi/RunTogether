@@ -31,7 +31,7 @@ class SessionManager private constructor(context: Context) {
                 instance
             }
         }
-        
+
         fun createLoginSession(context: Context, userId: Int) {
             val sessionManager = getInstance(context)
             sessionManager.editor.putBoolean(sessionManager.IS_LOGIN, true)
