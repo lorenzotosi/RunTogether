@@ -39,8 +39,6 @@ fun CardRun(navController: NavHostController){
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         val runs : List<Run> = database.runDao().getRunsFromCity("Riccione").collectAsState(initial = listOf()).value
-        Log.e("runs", runs.toString())
-        Log.e("runs", runs.size.toString())
         LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
                 columns = GridCells.Fixed(1), content = {
             items(count = runs.size) {
@@ -59,17 +57,13 @@ fun CardRun(navController: NavHostController){
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            TextCard(title = "Riccione", fontSize = 25)
+                            runs[it].city?.let { it1 -> TextCard(title = it1, fontSize = 25) }
                             Spacer(modifier = Modifier.width(5.dp))
-                            TextCard(title = "20km", fontSize = 25)
+                            TextCard(title = "${runs[it].length_km}km", fontSize = 25)
                         }
                         Spacer(modifier = Modifier.height(5.dp))
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            TextCard(title = "1h 30", fontSize = 15)
-                            Spacer(modifier = Modifier.width(5.dp))
-                            TextCard(title = "9km/h", fontSize = 15)
-                            Spacer(modifier = Modifier.width(5.dp))
-                            TextCard(title = "16/05/2023", fontSize = 15)
+                            TextCard(title = "${runs[it].day?.let { it1 -> DateConverter.getDay(it1) }}", fontSize = 15)
                         }
 
                     }
