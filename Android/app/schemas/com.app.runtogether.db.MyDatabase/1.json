@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4e2f6331f372ba29498884d09c9c6e95",
+    "identityHash": "ff3f90fb688c73ae47aa50f166207a95",
     "entities": [
       {
         "tableName": "User",
@@ -146,7 +146,7 @@
       },
       {
         "tableName": "Run",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` INTEGER, `day` INTEGER, `polyline` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` REAL, `day` INTEGER, `polyline` TEXT)",
         "fields": [
           {
             "fieldPath": "run_id",
@@ -169,7 +169,7 @@
           {
             "fieldPath": "length_km",
             "columnName": "length_km",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": false
           },
           {
@@ -198,7 +198,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4e2f6331f372ba29498884d09c9c6e95')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff3f90fb688c73ae47aa50f166207a95')"
     ]
   }
 }

@@ -145,7 +145,7 @@ fun ShowRunScreen(
                             val db = MyDatabase.getInstance(navController.context)
                             db.runDao().insertRun(Run(city = x,
                                 description = "descrizione prova",
-                                length_km = 10,
+                                length_km = calculateTotalDistance(waypoints),
                                 day = null,
                                 polyline = gson.toJson(waypoints)))
                         }
