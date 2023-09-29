@@ -19,7 +19,7 @@ fun ShowEndRunScreen(navController: NavHostController){
 
     val points = GetPolyLines(navController)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
+        position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 20f)
     }
 
     GoogleMap(cameraPositionState = cameraPositionState) {
@@ -28,7 +28,7 @@ fun ShowEndRunScreen(navController: NavHostController){
 
     LaunchedEffect(points){
         if (points.isNotEmpty())
-            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(points.first(), 15f))
+            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(points.first(), 20f))
     }
 
     //TODO pulsante per centrare la posizione sulle coordinate della polyline

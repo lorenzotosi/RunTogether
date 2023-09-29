@@ -144,7 +144,8 @@ fun ShowRunScreen(
                                 description = "descrizione prova",
                                 length_km = calculateTotalDistance(waypoints),
                                 day = DateConverter.fromDate(Date()),
-                                polyline = gson.toJson(waypoints)))
+                                polyline = gson.toJson(waypoints),
+                                organized = false))
                         }
                     }
                     onClickActionNavigation.invoke()

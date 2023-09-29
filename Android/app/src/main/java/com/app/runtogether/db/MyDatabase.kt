@@ -60,7 +60,7 @@ abstract class MyDatabase : RoomDatabase() {
                                 path = "path"
                             ))
                             INSTANCE?.runDao()?.insertRun(Run(city="Riccione", description = "la corsa di riccione", length_km = 10.0,  day = 1698697400000,
-                            polyline = "[{\"latitude\":44.0648167,\"longitude\":12.5709333},{\"latitude\":44.0655745,\"longitude\":12.5699331},{\"latitude\":44.0657251,\"longitude\":12.5697331}]"))
+                            polyline = "[{\"latitude\":44.0648167,\"longitude\":12.5709333},{\"latitude\":44.0655745,\"longitude\":12.5699331},{\"latitude\":44.0657251,\"longitude\":12.5697331}]", organized = true))
                             INSTANCE?.UserWithTrophiesDao()?.insertTrophyUserCrossRef(TrophyUserCrossRef(
                                 user_id = 1,
                                 trophy_id = 1

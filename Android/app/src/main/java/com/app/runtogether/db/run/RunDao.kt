@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RunDao {
 //get runs from city
-    @Query("SELECT * FROM Run WHERE city = :city")
+    @Query("SELECT * FROM Run WHERE city = :city and organized = true")
     fun getRunsFromCity(city: String): Flow<List<Run>>
 
     @Insert

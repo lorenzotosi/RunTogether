@@ -174,7 +174,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         startDestination = Screens.RunScreen.name,
         modifier = Modifier) {
         composable(route = Screens.TodaysRun.name){
-            CardRun(navController = navController )
+            CardRun(navController = navController, location = locationDetails)
         }
         composable(route = Screens.RunScreen.name){
             ShowRunScreen(navController, locationDetails, 155, false, b) { navController.navigate(Screens.Running.name) }

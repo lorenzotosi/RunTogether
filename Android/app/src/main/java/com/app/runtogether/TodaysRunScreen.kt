@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import android.location.Geocoder
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -32,13 +33,16 @@ fun TextCard(title: String, fontSize:Int){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardRun(navController: NavHostController){
+fun CardRun(navController: NavHostController, location : LocationDetails){
     val database = MyDatabase.getInstance(navController.context)
 
     Column(modifier = Modifier
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        val runs : List<Run> = database.runDao().getRunsFromCity("Riccione").collectAsState(initial = listOf()).value
+        val city = Geocoder(navController.context).getFromLocation(location.latitude,
+            location.longitude,
+            1)?.get(0)?.locality.toString()
+        val runs : List<Run> = database.runDao().getRunsFromCity(city).collectAsState(initial = listOf()).value
         LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
                 columns = GridCells.Fixed(1), content = {
             items(count = runs.size) {
