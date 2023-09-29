@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,13 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.app.runtogether.db.MyDatabase
 
-@Composable
-fun ShowButton(navController: NavHostController){
-    Button(onClick = { navController.navigate(Screens.SignUp.name) }) {
-        Text(text = "cliccami")
-    }
-}
 @Composable
 fun TextCard(title: String, fontSize:Int){
     Text(
@@ -34,13 +30,15 @@ fun TextCard(title: String, fontSize:Int){
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardRun(index: Int, navController: NavHostController){
+fun CardRun(navController: NavHostController){
+    val database = MyDatabase.getInstance(navController.context)
+    val runs = database.runDao().getRunsFromCity("Riccione").collectAsState(initial = listOf()).value
     Column(modifier = Modifier
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
-            items(count = index) {
+            items(count = runs.size) {
                 Card(modifier = Modifier
                     .size(150.dp, 150.dp)
                     .padding(8.dp)
