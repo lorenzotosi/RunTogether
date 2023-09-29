@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a62afa6d92d8ad991f780ebb00f1e1ad",
+    "identityHash": "fcc2f2d62b363b5195e896b40f92eb17",
     "entities": [
       {
         "tableName": "User",
@@ -104,7 +104,17 @@
             "trophy_id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_TrophyUserCrossRef_trophy_id",
+            "unique": false,
+            "columnNames": [
+              "trophy_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_TrophyUserCrossRef_trophy_id` ON `${TABLE_NAME}` (`trophy_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -132,12 +142,83 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "RunUserCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, PRIMARY KEY(`run_id`, `user_id`))",
+        "fields": [
+          {
+            "fieldPath": "run_id",
+            "columnName": "run_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "run_id",
+            "user_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Run",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` INTEGER, `day` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "run_id",
+            "columnName": "run_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "city",
+            "columnName": "city",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "length_km",
+            "columnName": "length_km",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "day",
+            "columnName": "day",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "run_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a62afa6d92d8ad991f780ebb00f1e1ad')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fcc2f2d62b363b5195e896b40f92eb17')"
     ]
   }
 }

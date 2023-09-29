@@ -24,14 +24,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, PolylineEntity::class,  RunUserCrossRef::class], version = 1)
+@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, PolylineEntity::class,  RunUserCrossRef::class, Run::class], version = 1)
 
 abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun trophyDao(): TrophyDao
     abstract fun runDao(): RunDao
     abstract fun UserWithTrophiesDao(): UserWithTrophiesDao
-
     abstract fun RunWithUsersDao(): RunWithUsersDao
     abstract fun polylineDao(): PolylineDao
 
