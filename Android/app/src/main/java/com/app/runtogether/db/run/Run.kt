@@ -11,4 +11,5 @@ data class Run(
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "length_km") val length_km: Int?,
     @ColumnInfo(name="day") val day: Long?,
+    @ColumnInfo(name = "polyline") val polyline : String?
 )

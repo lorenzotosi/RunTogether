@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import DateConverter
 import android.location.Location
 import android.util.Log
 import androidx.compose.animation.core.Animatable
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
-import com.app.runtogether.db.polylines.PolylineEntity
+import com.app.runtogether.db.run.Run
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -60,6 +61,11 @@ fun ShowRunScreen(
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("HH:mm")
     val current = formatter.format(time)
+
+    //val day = Calendar.getInstance().time
+    //val formatterDay = SimpleDateFormat("yyyy-MM-dd")
+    //val currentday = formatter.format(day).toLong()
+
     GoogleMap(
         modifier = Modifier
             .fillMaxSize()
@@ -128,8 +134,12 @@ fun ShowRunScreen(
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             val db = MyDatabase.getInstance(navController.context)
-                            db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
-                            Log.e("prova", gson.toJson(waypoints))
+                            //db.polylineDao().insert(PolylineEntity(points = gson.toJson(waypoints)))
+                            db.runDao().insertRun(Run(city = "cittá",
+                                description = "descrizione prova",
+                                length_km = 10,
+                                day = null,
+                                polyline = gson.toJson(waypoints)))
                         }
                     }
                     onClickActionNavigation.invoke()

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fcc2f2d62b363b5195e896b40f92eb17",
+    "identityHash": "4e2f6331f372ba29498884d09c9c6e95",
     "entities": [
       {
         "tableName": "User",
@@ -118,32 +118,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "polylines",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `points` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "points",
-            "columnName": "points",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "RunUserCrossRef",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, PRIMARY KEY(`run_id`, `user_id`))",
         "fields": [
@@ -172,7 +146,7 @@
       },
       {
         "tableName": "Run",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` INTEGER, `day` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` INTEGER, `day` INTEGER, `polyline` TEXT)",
         "fields": [
           {
             "fieldPath": "run_id",
@@ -203,6 +177,12 @@
             "columnName": "day",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "polyline",
+            "columnName": "polyline",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -218,7 +198,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fcc2f2d62b363b5195e896b40f92eb17')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4e2f6331f372ba29498884d09c9c6e95')"
     ]
   }
 }

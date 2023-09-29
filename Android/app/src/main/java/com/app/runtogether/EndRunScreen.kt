@@ -37,7 +37,7 @@ fun GetPolyLines(navController: NavHostController): List<LatLng> {
     val db = MyDatabase.getInstance(navController.context)
     val gson = Gson()
     val string: String =
-        db.polylineDao().getOnlyPoly().collectAsState(initial = listOf<LatLng>()).value.toString()
+        db.runDao().getOnlyPolyFromId().collectAsState(initial = listOf<LatLng>()).value.toString()
     Log.e("json", string)
     val typeToken = object : TypeToken<List<LatLng>>() {}.type
 

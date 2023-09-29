@@ -17,4 +17,7 @@ interface RunDao {
 
     @Delete
     suspend fun deleteRun(run: Run)
+
+    @Query("SELECT polyline FROM Run ORDER BY run_id DESC LIMIT 1")
+    fun getOnlyPolyFromId(): Flow<String>
 }
