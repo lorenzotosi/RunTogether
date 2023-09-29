@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "968fd9405565da61f42d965745dbda4c",
+    "identityHash": "e2f7b646aca1c3e2ab3dd0f62a5d3223",
     "entities": [
       {
         "tableName": "User",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "Trophy",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trophy_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `path` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trophy_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `path` INTEGER)",
         "fields": [
           {
             "fieldPath": "trophy_id",
@@ -67,7 +67,7 @@
           {
             "fieldPath": "path",
             "columnName": "path",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -204,7 +204,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '968fd9405565da61f42d965745dbda4c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2f7b646aca1c3e2ab3dd0f62a5d3223')"
     ]
   }
 }

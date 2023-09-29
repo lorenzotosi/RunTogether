@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
@@ -33,6 +35,8 @@ fun ShowProfilePage(navController: NavHostController){
         .collectAsState(initial = Int).value
     val username = db.userDao().getUsernameFromId(userId)
         .collectAsState(initial = String).value
+    val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
+        .collectAsState(initial = listOf()).value
 
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
@@ -86,41 +90,17 @@ fun ShowProfilePage(navController: NavHostController){
             )
         }
 
-
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(1f)
-                .padding(start = 25.dp, top = 160.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.trophy),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(40.dp)
-            )
-
-            Image(
-                painter = painterResource(id = R.drawable.trophy),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(40.dp)
-            )
-
-            Image(
-                painter = painterResource(id = R.drawable.trophy),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(40.dp)
-            )
-        }
-
-
-
-
-
+        LazyHorizontalGrid(modifier=Modifier,rows = GridCells.Fixed(1) , content ={
+            items(count = trophies.size){
+                trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
+                    Image(
+                        painter = it2,
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier
+                            .size(40.dp)
+                    )
+                }
+            }
+        } )
     }
 }
