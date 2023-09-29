@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.run.Run
 
 @Composable
 fun TextCard(title: String, fontSize:Int){
@@ -32,12 +34,15 @@ fun TextCard(title: String, fontSize:Int){
 @Composable
 fun CardRun(navController: NavHostController){
     val database = MyDatabase.getInstance(navController.context)
-    val runs = database.runDao().getRunsFromCity("Riccione").collectAsState(initial = listOf()).value
+
     Column(modifier = Modifier
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-
-        LazyVerticalGrid(columns = GridCells.Fixed(1), content = {
+        val runs : List<Run> = database.runDao().getRunsFromCity("Riccione").collectAsState(initial = listOf()).value
+        Log.e("runs", runs.toString())
+        Log.e("runs", runs.size.toString())
+        LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
+                columns = GridCells.Fixed(1), content = {
             items(count = runs.size) {
                 Card(modifier = Modifier
                     .size(150.dp, 150.dp)
