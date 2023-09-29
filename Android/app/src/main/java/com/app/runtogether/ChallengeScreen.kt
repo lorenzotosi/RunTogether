@@ -29,11 +29,7 @@ fun CreateGrid(index: Int, navController: NavHostController){
     val userId = SessionManager.getUserDetails(navController.context)
     val trophies = database.UserWithTrophiesDao().getTrophyNotHave(userId).collectAsState(initial = listOf()).value
 
-    Column(modifier = Modifier
-        .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-
-        LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+        LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp), columns = GridCells.Fixed(2), content = {
             items(count = trophies.size) {
                 Card(modifier = Modifier
                     .size(150.dp, 150.dp)
@@ -70,6 +66,5 @@ fun CreateGrid(index: Int, navController: NavHostController){
             }
         })
     }
-}
 
 
