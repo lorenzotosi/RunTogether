@@ -36,6 +36,7 @@ import java.lang.Math.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.pow
@@ -64,10 +65,6 @@ fun ShowRunScreen(
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("HH:mm")
     val current = formatter.format(time)
-
-    //val day = Calendar.getInstance().time
-    //val formatterDay = SimpleDateFormat("yyyy-MM-dd")
-    //val currentday = formatter.format(day).toLong()
 
     GoogleMap(
         modifier = Modifier
@@ -146,7 +143,7 @@ fun ShowRunScreen(
                             db.runDao().insertRun(Run(city = x,
                                 description = "descrizione prova",
                                 length_km = calculateTotalDistance(waypoints),
-                                day = null,
+                                day = DateConverter.fromDate(Date()),
                                 polyline = gson.toJson(waypoints)))
                         }
                     }
