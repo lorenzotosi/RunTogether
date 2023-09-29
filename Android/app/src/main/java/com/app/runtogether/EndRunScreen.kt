@@ -20,6 +20,7 @@ fun ShowEndRunScreen(navController: NavHostController){
     val points = GetPolyLines(navController)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 20f)
+        //maybe set a real location
     }
 
     GoogleMap(cameraPositionState = cameraPositionState) {

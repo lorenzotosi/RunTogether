@@ -39,9 +39,17 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
     Column(modifier = Modifier
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        val city = Geocoder(navController.context).getFromLocation(location.latitude,
-            location.longitude,
-            1)?.get(0)?.locality.toString()
+
+
+        //can be avoided by setting a real location on main activity
+        val x = Geocoder(navController.context).getFromLocation(location.latitude,
+            location.longitude, 1)
+        var city = ""
+        if (x != null) {
+            if (x.isNotEmpty()){
+                city = x[0].locality
+            }
+        }
         val runs : List<Run> = database.runDao().getRunsFromCity(city).collectAsState(initial = listOf()).value
         LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
                 columns = GridCells.Fixed(1), content = {

@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
     private var showSnackBar = mutableStateOf(false)
     private var showAlertDialog = mutableStateOf(false)
+    //maybe set a real location instead of 0 0
     private val location = mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
 
     private var loc = false
