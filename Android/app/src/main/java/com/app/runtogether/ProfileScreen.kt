@@ -2,7 +2,6 @@ package com.app.runtogether
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,16 +14,18 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.UserViewModel
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowProfilePage(navController: NavHostController){
     val users = hiltViewModel<UserViewModel>()
@@ -38,6 +39,7 @@ fun ShowProfilePage(navController: NavHostController){
         .collectAsState(initial = String).value
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
+    val runs : List<Run> = db.RunWithUsersDao().getAllRunsFromUserId(userId).collectAsState(initial = listOf()).value
 
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
@@ -50,9 +52,7 @@ fun ShowProfilePage(navController: NavHostController){
         contentAlignment = Alignment.TopStart
     ){
         Text(
-
             text = "$username",
-
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 25.dp)
@@ -91,7 +91,7 @@ fun ShowProfilePage(navController: NavHostController){
             )
         }
 
-        LazyVerticalGrid(modifier=Modifier.padding(top = 150.dp, start = 10.dp, end = 10.dp), columns = GridCells.Fixed(5) , content ={
+        LazyHorizontalGrid(modifier=Modifier.padding(start = 20.dp, end = 20.dp).height(350.dp), rows = GridCells.Fixed(1) , content ={
             items(count = trophies.size){
                 trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
                     Image(
@@ -103,5 +103,37 @@ fun ShowProfilePage(navController: NavHostController){
                 }
             }
         } )
+
+        LazyVerticalGrid(modifier=Modifier.padding(top = 280.dp, start = 10.dp, end = 10.dp), columns = GridCells.Fixed(1) , content ={
+            items(count = runs.size) {
+                Card(modifier = Modifier
+                    .size(150.dp, 150.dp)
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
+                    onClick = {  }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(all = 12.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                            runs[it].city?.let { it1 -> TextCard(title = it1, fontSize = 25) }
+                            Spacer(modifier = Modifier.width(5.dp))
+                            TextCard(title = "${runs[it].length_km}km", fontSize = 25)
+                        }
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                            TextCard(title = "${runs[it].day?.let { it1 -> DateConverter.getDay(it1) }}", fontSize = 15)
+                        }
+
+                    }
+                }
+            }
+
+        })
     }
 }
