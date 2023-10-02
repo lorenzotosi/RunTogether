@@ -57,25 +57,24 @@ fun ShowEndRunScreen(navController: NavHostController){
             .padding(top = 480.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
+                Text(text = "Distanza percorsa: ",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
                 Text(text = "${run.length_km} KM",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold)
             }
         }
         Row(modifier = Modifier
-            .padding(top = 500.dp, start = 25.dp, end = 25.dp)
+            .padding(top = 540.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
-                Text(text = "${run.startHour} KM",
+                Text(text = "Orario di inizio ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold)
             }
-        }
-        Row(modifier = Modifier
-            .padding(top = 550.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
             if (run != null) {
-                Text(text = "${run.endHour} KM",
+                Text(text = "${run.startHour}",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold)
             }
@@ -83,9 +82,54 @@ fun ShowEndRunScreen(navController: NavHostController){
         Row(modifier = Modifier
             .padding(top = 600.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
+            if (run != null) {
+                Text(text = "Orario di fine ",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+            if (run != null) {
+                Text(text = "${run.endHour}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+        }
+        Row(modifier = Modifier
+            .padding(top = 660.dp, start = 25.dp, end = 25.dp)
+            .fillMaxWidth()){
+            if (run != null) {
+                Text(text = "Andatura media ",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+
 
             if (run != null) {
-                Text(text = " KM/H",
+
+                val orarioFine = run.endHour
+                val orarioInizio = run.startHour
+                val distance = run.length_km
+
+                val formatter = DateTimeFormatter.ofPattern("HH:mm")
+
+                val inizio = LocalTime.parse(orarioInizio, formatter)
+                val fine = LocalTime.parse(orarioFine, formatter)
+
+                val differenzaInMinuti = fine.toSecondOfDay() / 60 - inizio.toSecondOfDay() / 60
+
+                if (differenzaInMinuti < 0) {
+                    // Se l'orario di fine è prima di quello di inizio (es. giorno successivo), aggiungi 24 ore
+                    differenzaInMinuti + 24 * 60
+                }
+
+                var velMed = 0.0
+
+                if (differenzaInMinuti != 0){
+                    if (distance != null) {
+                        velMed = (distance)*(60/differenzaInMinuti)
+                    }
+                }
+
+                Text(text = " ${String.format("%.2f", velMed)} km/h",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold)
             }
