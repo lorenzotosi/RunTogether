@@ -1,12 +1,8 @@
 package com.app.runtogether
 
 import DateConverter
-import android.location.Address
 import android.location.Geocoder
-import android.location.Geocoder.GeocodeListener
-import android.location.Location
 import android.util.Log
-import androidx.compose.animation.core.Animatable
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,11 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Math.*
-import java.math.RoundingMode
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.pow
 
@@ -52,7 +44,7 @@ fun ShowRunScreen(
     onClickActionNavigation: () -> Unit
 ) {
 
-    var myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
+    val myPosition = LatLng(locationDetails.latitude, locationDetails.longitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(myPosition, 15f)
     }
@@ -62,9 +54,11 @@ fun ShowRunScreen(
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
     var waypoints by remember { mutableStateOf<List<LatLng>>(value = listOf()) }
 
-    val time = Calendar.getInstance().time
-    val formatter = SimpleDateFormat("HH:mm")
-    val current = formatter.format(time)
+    var time = Calendar.getInstance().time
+    var formatter = SimpleDateFormat("HH:mm")
+    var current = formatter.format(time)
+
+    val startTime by remember { mutableStateOf(System.currentTimeMillis()) }
 
     GoogleMap(
         modifier = Modifier
@@ -120,7 +114,7 @@ fun ShowRunScreen(
             ) {
                 if (mapSettings) {
                     Text(
-                        text = current.toString(),
+                        text = current,
                         fontSize = 24.sp, // Increase the font size as desired
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 8.dp)
@@ -136,7 +130,8 @@ fun ShowRunScreen(
                             waypoints[0].longitude,
                             1)?.get(0)?.locality.toString()
 
-                        Log.e("geocode",x)
+                        Log.e("ora", formatTime(startTime))
+                        Log.e("ora2",current)
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             val db = MyDatabase.getInstance(navController.context)
@@ -145,7 +140,9 @@ fun ShowRunScreen(
                                 length_km = calculateTotalDistance(waypoints),
                                 day = DateConverter.fromDate(Date()),
                                 polyline = gson.toJson(waypoints),
-                                organized = false))
+                                organized = false,
+                                startHour = formatTime(startTime),
+                                endHour = current))
                         }
                     }
                     onClickActionNavigation.invoke()
@@ -190,6 +187,11 @@ suspend fun CameraPositionState.centerOnLocation(location: LatLng) = animate(
         location
     )
 )
+
+fun formatTime(timeInMillis: Long): String {
+    val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return dateFormat.format(Date(timeInMillis))
+}
 
 @Composable
 fun UpdatePolyline(waypoints: List<LatLng>) {

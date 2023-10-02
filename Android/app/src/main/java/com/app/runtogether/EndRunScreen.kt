@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
@@ -18,6 +20,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.maps.android.compose.*
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ShowEndRunScreen(navController: NavHostController){
@@ -50,10 +54,40 @@ fun ShowEndRunScreen(navController: NavHostController){
             }
         }
         Row(modifier = Modifier
-            .padding(top = 600.dp)
+            .padding(top = 480.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
-                Text(text = run.length_km.toString())
+                Text(text = "${run.length_km} KM",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+        }
+        Row(modifier = Modifier
+            .padding(top = 500.dp, start = 25.dp, end = 25.dp)
+            .fillMaxWidth()){
+            if (run != null) {
+                Text(text = "${run.startHour} KM",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+        }
+        Row(modifier = Modifier
+            .padding(top = 550.dp, start = 25.dp, end = 25.dp)
+            .fillMaxWidth()){
+            if (run != null) {
+                Text(text = "${run.endHour} KM",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
+            }
+        }
+        Row(modifier = Modifier
+            .padding(top = 600.dp, start = 25.dp, end = 25.dp)
+            .fillMaxWidth()){
+
+            if (run != null) {
+                Text(text = " KM/H",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold)
             }
         }
     }
