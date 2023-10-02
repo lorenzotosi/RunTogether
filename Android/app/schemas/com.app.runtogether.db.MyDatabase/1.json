@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e2f7b646aca1c3e2ab3dd0f62a5d3223",
+    "identityHash": "200a908fc83470038ef2f1b4c5440343",
     "entities": [
       {
         "tableName": "User",
@@ -146,7 +146,7 @@
       },
       {
         "tableName": "Run",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` REAL, `day` INTEGER, `polyline` TEXT, `organized` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`run_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `city` TEXT, `description` TEXT, `length_km` REAL, `day` INTEGER, `polyline` TEXT, `organized` INTEGER, `startHour` TEXT, `endHour` TEXT)",
         "fields": [
           {
             "fieldPath": "run_id",
@@ -189,6 +189,18 @@
             "columnName": "organized",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "startHour",
+            "columnName": "startHour",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "endHour",
+            "columnName": "endHour",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -204,7 +216,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2f7b646aca1c3e2ab3dd0f62a5d3223')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '200a908fc83470038ef2f1b4c5440343')"
     ]
   }
 }
