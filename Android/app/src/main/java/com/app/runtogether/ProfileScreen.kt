@@ -98,7 +98,7 @@ fun ShowProfilePage(navController: NavHostController){
                         painter = it2,
                         contentDescription = "Profile Picture",
                         modifier = Modifier
-                            .size(40.dp)
+                            .size(60.dp)
                     )
                 }
             }
