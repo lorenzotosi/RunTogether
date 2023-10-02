@@ -13,6 +13,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
@@ -90,7 +91,7 @@ fun ShowProfilePage(navController: NavHostController){
             )
         }
 
-        LazyHorizontalGrid(modifier=Modifier,rows = GridCells.Fixed(1) , content ={
+        LazyVerticalGrid(modifier=Modifier.padding(top = 150.dp, start = 10.dp, end = 10.dp), columns = GridCells.Fixed(5) , content ={
             items(count = trophies.size){
                 trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
                     Image(

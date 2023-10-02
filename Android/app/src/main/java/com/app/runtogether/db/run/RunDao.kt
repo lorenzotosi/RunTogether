@@ -20,4 +20,7 @@ interface RunDao {
 
     @Query("SELECT polyline FROM Run ORDER BY run_id DESC LIMIT 1")
     fun getOnlyPolyFromId(): Flow<String>
+
+    @Query("SELECT * FROM Run ORDER BY run_id DESC LIMIT 1")
+    fun getLastRunDistance(): Flow<Run>
 }

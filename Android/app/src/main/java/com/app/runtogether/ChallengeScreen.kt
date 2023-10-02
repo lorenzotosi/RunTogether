@@ -23,13 +23,17 @@ import com.app.runtogether.db.MyDatabase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateGrid(index: Int, navController: NavHostController){
+fun CreateGrid(index: Int, navController: NavHostController) {
 
     val database = MyDatabase.getInstance(navController.context)
     val userId = SessionManager.getUserDetails(navController.context)
-    val trophies = database.UserWithTrophiesDao().getTrophyNotHave(userId).collectAsState(initial = listOf()).value
+    val trophies = database.UserWithTrophiesDao().getTrophyNotHave(userId)
+        .collectAsState(initial = listOf()).value
 
-        LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp), columns = GridCells.Fixed(2), content = {
+    LazyVerticalGrid(
+        modifier = Modifier.padding(top = 155.dp),
+        columns = GridCells.Fixed(2),
+        content = {
             items(count = trophies.size) {
                 Card(modifier = Modifier
                     .size(150.dp, 150.dp)
@@ -56,7 +60,7 @@ fun CreateGrid(index: Int, navController: NavHostController){
                             )
                         }
                         Text(
-                            text = "Trofeo $it",
+                            text = "Trofeo ${trophies[it].trophy_id}",
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             textAlign = TextAlign.Center
@@ -65,6 +69,6 @@ fun CreateGrid(index: Int, navController: NavHostController){
                 }
             }
         })
-    }
+}
 
 

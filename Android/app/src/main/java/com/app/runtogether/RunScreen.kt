@@ -75,7 +75,7 @@ fun ShowRunScreen(
             compassEnabled = false,
             indoorLevelPickerEnabled = mapSettings,
             mapToolbarEnabled = false,
-            myLocationButtonEnabled = mapSettings,
+            myLocationButtonEnabled = true,
             rotationGesturesEnabled = mapSettings,
             scrollGesturesEnabled = mapSettings,
             scrollGesturesEnabledDuringRotateOrZoom = mapSettings,
