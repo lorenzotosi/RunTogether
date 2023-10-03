@@ -1,5 +1,6 @@
 package com.app.runtogether
 
+import SessionManager
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -14,18 +15,23 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
+import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun ShowEndRunScreen(navController: NavHostController){
 
+    var clickable = true
     val db = MyDatabase.getInstance(navController.context)
     val points = getPolyLines(db)
     val run = db.runDao().getLastRunDistance().collectAsState(initial = null).value
@@ -53,7 +59,7 @@ fun ShowEndRunScreen(navController: NavHostController){
             }
         }
         Row(modifier = Modifier
-            .padding(top = 480.dp, start = 25.dp, end = 25.dp)
+            .padding(top = 450.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
                 Text(text = "Distanza percorsa: ",
@@ -65,7 +71,7 @@ fun ShowEndRunScreen(navController: NavHostController){
             }
         }
         Row(modifier = Modifier
-            .padding(top = 540.dp, start = 25.dp, end = 25.dp)
+            .padding(top = 500.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
                 Text(text = "Orario di inizio ",
@@ -79,7 +85,7 @@ fun ShowEndRunScreen(navController: NavHostController){
             }
         }
         Row(modifier = Modifier
-            .padding(top = 600.dp, start = 25.dp, end = 25.dp)
+            .padding(top = 550.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
                 Text(text = "Orario di fine ",
@@ -93,7 +99,7 @@ fun ShowEndRunScreen(navController: NavHostController){
             }
         }
         Row(modifier = Modifier
-            .padding(top = 660.dp, start = 25.dp, end = 25.dp)
+            .padding(top = 600.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
             if (run != null) {
                 Text(text = "Andatura media ",
@@ -131,6 +137,33 @@ fun ShowEndRunScreen(navController: NavHostController){
                 Text(text = " ${String.format("%.2f", velMed)} km/h",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold)
+            }
+        }
+        Row(modifier = Modifier
+            .padding(top = 650.dp, start = 25.dp, end = 25.dp)
+            .fillMaxWidth()){
+            Button(onClick = {
+                //Log.e("clickable", "fuori $clickable")
+                if (clickable) {
+                    //Log.e("clickable", "dentro $clickable")
+                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                    myCoroutineScope.launch {
+                        if (run != null) {
+                            if (SessionManager.isLoggedIn(navController.context)) {
+                                db.RunWithUsersDao().insertRunUserCrossRef(
+                                    RunUserCrossRef(
+                                        run.run_id,
+                                        SessionManager.getUserDetails(navController.context)
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    clickable = false
+                    //Log.e("dopo false", "dentro $clickable")
+                }
+            }) {
+                Text(text = "Salva la corsa")
             }
         }
     }
