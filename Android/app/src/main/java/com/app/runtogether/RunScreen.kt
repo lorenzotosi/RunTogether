@@ -54,9 +54,9 @@ fun ShowRunScreen(
     val myId = if (mapSettings) R.drawable.stop_button else R.drawable.baseline_run_circle_24
     var waypoints by remember { mutableStateOf<List<LatLng>>(value = listOf()) }
 
-    var time = Calendar.getInstance().time
-    var formatter = SimpleDateFormat("HH:mm")
-    var current = formatter.format(time)
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val current = formatter.format(time)
 
     val startTime by remember { mutableStateOf(System.currentTimeMillis()) }
 
@@ -125,7 +125,7 @@ fun ShowRunScreen(
             IconButton(
                 onClick = {
                     if (mapSettings) {
-                        var x =  Geocoder(navController.context).getFromLocation(waypoints[0].latitude,
+                        val x =  Geocoder(navController.context).getFromLocation(waypoints[0].latitude,
                             waypoints[0].longitude,
                             1)?.get(0)?.locality.toString()
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)

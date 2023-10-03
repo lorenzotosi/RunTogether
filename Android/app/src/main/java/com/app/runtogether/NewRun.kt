@@ -11,9 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +21,11 @@ import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.User
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,22 +55,16 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         val mMonth: Int
         val mDay: Int
 
-        // Initializing a Calendar
         val mCalendar = Calendar.getInstance()
 
-        // Fetching current year, month and day
         mYear = mCalendar.get(Calendar.YEAR)
         mMonth = mCalendar.get(Calendar.MONTH)
         mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
 
         mCalendar.time = Date()
 
-        // Declaring a string value to
-        // store date in string format
         val mDate = remember { mutableStateOf("") }
 
-        // Declaring DatePickerDialog and setting
-        // initial values as current values (present year, month and day)
         val mDatePickerDialog = DatePickerDialog(
             navController.context,
             { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
@@ -86,7 +83,7 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         val mMinute = mCalendar[Calendar.MINUTE]
 
         val mTime = remember { mutableStateOf("") }
-
+        var position by remember { mutableStateOf<LatLng>(value = LatLng(locationDetails.latitude, locationDetails.longitude)) }
         val mTimePickerDialog = TimePickerDialog(
             navController.context,
             {_, mHour : Int, mMinute: Int ->
@@ -104,10 +101,18 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
 
             Text(text = "Orario Selezionato: ${mTime.value}")
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        GoogleMap(modifier = Modifier.height(250.dp), onMapClick = {
+            position = it
+        }) {
+            Marker(position = position, title = "Punto di partenza")
+        }
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
             Button(onClick = {
                 if(mDate.value!= "" && mTime.value!="" && nome != "" && descrizione != "" && lunghezza != "") {
+                    val gson = Gson()
+                    val waypoints = listOf<LatLng>(position)
                     val data = DateConverter.fromDate(stringToDate(mDate.value))
                     val ora = mTime.value
                     val city = Geocoder(navController.context).getFromLocation(
@@ -124,7 +129,7 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
                                 length_km = lunghezza.toDouble(),
                                 startHour = ora,
                                 endHour = null,
-                                polyline = null,
+                                polyline = gson.toJson(waypoints),
                                 day = data,
                                 organized = true,
                                 city = city
@@ -136,6 +141,9 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
             },
                 modifier = Modifier.padding(end = 9.dp)) {
                 Text(text = "Crea!")
+            }
+            Button(onClick = { navController.navigate(Screens.TodaysRun.name) }) {
+                Text(text = "Annulla")
             }
         }
     }

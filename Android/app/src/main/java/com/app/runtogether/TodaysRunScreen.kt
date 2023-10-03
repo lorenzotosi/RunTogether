@@ -83,7 +83,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                         }
                         Spacer(modifier = Modifier.height(5.dp))
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            val formatter = SimpleDateFormat("dd/MM/yyyy")
+                            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                             TextCard(title = "${formatter.format(runs[it].day)}, ${runs[it].startHour}", fontSize = 15)
                         }
 
