@@ -23,6 +23,7 @@ import com.app.runtogether.db.user.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
@@ -73,7 +74,7 @@ fun NewRunScreen(navController : NavHostController){
         }) {
             Text(text = "Scegli la data!", color = Color.White)
         }
-        Text(text = "Data Scelta: ${mDate.value}")
+        Text(text = "Data Scelta: ${stringToDate(mDate.value)}")
         Spacer(modifier = Modifier.height(5.dp))
 
         val mHour = mCalendar[Calendar.HOUR_OF_DAY]
@@ -91,17 +92,13 @@ fun NewRunScreen(navController : NavHostController){
         Column(modifier = Modifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
             Button(onClick = { mTimePickerDialog.show() }) {
-                Text(text = "Open Time Picker", color = Color.White)
+                Text(text = "Scegli l'orario!", color = Color.White)
             }
 
             Spacer(modifier = Modifier.size(5.dp))
 
-            Text(text = "Selected Time: ${mTime.value}")
+            Text(text = "Orario Selezionato: ${mTime.value}")
         }
-
-
-
-
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
             Button(onClick = {
@@ -114,5 +111,14 @@ fun NewRunScreen(navController : NavHostController){
                 Text(text = "Crea!")
             }
         }
+    }
+}
+
+fun stringToDate(dateString: String, pattern: String = "dd/MM/yyyy"): Date? {
+    return if (dateString != "") {
+        val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+        dateFormat.parse(dateString) ?: Date()
+    } else {
+        null
     }
 }
