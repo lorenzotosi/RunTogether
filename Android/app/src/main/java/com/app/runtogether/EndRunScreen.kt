@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter
 fun ShowEndRunScreen(navController: NavHostController){
 
     val db = MyDatabase.getInstance(navController.context)
-    val points = GetPolyLines(db)
+    val points = getPolyLines(db)
     val run = db.runDao().getLastRunDistance().collectAsState(initial = null).value
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
