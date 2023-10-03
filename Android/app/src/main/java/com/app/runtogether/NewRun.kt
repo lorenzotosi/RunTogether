@@ -1,7 +1,9 @@
 package com.app.runtogether
 
+import DateConverter
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.location.Geocoder
 import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun NewRunScreen(navController : NavHostController){
+fun NewRunScreen(navController : NavHostController, locationDetails: LocationDetails){
     val database = MyDatabase.getInstance(navController.context)
 
     Column(
@@ -42,6 +45,8 @@ fun NewRunScreen(navController : NavHostController){
         val nome = TextField(name = "Nome Corsa")
         Spacer(modifier = Modifier.height(5.dp))
         val descrizione = TextField(name = "Descrizione")
+        Spacer(modifier = Modifier.height(5.dp))
+        val lunghezza = TextField(name = "Lunghezza (KM)")
         Spacer(modifier = Modifier.height(5.dp))
         val mYear: Int
         val mMonth: Int
@@ -102,9 +107,31 @@ fun NewRunScreen(navController : NavHostController){
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
             Button(onClick = {
-                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                myCoroutineScope.launch {
+                if(mDate.value!= "" && mTime.value!="" && nome != "" && descrizione != "" && lunghezza != "") {
+                    val data = DateConverter.fromDate(stringToDate(mDate.value))
+                    val ora = mTime.value
+                    val city = Geocoder(navController.context).getFromLocation(
+                        locationDetails.latitude,
+                        locationDetails.longitude,
+                        1
+                    )?.get(0)?.locality.toString()
 
+                    val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                    myCoroutineScope.launch {
+                        database.runDao().insertRun(
+                            Run(
+                                description = descrizione,
+                                length_km = lunghezza.toDouble(),
+                                startHour = ora,
+                                endHour = null,
+                                polyline = null,
+                                day = data,
+                                organized = true,
+                                city = city
+                            )
+                        )
+                    }
+                    navController.navigate(Screens.TodaysRun.name)
                 }
             },
                 modifier = Modifier.padding(end = 9.dp)) {

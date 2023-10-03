@@ -220,7 +220,7 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
             ShowEndRunScreen(navController = navController)
         }
         composable(route = Screens.AddNewRun.name){
-            NewRunScreen(navController = navController)
+            NewRunScreen(navController = navController, locationDetails)
         }
 
 
