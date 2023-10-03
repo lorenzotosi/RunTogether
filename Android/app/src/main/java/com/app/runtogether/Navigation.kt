@@ -10,7 +10,7 @@ sealed class Screens(val name: String) {
     object Profile : Screens("Profile")
     object Notify : Screens("Notify")
     object Running : Screens("Running")
-
+    object AddNewRun : Screens("New Run")
     object EndRun : Screens("Results")
 
 }

@@ -219,6 +219,9 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         composable(route = Screens.EndRun.name){
             ShowEndRunScreen(navController = navController)
         }
+        composable(route = Screens.AddNewRun.name){
+            NewRunScreen(navController = navController)
+        }
 
 
     }

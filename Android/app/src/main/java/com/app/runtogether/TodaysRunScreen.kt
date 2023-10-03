@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,10 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
-import java.util.Locale
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 @Composable
 fun TextCard(title: String, fontSize:Int){
@@ -61,7 +66,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-                    onClick = {  }
+                    onClick = { /* TODO onclick open trophy */ }
                 ) {
                     Column(
                         modifier = Modifier
@@ -84,5 +89,30 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                 }
             }
         })
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(bottom = 20.dp, end = 20.dp),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            IconButton(
+                onClick = { navController.navigate(Screens.AddNewRun.name) },
+                modifier = Modifier
+                    .size(80.dp)
+                    .zIndex(1f)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_add_24),
+                    contentDescription = "Start run",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(8.dp)
+                )
+            }
+        }
     }
 }
