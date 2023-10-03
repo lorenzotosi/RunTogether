@@ -1,7 +1,10 @@
 package com.app.runtogether
 
 import android.location.Geocoder
+import android.location.Geocoder.GeocodeListener
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -21,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
+import java.util.Locale
 
 @Composable
 fun TextCard(title: String, fontSize:Int){
@@ -40,10 +44,8 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-
-        //can be avoided by setting a real location on main activity
-        val x = Geocoder(navController.context).getFromLocation(location.latitude,
-            location.longitude, 1)
+        val x = Geocoder(navController.context, Locale.getDefault())
+            .getFromLocation(location.latitude, location.longitude, 1)
         var city = ""
         if (x != null) {
             if (x.isNotEmpty()){
