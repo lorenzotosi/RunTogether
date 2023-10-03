@@ -29,7 +29,6 @@ fun ShowEndRunScreen(navController: NavHostController){
     val db = MyDatabase.getInstance(navController.context)
     val points = GetPolyLines(db)
     val run = db.runDao().getLastRunDistance().collectAsState(initial = null).value
-    Log.e("run", run.toString())
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
     }
@@ -139,14 +138,10 @@ fun ShowEndRunScreen(navController: NavHostController){
 }
 
 @Composable
-fun GetPolyLines(db: MyDatabase): List<LatLng> {
-
+fun getPolyLines(db: MyDatabase): List<LatLng> {
     val gson = Gson()
     val string: String =
         db.runDao().getOnlyPolyFromId().collectAsState(initial = listOf<LatLng>()).value.toString()
-    Log.e("json", string)
     val typeToken = object : TypeToken<List<LatLng>>() {}.type
-
-    //Log.e("json", points.toString())
     return gson.fromJson(string, typeToken)
 }

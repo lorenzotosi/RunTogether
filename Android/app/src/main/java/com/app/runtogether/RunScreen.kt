@@ -125,13 +125,9 @@ fun ShowRunScreen(
             IconButton(
                 onClick = {
                     if (mapSettings) {
-
                         var x =  Geocoder(navController.context).getFromLocation(waypoints[0].latitude,
                             waypoints[0].longitude,
                             1)?.get(0)?.locality.toString()
-
-                        Log.e("ora", formatTime(startTime))
-                        Log.e("ora2",current)
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             val db = MyDatabase.getInstance(navController.context)
