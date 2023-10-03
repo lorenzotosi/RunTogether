@@ -29,6 +29,7 @@ import com.app.runtogether.db.run.Run
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
@@ -82,7 +83,8 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                         }
                         Spacer(modifier = Modifier.height(5.dp))
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            TextCard(title = "${runs[it].day?.let { it1 -> DateConverter.getDay(it1) }}", fontSize = 15)
+                            val formatter = SimpleDateFormat("dd/MM/yyyy")
+                            TextCard(title = "${formatter.format(runs[it].day)}, ${runs[it].startHour}", fontSize = 15)
                         }
 
                     }
