@@ -65,6 +65,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     onClick = { run_id = runs[it].run_id
+                                Log.e("corsa", run_id.toString())
                                 navController.navigate(Screens.RunInfo.name)}
                 ) {
                     Column(

@@ -1,9 +1,6 @@
 package com.app.runtogether.db.runToUser
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.app.runtogether.db.run.Run
 import kotlinx.coroutines.flow.Flow
 
@@ -24,4 +21,10 @@ interface RunWithUsersDao {
 
     @Insert
     suspend fun insertRunUserCrossRef(runUserCrossRef: RunUserCrossRef)
+
+    @Query("SELECT run_id FROM RunUserCrossRef where user_id = :userId")
+    fun getRunsIdFromUserId(userId: Int): Flow<List<Int>>
+
+    @Delete
+    fun deleteFromDb(runUserCrossRef: RunUserCrossRef)
 }
