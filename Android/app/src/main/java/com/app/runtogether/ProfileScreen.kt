@@ -110,7 +110,7 @@ fun ShowProfilePage(navController: NavHostController){
             )
         }
 
-        LazyHorizontalGrid(modifier=Modifier.padding(start = 20.dp, end = 20.dp).height(350.dp), rows = GridCells.Fixed(1) , content ={
+        LazyHorizontalGrid(modifier=Modifier.padding(start = 20.dp, end = 20.dp, top = 140.dp).height(70.dp), rows = GridCells.Fixed(1) , content ={
             items(count = trophies.size){
                 trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
                     Image(
