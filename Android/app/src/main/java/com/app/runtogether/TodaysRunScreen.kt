@@ -91,30 +91,31 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                 }
             }
         })
-        Box(
+
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(bottom = 20.dp, end = 20.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        IconButton(
+            onClick = { navController.navigate(Screens.AddNewRun.name) },
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(bottom = 20.dp, end = 20.dp),
-            contentAlignment = Alignment.BottomEnd
+                .size(80.dp)
+                .zIndex(1f)
         ) {
-            IconButton(
-                onClick = { navController.navigate(Screens.AddNewRun.name) },
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_add_24),
+                contentDescription = "Start run",
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier
-                    .size(80.dp)
-                    .zIndex(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_add_24),
-                    contentDescription = "Start run",
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .padding(8.dp)
-                )
-            }
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(8.dp)
+            )
         }
     }
 }
