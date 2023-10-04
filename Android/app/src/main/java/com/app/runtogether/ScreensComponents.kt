@@ -46,7 +46,8 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
     val userId = SessionManager.getUserDetails(navController.context)
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val uriSelected = db.userDao().getUriFromId(userId)
+    val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
+    Log.d("uri", uriSelected.toString())
     val imagePainter = if (uriSelected != null) {
         rememberAsyncImagePainter(model = uriSelected)
     } else {

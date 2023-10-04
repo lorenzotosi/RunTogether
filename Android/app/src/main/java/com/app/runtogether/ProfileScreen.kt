@@ -51,7 +51,7 @@ fun ShowProfilePage(navController: NavHostController){
             db.userDao().addUriToUser(uri.toString(), userId)
         }
     }
-    val uriSelected = db.userDao().getUriFromId(userId)
+    val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
     val imagePainter = if (uriSelected != null) {
         rememberAsyncImagePainter(model = uriSelected)
     } else {
