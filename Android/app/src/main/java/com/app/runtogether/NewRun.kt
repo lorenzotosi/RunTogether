@@ -87,7 +87,11 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         val mTimePickerDialog = TimePickerDialog(
             navController.context,
             {_, mHour : Int, mMinute: Int ->
-                mTime.value = "$mHour:$mMinute"
+                if (mMinute in 0..9){
+                    mTime.value = "$mHour:0$mMinute"
+                } else {
+                    mTime.value = "$mHour:$mMinute"
+                }
             }, mHour, mMinute, false
         )
 
