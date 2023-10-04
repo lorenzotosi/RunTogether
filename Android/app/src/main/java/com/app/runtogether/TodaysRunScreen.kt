@@ -1,12 +1,8 @@
 package com.app.runtogether
 
 import android.location.Geocoder
-import android.location.Geocoder.GeocodeListener
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,7 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,9 +22,6 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -104,7 +97,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
             onClick = { navController.navigate(Screens.AddNewRun.name) },
             modifier = Modifier
                 .size(80.dp)
-                .zIndex(1f)
+                .zIndex(10f)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_add_24),
@@ -113,6 +106,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
+                    .border(2.dp, Color.Black, CircleShape)
                     .background(MaterialTheme.colorScheme.secondaryContainer)
                     .padding(8.dp)
             )
