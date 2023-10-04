@@ -43,25 +43,6 @@ fun ShowSettingsScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Apply button
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = currentUsername,
-                onValueChange = { newUsername -> onUsernameChanged(newUsername) },
-                label = { Text("Username") },
-                modifier = Modifier
-                    .widthIn(max = 200.dp) // Set the maximum width for the input field
-            )
-            TextButton(onClick = { onSaveClicked() }) {
-                Text("Apply") // Change the label as needed
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
