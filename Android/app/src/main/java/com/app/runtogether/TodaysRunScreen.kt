@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 import android.location.Geocoder
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,9 @@ fun TextCard(title: String, fontSize:Int){
         textAlign = TextAlign.Center
     )
 }
+
+var run_id = -1
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardRun(navController: NavHostController, location : LocationDetails){
@@ -60,7 +64,8 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-                    onClick = { /* TODO onclick open trophy */ }
+                    onClick = { run_id = runs[it].run_id
+                                navController.navigate(Screens.RunInfo.name)}
                 ) {
                     Column(
                         modifier = Modifier

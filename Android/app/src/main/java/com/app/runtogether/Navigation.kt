@@ -12,5 +12,6 @@ sealed class Screens(val name: String) {
     object Running : Screens("Running")
     object AddNewRun : Screens("New Run")
     object EndRun : Screens("Results")
+    object RunInfo : Screens("Run Information")
 
 }

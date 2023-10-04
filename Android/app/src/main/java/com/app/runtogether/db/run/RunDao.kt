@@ -23,4 +23,7 @@ interface RunDao {
 
     @Query("SELECT * FROM Run ORDER BY run_id DESC LIMIT 1")
     fun getLastRunDistance(): Flow<Run>
+
+    @Query("SELECT * FROM Run where run_id = :id")
+    fun getRunFromId(id : Int): Flow<Run>
 }
