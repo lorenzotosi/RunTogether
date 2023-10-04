@@ -1,8 +1,9 @@
 package com.app.runtogether
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -15,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +23,12 @@ import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.UserViewModel
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.painter.Painter
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +46,17 @@ fun ShowProfilePage(navController: NavHostController){
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
     val runs : List<Run> = db.RunWithUsersDao().getAllRunsFromUserId(userId).collectAsState(initial = listOf()).value
-
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            selectedImageUri = uri
+        }
+    }
+    val imagePainter = if (selectedImageUri != null) {
+        rememberAsyncImagePainter(model = selectedImageUri)
+    } else {
+        painterResource(id = R.drawable.image_profile)
+    }
     Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
 
 
@@ -64,13 +80,16 @@ fun ShowProfilePage(navController: NavHostController){
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically){
             Image(
-                painter = painterResource(id = R.drawable.image_profile),
+                painter = imagePainter,
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(90.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.secondaryContainer)
                     .padding(8.dp)
+                    .clickable {
+                        pickImageLauncher.launch("image/*")
+                    }
             )
 
 
