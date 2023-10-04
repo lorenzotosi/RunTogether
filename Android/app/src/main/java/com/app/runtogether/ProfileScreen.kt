@@ -46,14 +46,14 @@ fun ShowProfilePage(navController: NavHostController){
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
     val runs : List<Run> = db.RunWithUsersDao().getAllRunsFromUserId(userId).collectAsState(initial = listOf()).value
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
-            selectedImageUri = uri
+            db.userDao().addUriToUser(uri.toString(), userId)
         }
     }
-    val imagePainter = if (selectedImageUri != null) {
-        rememberAsyncImagePainter(model = selectedImageUri)
+    val uriSelected = db.userDao().getUriFromId(userId)
+    val imagePainter = if (uriSelected != null) {
+        rememberAsyncImagePainter(model = uriSelected)
     } else {
         painterResource(id = R.drawable.image_profile)
     }

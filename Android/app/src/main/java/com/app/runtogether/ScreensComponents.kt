@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
@@ -41,9 +42,16 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
-
+    val db = MyDatabase.getInstance(navController.context)
+    val userId = SessionManager.getUserDetails(navController.context)
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val uriSelected = db.userDao().getUriFromId(userId)
+    val imagePainter = if (uriSelected != null) {
+        rememberAsyncImagePainter(model = uriSelected)
+    } else {
+        painterResource(id = R.drawable.image_profile)
+    }
     // icons to mimic drawer destinations
     val items = listOf(
         MenuItems(id = "Profile",
@@ -63,11 +71,12 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
             Screens.Settings),
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Image(painter = painterResource(id = R.drawable.image_profile),
+                Image(painter = painterResource(id = imagePainter),
                     contentDescription = "Immagine profilo",
                     modifier = Modifier
                         .padding(16.dp)
