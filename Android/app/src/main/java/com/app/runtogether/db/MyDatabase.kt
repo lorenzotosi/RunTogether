@@ -53,7 +53,8 @@ abstract class MyDatabase : RoomDatabase() {
                             INSTANCE?.userDao()?.insertAll(User(
                                 username = "nome",
                                 email = "email@email.com",
-                                password = "password"
+                                password = "password",
+                                uri = ""
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_1",

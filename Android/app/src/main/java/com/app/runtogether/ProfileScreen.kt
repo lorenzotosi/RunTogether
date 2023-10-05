@@ -29,6 +29,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.painter.Painter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,17 +51,19 @@ fun ShowProfilePage(navController: NavHostController){
     val runs : List<Run> = db.RunWithUsersDao().getAllRunsFromUserId(userId).collectAsState(initial = listOf()).value
     val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
-            db.userDao().addUriToUser(uri.toString(), userId)
+            val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+            myCoroutineScope.launch {
+                db.userDao().addUriToUser(uri.toString(), userId)
+            }
         }
     }
     val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
-    val imagePainter = if (uriSelected != null) {
+    val imagePainter = if (uriSelected != "") {
         rememberAsyncImagePainter(model = uriSelected)
     } else {
         painterResource(id = R.drawable.image_profile)
     }
-    Log.d("db", db.UserWithTrophiesDao().getUserWithTrophies().collectAsState(initial = listOf()).value.toString())
-
+    Log.d("db", imagePainter.toString())
 
     Box(
         modifier = Modifier
