@@ -43,7 +43,7 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     onClick = {
                         myChallenge = trophies[it].trophy_id
-                        navController.navigate(Screens.SignUp.name)
+                        navController.navigate(Screens.TrophyInfo.name)
                     }
                 ) {
                     Column(

@@ -122,7 +122,10 @@ fun ShowProfilePage(navController: NavHostController){
                         painter = it2,
                         contentDescription = "Profile Picture",
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(60.dp).clickable {
+                                myChallenge = trophies[it].trophy_id
+                                navController.navigate(Screens.TrophyInfo.name)
+                            }
                     )
                 }
             }

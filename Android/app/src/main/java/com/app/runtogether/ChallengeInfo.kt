@@ -67,7 +67,8 @@ fun ShowChallengeInfo(navController: NavHostController){
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Completata: $completed", fontSize = 24.sp,
+                text = "Completata: ${if (completed) "SI" else "NO"}",
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))

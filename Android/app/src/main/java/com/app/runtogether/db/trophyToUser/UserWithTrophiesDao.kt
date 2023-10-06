@@ -20,7 +20,7 @@ interface UserWithTrophiesDao {
     @Query("SELECT * FROM Trophy WHERE trophy_id IN (SELECT trophy_id FROM TrophyUserCrossRef WHERE user_id = :userId)")
     fun getTrophyHave(userId: Int): Flow<List<Trophy>>
 
-    @Transaction
+
     fun hasUserGotTrophy(userId: Int, trophyId: Int): Flow<Boolean>
     {
         return getTrophyHave(userId).map { trophies ->

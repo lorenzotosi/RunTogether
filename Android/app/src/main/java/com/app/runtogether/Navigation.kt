@@ -14,4 +14,6 @@ sealed class Screens(val name: String) {
     object EndRun : Screens("Results")
     object RunInfo : Screens("Run Information")
 
+    object TrophyInfo : Screens("Trophy Information")
+
 }

@@ -235,6 +235,9 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
         composable(route = Screens.RunInfo.name){
             ShowInfoRun(navController = navController)
         }
+        composable(route = Screens.TrophyInfo.name){
+            ShowChallengeInfo(navController = navController)
+        }
 
 
     }
