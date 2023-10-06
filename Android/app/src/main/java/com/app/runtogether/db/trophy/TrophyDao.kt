@@ -3,6 +3,7 @@ package com.app.runtogether.db.trophy
 import android.content.Context
 import androidx.room.*
 import com.app.runtogether.db.MyDatabase
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrophyDao {
@@ -11,6 +12,9 @@ interface TrophyDao {
 
     @Query("SELECT * FROM trophy WHERE trophy_id IN (:trophyIds)")
     fun loadAllByIds(trophyIds: IntArray): List<Trophy>
+
+    @Query("SELECT * FROM trophy WHERE trophy_id IN (:trophyIds)")
+    fun getTrophyFromId(trophyIds: Int): Flow<Trophy>
 
     @Query("SELECT * FROM trophy WHERE name LIKE :first LIMIT 1")
     fun findByName(first: String): Trophy

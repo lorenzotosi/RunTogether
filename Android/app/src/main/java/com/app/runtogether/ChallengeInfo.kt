@@ -33,82 +33,37 @@ import java.util.*
 @Composable
 fun ShowChallengeInfo(navController: NavHostController){
     val database = MyDatabase.getInstance(navController.context)
-    val run = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
+    val trophies = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
+
+    var unlocked = false
+
+    if (SessionManager.isLoggedIn(navController.context)){
+        
+    }
 
     Column(
         modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.Start
     ){
-        if (run != null) {
-            val formatter = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
+        if (trophies != null) {
+
             Spacer(modifier = Modifier.height(35.dp))
-            Text(text = "Nome: ${run.name}",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Nome: ${trophies.name}", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Descrizione: ${run.description}",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Descrizione: ${trophies.description}", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Obiettivo: ${run.km} KM",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Obiettivo: ${trophies.km} KM", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Giorno e ora: ${DateConverter.toDate(run.day)?.
-            let { formatter.format(it) }} ${run.startHour}",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
-            Spacer(modifier = Modifier.height(10.dp))
-            val gson = Gson()
-            val string: String = run.polyline.toString()
-            val typeToken = object : TypeToken<List<LatLng>>() {}.type
-            val x = gson.fromJson<List<LatLng>>(string, typeToken)
-            val point = x[0]
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(point, 15f)
-            }
-            GoogleMap(modifier = Modifier
-                .height(250.dp)
-                .padding(start = 10.dp, end = 10.dp),
-                cameraPositionState = cameraPositionState) {
-                cameraPositionState.move(CameraUpdateFactory.newLatLng(point))
-                Marker(position = LatLng(point.latitude, point.longitude))
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            if (SessionManager.isLoggedIn(navController.context)) {
-
-                val info = database.RunWithUsersDao()
-                    .getRunsIdFromUserId(SessionManager.getUserDetails(navController.context)).collectAsState(
-                        initial = listOf()
-                    ).value
-
-                if (info.contains(run.run_id)){
-                    Button(onClick = {
-                        val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                        myCoroutineScope.launch {
-                            database.RunWithUsersDao()
-                                .deleteFromDb(RunUserCrossRef(run.run_id,
-                                    SessionManager.getUserDetails(navController.context)))
-                        }
-                    }) {
-                        Text(text = "Disiscriviti")
-                    }
-                } else {
-                    Button(onClick = {
-                        val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                        myCoroutineScope.launch {
-                            database.RunWithUsersDao()
-                                .insertRunUserCrossRef(
-                                    RunUserCrossRef(
-                                        run_id = run.run_id,
-                                        SessionManager.getUserDetails(navController.context)
-                                    )
-                                )
-                        }
-                    }) {
-                        Text(text = "Partecipa!")
-                    }
-                }
-            }
 
         }
-
     }
 }
