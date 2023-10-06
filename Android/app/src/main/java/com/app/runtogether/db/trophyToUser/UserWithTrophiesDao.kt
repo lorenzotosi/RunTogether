@@ -3,6 +3,7 @@ package com.app.runtogether.db.trophyToUser
 import androidx.room.*
 import com.app.runtogether.db.trophy.Trophy
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Dao
 interface UserWithTrophiesDao {
@@ -20,8 +21,12 @@ interface UserWithTrophiesDao {
     fun getTrophyHave(userId: Int): Flow<List<Trophy>>
 
     @Transaction
-    @Query("SELECT * FROM TrophyUserCrossRef WHERE trophy_id = :trophyId and user_id = :userId")
     fun hasUserGotTrophy(userId: Int, trophyId: Int): Flow<Boolean>
+    {
+        return getTrophyHave(userId).map { trophies ->
+            trophies.any { it.trophy_id == trophyId }
+        }
+    }
 
     @Transaction
     @Query("SELECT COUNT(trophy_id) FROM TrophyUserCrossRef WHERE user_id = :userId")

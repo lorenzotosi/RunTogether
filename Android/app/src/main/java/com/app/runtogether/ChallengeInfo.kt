@@ -35,10 +35,11 @@ fun ShowChallengeInfo(navController: NavHostController){
     val database = MyDatabase.getInstance(navController.context)
     val trophies = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
 
-    var unlocked = false
+    var completed = false
 
     if (SessionManager.isLoggedIn(navController.context)){
-        
+        completed = database.UserWithTrophiesDao().hasUserGotTrophy(SessionManager.getUserDetails(navController.context), myChallenge).collectAsState(
+            initial = false).value
     }
 
     Column(
@@ -63,6 +64,10 @@ fun ShowChallengeInfo(navController: NavHostController){
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Completata: $completed", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
 
         }
     }
