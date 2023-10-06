@@ -138,7 +138,10 @@ fun ShowProfilePage(navController: NavHostController){
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-                    onClick = {  }
+                    onClick = {
+                        run_id = runs[it].run_id
+                        navController.navigate(Screens.RunInfo.name)
+                    }
                 ) {
                     Column(
                         modifier = Modifier
