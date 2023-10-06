@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 
+var myChallenge = -1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,10 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-                    onClick = { navController.navigate(Screens.SignUp.name) }
+                    onClick = {
+                        myChallenge = trophies[it].trophy_id
+                        navController.navigate(Screens.SignUp.name)
+                    }
                 ) {
                     Column(
                         modifier = Modifier

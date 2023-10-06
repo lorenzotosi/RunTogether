@@ -19,6 +19,9 @@ interface UserWithTrophiesDao {
     @Query("SELECT * FROM Trophy WHERE trophy_id IN (SELECT trophy_id FROM TrophyUserCrossRef WHERE user_id = :userId)")
     fun getTrophyHave(userId: Int): Flow<List<Trophy>>
 
+    @Transaction
+    @Query("SELECT * FROM TrophyUserCrossRef WHERE trophy_id = :trophyId and user_id = :userId")
+    fun hasUserGotTrophy(userId: Int, trophyId: Int): Flow<Boolean>
 
     @Transaction
     @Query("SELECT COUNT(trophy_id) FROM TrophyUserCrossRef WHERE user_id = :userId")
