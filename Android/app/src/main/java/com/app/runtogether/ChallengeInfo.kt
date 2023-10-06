@@ -2,12 +2,14 @@ package com.app.runtogether
 
 import DateConverter
 import SessionManager
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +35,7 @@ import java.util.*
 @Composable
 fun ShowChallengeInfo(navController: NavHostController){
     val database = MyDatabase.getInstance(navController.context)
-    val trophies = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
+    val trophy = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
 
     var completed = false
 
@@ -46,21 +48,21 @@ fun ShowChallengeInfo(navController: NavHostController){
         modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.Start
     ){
-        if (trophies != null) {
+        if (trophy != null) {
 
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Nome: ${trophies.name}", fontSize = 24.sp,
+                text = "Nome: ${trophy.name}", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Descrizione: ${trophies.description}", fontSize = 24.sp,
+                text = "Descrizione: ${trophy.description}", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Obiettivo: ${trophies.km} KM", fontSize = 24.sp,
+                text = "Obiettivo: ${trophy.km} KM", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -68,6 +70,9 @@ fun ShowChallengeInfo(navController: NavHostController){
                 text = "Completata: $completed", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            trophy.path?.let { painterResource(it) }
+                ?.let { Image(painter = it, contentDescription = trophy.description, modifier = Modifier.size(200.dp)) }
 
         }
     }
