@@ -93,87 +93,100 @@ fun ShowRunScreen(
                 }
                 UpdatePolyline(waypoints = waypoints)
             }
+        } else {
+            val newPos = LatLng(44.06, 12.56)
+            LaunchedEffect(newPos) {
+                cameraPositionState.centerOnLocation(newPos)
+            }
         }
 
     }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(bottom = 60.dp),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(1f),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+    if (myLocation) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(bottom = 60.dp),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.CenterStart // Align text to the start (left) within the Box
+            Row(
+                modifier = Modifier.fillMaxWidth(1f),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (mapSettings) {
-                    Text(
-                        text = current,
-                        fontSize = 24.sp, // Increase the font size as desired
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                }
-            }
-
-            IconButton(
-                onClick = {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterStart // Align text to the start (left) within the Box
+                ) {
                     if (mapSettings) {
-                        val x =  Geocoder(navController.context).getFromLocation(waypoints[0].latitude,
-                            waypoints[0].longitude,
-                            1)?.get(0)?.locality.toString()
-                        val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                        myCoroutineScope.launch {
-                            val db = MyDatabase.getInstance(navController.context)
-                            db.runDao().insertRun(Run(city = x,
-                                description = "descrizione prova",
-                                length_km = calculateTotalDistance(waypoints),
-                                day = DateConverter.fromDate(Date()),
-                                polyline = gson.toJson(waypoints),
-                                organized = false,
-                                startHour = formatTime(startTime),
-                                endHour = current))
-                        }
+                        Text(
+                            text = current,
+                            fontSize = 24.sp, // Increase the font size as desired
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
                     }
-                    onClickActionNavigation.invoke()
-                },
-                modifier = Modifier
-                    .size(120.dp)
-                    .zIndex(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = myId),
-                    contentDescription = "Start run",
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                }
+
+                IconButton(
+                    onClick = {
+                        if (mapSettings) {
+                            val x = Geocoder(navController.context).getFromLocation(
+                                waypoints[0].latitude,
+                                waypoints[0].longitude,
+                                1
+                            )?.get(0)?.locality.toString()
+                            val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                            myCoroutineScope.launch {
+                                val db = MyDatabase.getInstance(navController.context)
+                                db.runDao().insertRun(
+                                    Run(
+                                        city = x,
+                                        description = "descrizione prova",
+                                        length_km = calculateTotalDistance(waypoints),
+                                        day = DateConverter.fromDate(Date()),
+                                        polyline = gson.toJson(waypoints),
+                                        organized = false,
+                                        startHour = formatTime(startTime),
+                                        endHour = current
+                                    )
+                                )
+                            }
+                        }
+                        onClickActionNavigation.invoke()
+                    },
                     modifier = Modifier
                         .size(120.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .padding(8.dp)
-                )
-            }
-
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.CenterEnd // Align text to the end (right) within the Box
-            ) {
-                if (mapSettings) {
-                    Text(
-                        text = "${(calculateTotalDistance(waypoints))} km",
-                        fontSize = 24.sp, // Increase the font size as desired
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(end = 8.dp)
+                        .zIndex(1f)
+                ) {
+                    Icon(
+                        painter = painterResource(id = myId),
+                        contentDescription = "Start run",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                            .padding(8.dp)
                     )
                 }
-            }
-        }
 
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterEnd // Align text to the end (right) within the Box
+                ) {
+                    if (mapSettings) {
+                        Text(
+                            text = "${(calculateTotalDistance(waypoints))} km",
+                            fontSize = 24.sp, // Increase the font size as desired
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                    }
+                }
+            }
+
+        }
     }
 
 }
