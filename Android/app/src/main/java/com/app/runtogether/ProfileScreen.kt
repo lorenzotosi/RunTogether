@@ -33,6 +33,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -157,7 +159,8 @@ fun ShowProfilePage(navController: NavHostController){
                         }
                         Spacer(modifier = Modifier.height(5.dp))
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            TextCard(title = "${runs[it].day?.let { it1 -> DateConverter.getDay(it1) }}", fontSize = 15)
+                            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            TextCard(title = "${runs[it].day?.let { it1 -> formatter.format(it1) }} ${runs[it].startHour}", fontSize = 15)
                         }
 
                     }

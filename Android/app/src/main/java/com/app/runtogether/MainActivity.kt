@@ -2,22 +2,37 @@ package com.app.runtogether
 
 import SessionManager
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
 import android.widget.EditText
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
@@ -58,9 +73,7 @@ class MainActivity : ComponentActivity() {
                 isGranted.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     startLocationUpdates()
                 }
-                isGranted.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    startLocationUpdates()
-                } else -> {
+                else -> {
                     showSnackBar.value = true
                 }
             }
@@ -109,7 +122,6 @@ class MainActivity : ComponentActivity() {
                                     .padding(innerPadding)
                             ) {
                                 startLocationUpdates()
-
                                 ModalNavigationDrawerSample(location.value, loc)
 
 
@@ -158,7 +170,8 @@ class MainActivity : ComponentActivity() {
                 locationPermissionRequest.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_CALENDAR)
                 )
             }
         }

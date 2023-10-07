@@ -2,15 +2,26 @@ package com.app.runtogether
 
 import DateConverter
 import SessionManager
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.CalendarContract
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.runToUser.RunUserCrossRef
@@ -106,6 +117,47 @@ fun ShowInfoRun(navController: NavHostController){
                         Text(text = "Partecipa!")
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+            Button(onClick = {
+                val hour = run.startHour
+                val parti = hour?.split(":")
+
+
+                val ore = parti?.get(0)?.toIntOrNull() ?: 0
+                val minuti = parti?.getOrNull(1)?.toIntOrNull() ?: 0
+
+                val date : Date? = DateConverter.toDate(run.day)
+
+
+                    val calendar = Calendar.getInstance().apply {
+                        time = date
+                    }
+                    val year = calendar.get(Calendar.YEAR)
+                    val month =
+                        calendar.get(Calendar.MONTH) + 1
+                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+                val startMillis: Long = Calendar.getInstance().run {
+                    set(year, month, day, ore, minuti)
+                    timeInMillis
+                }
+
+                Log.e("tempo", "$ore $minuti, ${run.startHour}")
+
+
+
+                val intent = Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                    .putExtra(CalendarContract.Events.TITLE, "Corsa RunTogether")
+                    .putExtra(CalendarContract.Events.DESCRIPTION, run.description)
+                startActivity(navController.context, intent, null)
+
+
+            }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(text = "Aggiungi l'evento al calendario!")
             }
 
         }
