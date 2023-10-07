@@ -87,7 +87,7 @@ fun ShowInfoRun(navController: NavHostController){
                                 .deleteFromDb(RunUserCrossRef(run.run_id,
                                     SessionManager.getUserDetails(navController.context)))
                         }
-                    }) {
+                    }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                         Text(text = "Disiscriviti")
                     }
                 } else {
@@ -102,7 +102,7 @@ fun ShowInfoRun(navController: NavHostController){
                                     )
                                 )
                         }
-                    }) {
+                    }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                         Text(text = "Partecipa!")
                     }
                 }
