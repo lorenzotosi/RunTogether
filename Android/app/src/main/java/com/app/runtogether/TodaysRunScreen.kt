@@ -55,7 +55,27 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                 city = x[0].locality
             }
         }
-        val runs : List<Run> = database.runDao().getRunsFromCity(city).collectAsState(initial = listOf()).value
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val startOfDay = DateConverter.fromDate(calendar.time) // Start of the day (00:00)
+
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val endOfDay = DateConverter.fromDate(calendar.time) // End of the day (23:59)
+
+        var runs = listOf<Run>()
+
+        if(startOfDay != null && endOfDay != null){
+            runs = database.runDao().getRunsFromCityForToday(city, startOfDay, endOfDay).collectAsState(initial = listOf()).value
+        }
+        Log.e("corsa", runs.toString())
+
         LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
                 columns = GridCells.Fixed(1), content = {
             items(count = runs.size) {
