@@ -2,25 +2,18 @@ package com.app.runtogether
 
 import DateConverter
 import SessionManager
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.provider.CalendarContract
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
@@ -30,10 +23,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,50 +43,70 @@ fun ShowInfoRun(navController: NavHostController){
         if (run != null) {
             val formatter = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
             Spacer(modifier = Modifier.height(35.dp))
-            Text(text = "Citta: ${run.city}",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Citta: ${run.city}", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Descrizione: ${run.description}",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Descrizione: ${run.description}", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Distanza: ${run.length_km} KM",fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+            Text(
+                text = "Distanza: ${run.length_km} KM", fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Giorno e ora: ${DateConverter.toDate(run.day)?.
-                let { formatter.format(it) }} ${run.startHour}",
+            Text(
+                text = "Giorno e ora: ${
+                    DateConverter.toDate(run.day)?.let { formatter.format(it) }
+                } ${run.startHour}",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,)
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(modifier = Modifier.height(10.dp))
             val gson = Gson()
             val string: String = run.polyline.toString()
             val typeToken = object : TypeToken<List<LatLng>>() {}.type
-            val x = gson.fromJson<List<LatLng>>(string, typeToken)
+            val x: List<LatLng> = gson.fromJson<List<LatLng>>(string, typeToken)
             val point = x[0]
             val cameraPositionState = rememberCameraPositionState {
                 position = CameraPosition.fromLatLngZoom(point, 15f)
             }
-            GoogleMap(modifier = Modifier
-                .height(250.dp)
-                .padding(start = 10.dp, end = 10.dp),
-            cameraPositionState = cameraPositionState) {
+            GoogleMap(
+                modifier = Modifier
+                    .height(250.dp)
+                    .padding(start = 10.dp, end = 10.dp),
+                cameraPositionState = cameraPositionState
+            ) {
                 cameraPositionState.move(CameraUpdateFactory.newLatLng(point))
-                Marker(position = LatLng(point.latitude, point.longitude))
+                if (run.organized == true) {
+                    Marker(position = LatLng(point.latitude, point.longitude))
+                } else {
+                    Polyline(points = x)
+                }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            if (SessionManager.isLoggedIn(navController.context)) {
+            if (SessionManager.isLoggedIn(navController.context) && run.organized == true) {
 
                 val info = database.RunWithUsersDao()
-                    .getRunsIdFromUserId(SessionManager.getUserDetails(navController.context)).collectAsState(
+                    .getRunsIdFromUserId(SessionManager.getUserDetails(navController.context))
+                    .collectAsState(
                         initial = listOf()
                     ).value
 
-                if (info.contains(run.run_id)){
+                if (info.contains(run.run_id)) {
                     Button(onClick = {
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             database.RunWithUsersDao()
-                                .deleteFromDb(RunUserCrossRef(run.run_id,
-                                    SessionManager.getUserDetails(navController.context)))
+                                .deleteFromDb(
+                                    RunUserCrossRef(
+                                        run.run_id,
+                                        SessionManager.getUserDetails(navController.context)
+                                    )
+                                )
                         }
                     }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                         Text(text = "Disiscriviti")
@@ -119,15 +129,16 @@ fun ShowInfoRun(navController: NavHostController){
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
-            Button(onClick = {
-                val hour = run.startHour
-                val parti = hour?.split(":")
+            if (run.organized == true) {
+                Button(onClick = {
+                    val hour = run.startHour
+                    val parti = hour?.split(":")
 
 
-                val ore = parti?.get(0)?.toIntOrNull() ?: 0
-                val minuti = parti?.getOrNull(1)?.toIntOrNull() ?: 0
+                    val ore = parti?.get(0)?.toIntOrNull() ?: 0
+                    val minuti = parti?.getOrNull(1)?.toIntOrNull() ?: 0
 
-                val date : Date? = DateConverter.toDate(run.day)
+                    val date: Date? = DateConverter.toDate(run.day)
 
 
                     val calendar = Calendar.getInstance().apply {
@@ -139,27 +150,27 @@ fun ShowInfoRun(navController: NavHostController){
                     val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
-                val startMillis: Long = Calendar.getInstance().run {
-                    set(year, month, day, ore, minuti)
-                    timeInMillis
+                    val startMillis: Long = Calendar.getInstance().run {
+                        set(year, month, day, ore, minuti)
+                        timeInMillis
+                    }
+
+                    Log.e("tempo", "$ore $minuti, ${run.startHour}")
+
+
+                    val intent = Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                        .putExtra(CalendarContract.Events.TITLE, "Corsa RunTogether")
+                        .putExtra(CalendarContract.Events.DESCRIPTION, run.description)
+                    startActivity(navController.context, intent, null)
+
+
+                }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    Text(text = "Aggiungi l'evento al calendario!")
                 }
 
-                Log.e("tempo", "$ore $minuti, ${run.startHour}")
-
-
-
-                val intent = Intent(Intent.ACTION_INSERT)
-                    .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
-                    .putExtra(CalendarContract.Events.TITLE, "Corsa RunTogether")
-                    .putExtra(CalendarContract.Events.DESCRIPTION, run.description)
-                startActivity(navController.context, intent, null)
-
-
-            }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(text = "Aggiungi l'evento al calendario!")
             }
-
         }
 
     }
