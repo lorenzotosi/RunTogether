@@ -117,14 +117,17 @@ fun ShowProfilePage(navController: NavHostController){
             )
         }
 
-        LazyHorizontalGrid(modifier=Modifier.padding(start = 20.dp, end = 20.dp, top = 140.dp).height(70.dp), rows = GridCells.Fixed(1) , content ={
+        LazyHorizontalGrid(modifier= Modifier
+            .padding(start = 20.dp, end = 20.dp, top = 140.dp)
+            .height(70.dp), rows = GridCells.Fixed(1) , content ={
             items(count = trophies.size){
                 trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
                     Image(
                         painter = it2,
                         contentDescription = "Profile Picture",
                         modifier = Modifier
-                            .size(60.dp).clickable {
+                            .size(60.dp)
+                            .clickable {
                                 myChallenge = trophies[it].trophy_id
                                 navController.navigate(Screens.TrophyInfo.name)
                             }
@@ -132,7 +135,15 @@ fun ShowProfilePage(navController: NavHostController){
                 }
             }
         } )
-
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.padding(top = 220.dp, start = 25.dp)) {
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Le mie corse")
+            }
+            Spacer(modifier = Modifier.padding(start = 10.dp))
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Partecipazioni")
+            }
+        }
         LazyVerticalGrid(modifier=Modifier.padding(top = 280.dp, start = 10.dp, end = 10.dp), columns = GridCells.Fixed(1) , content ={
             items(count = runs.size) {
                 Card(modifier = Modifier
