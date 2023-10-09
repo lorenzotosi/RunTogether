@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ShowEndRunScreen(navController: NavHostController){
 
-    var clickable = true
+    // clickable = true
     val db = MyDatabase.getInstance(navController.context)
     val points = getPolyLines(db)
     val run = db.runDao().getLastRunDistance().collectAsState(initial = null).value
@@ -142,26 +142,36 @@ fun ShowEndRunScreen(navController: NavHostController){
         Row(modifier = Modifier
             .padding(top = 650.dp, start = 25.dp, end = 25.dp)
             .fillMaxWidth()){
+
             Button(onClick = {
                 //Log.e("clickable", "fuori $clickable")
-                if (clickable) {
+                //if (clickable) {
                     //Log.e("clickable", "dentro $clickable")
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                     myCoroutineScope.launch {
                         if (run != null) {
                             if (SessionManager.isLoggedIn(navController.context)) {
-                                db.RunWithUsersDao().insertRunUserCrossRef(
-                                    RunUserCrossRef(
-                                        run.run_id,
-                                        SessionManager.getUserDetails(navController.context)
-                                    )
+
+                                val doesExist = db.RunWithUsersDao().doesRunUserCrossRefExist(
+                                    run.run_id,
+                                    SessionManager.getUserDetails(navController.context)
                                 )
+                                if (!doesExist) {
+                                    db.RunWithUsersDao().insertRunUserCrossRef(
+                                        RunUserCrossRef(
+                                            run.run_id,
+                                            SessionManager.getUserDetails(navController.context)
+                                        )
+                                    )
+                                }
+
+
                             }
                         }
                     }
-                    clickable = false
+                    //clickable = false
                     //Log.e("dopo false", "dentro $clickable")
-                }
+                //}
             }) {
                 Text(text = "Salva la corsa")
             }

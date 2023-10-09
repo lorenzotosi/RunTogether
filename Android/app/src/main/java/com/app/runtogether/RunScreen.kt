@@ -78,7 +78,9 @@ fun ShowRunScreen(
             zoomControlsEnabled = false,
             zoomGesturesEnabled = mapSettings
         ),
-        properties = MapProperties(isMyLocationEnabled = myLocation)
+        properties = MapProperties(isMyLocationEnabled = myLocation,
+                                    minZoomPreference = 10f,
+                                    maxZoomPreference = 20f)
     ) {
 
         if (myLocation) {

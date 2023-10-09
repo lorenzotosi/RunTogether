@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RunWithUsersDao {
 
+    @Query("SELECT EXISTS (SELECT 1 FROM RunUserCrossRef WHERE run_Id = :runId AND user_Id = :userId)")
+    fun doesRunUserCrossRefExist(runId: Int, userId: Int): Boolean
+
     @Transaction
     @Query("SELECT * FROM User, RunUserCrossRef WHERE User.user_id = RunUserCrossRef.user_id and RunUserCrossRef.run_id = :runId")
     fun getUsersFromRun(runId: Int): Flow<List<RunWithUsers>>

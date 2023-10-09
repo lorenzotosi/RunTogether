@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val settingsViewModel: SettingsViewModel by viewModels()
+
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
     private val location = mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
 
     private var loc = false
-
+    private val settingsViewModel: SettingsViewModel by viewModels()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         //SessionManager.logoutUser(applicationContext)
@@ -86,7 +86,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val theme by settingsViewModel.theme.collectAsState(initial = "")
             RunTogetherTheme(darkTheme = theme == getString(R.string.dark_theme)) {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
