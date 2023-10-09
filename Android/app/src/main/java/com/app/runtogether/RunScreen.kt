@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -123,7 +124,8 @@ fun ShowRunScreen(
                             text = current,
                             fontSize = 24.sp, // Increase the font size as desired
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier.padding(start = 8.dp),
+                            color = Color.Black
                         )
                     }
                 }
@@ -180,7 +182,8 @@ fun ShowRunScreen(
                             text = "${(calculateTotalDistance(waypoints))} km",
                             fontSize = 24.sp, // Increase the font size as desired
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier.padding(end = 8.dp),
+                            color = Color.Black
                         )
                     }
                 }

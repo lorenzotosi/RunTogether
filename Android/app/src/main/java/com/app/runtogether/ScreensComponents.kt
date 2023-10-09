@@ -78,7 +78,6 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                         .size(150.dp, 150.dp))
                 Text("RUN",
                     modifier = Modifier.padding(16.dp),
-                    color = Color.DarkGray,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 )

@@ -43,17 +43,19 @@ fun ShowSettingsScreen(
         /*Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            var b = false
             Text("Dark Theme")
             Spacer(modifier = Modifier.width(16.dp))
             Switch(
-                checked = isDarkTheme,
-                onCheckedChange = { newThemeState ->
-                    onThemeChanged(newThemeState)
+                checked = b,
+                onCheckedChange = {
+                    b = !b
                 }
             )
         }*/
 
         val radioOptions = listOf("Light", "Dark")
+        Text(text = "Tema applicazione:")
         Column(Modifier.selectableGroup()) {
             radioOptions.forEach { text ->
                 Row(
@@ -67,7 +69,7 @@ fun ShowSettingsScreen(
                             },
                             role = Role.RadioButton
                         )
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp).padding(start = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
