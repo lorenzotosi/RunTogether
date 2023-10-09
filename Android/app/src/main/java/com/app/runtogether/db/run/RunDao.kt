@@ -1,9 +1,6 @@
 package com.app.runtogether.db.run
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,6 +8,10 @@ interface RunDao {
 //get runs from city
     @Query("SELECT * FROM Run WHERE city = :city and organized = true")
     fun getRunsFromCity(city: String): Flow<List<Run>>
+
+    @Transaction
+    @Query("SELECT Run.run_id, city, description, length_km, day, polyline, organized, startHour, endHour FROM Run, RunUserCrossRef as r WHERE r.run_id=Run.run_id and r.user_id = :id and Run.organized = false")
+    fun getMyRuns(id: Int): Flow<List<Run>>
 
     @Query("SELECT * FROM run WHERE city = :city AND day BETWEEN :startOfDay AND :endOfDay")
     fun getRunsFromCityForToday(city: String, startOfDay: Long, endOfDay: Long): Flow<List<Run>>
