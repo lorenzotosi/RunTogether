@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RunTogether</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
 </resources>

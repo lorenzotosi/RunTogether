@@ -1,39 +1,22 @@
 package com.app.runtogether
 
-import SessionManager
 import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
-import android.widget.EditText
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import com.app.runtogether.swm.SettingsViewModel
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val settingsViewModel: SettingsViewModel by viewModels()
+
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
@@ -77,14 +63,6 @@ class MainActivity : ComponentActivity() {
                     showSnackBar.value = true
                 }
             }
-
-            /*if (isGranted) {
-                loc = true
-                startLocationUpdates()
-            } else {
-                loc = false
-                showSnackBar.value = true
-            }*/
         }
 
         locationRequest =
@@ -106,7 +84,8 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            RunTogetherTheme {
+            val theme by settingsViewModel.theme.collectAsState(initial = "")
+            RunTogetherTheme(darkTheme = theme == getString(R.string.dark_theme)) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -122,9 +101,7 @@ class MainActivity : ComponentActivity() {
                                     .padding(innerPadding)
                             ) {
                                 startLocationUpdates()
-                                ModalNavigationDrawerSample(location.value, loc)
-
-
+                                ModalNavigationDrawerSample(location.value, loc, theme, settingsViewModel)
                             }
                         }
                     )

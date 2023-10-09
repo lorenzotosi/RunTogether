@@ -2,8 +2,8 @@ package com.app.runtogether.di
 
 import android.content.Context
 import com.app.runtogether.RunApp
-import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.UserRepository
+import com.app.runtogether.data.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,5 +19,9 @@ object DataModule {
     @Provides
     fun provideUserRepository(@ApplicationContext context: Context) =
         UserRepository((context.applicationContext as RunApp).database.userDao())
+
+    @Singleton
+    @Provides
+    fun provideSettingsRepository(@ApplicationContext context: Context) = SettingsRepository(context)
 
 }

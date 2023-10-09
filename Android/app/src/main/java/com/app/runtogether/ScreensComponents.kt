@@ -1,9 +1,7 @@
 package com.app.runtogether
 
 import SessionManager
-import ShowSettingsScreen
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
@@ -21,24 +19,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.app.runtogether.db.MyDatabase
-import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserViewModel
-import com.app.runtogether.di.DataModule
+import com.app.runtogether.swm.SettingsViewModel
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean, navController : NavHostController = rememberNavController()) {
+fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean, settingsViewModel: String, svm : SettingsViewModel, navController: NavHostController = rememberNavController()) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
@@ -47,7 +41,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
-    Log.d("uri", uriSelected.toString())
+    //Log.d("uri", uriSelected.toString())
     val imagePainter = if (uriSelected != null) {
         rememberAsyncImagePainter(model = uriSelected)
     } else {
@@ -148,7 +142,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                     }
                 }
             ) {
-                NavigationGraph(navController, it, locationDetails, mygps)
+                NavigationGraph(navController, it, locationDetails, mygps, settingsViewModel, svm)
             }
         },
         gesturesEnabled = currentScreen != Screens.Running.name && currentScreen != Screens.EndRun.name && currentScreen != Screens.AddNewRun.name
@@ -173,7 +167,14 @@ fun GoHome(navController : NavHostController) {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues, locationDetails: LocationDetails, b : Boolean){
+fun NavigationGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+    locationDetails: LocationDetails,
+    b: Boolean,
+    settingsViewModel: String,
+    svm : SettingsViewModel
+){
     // Define a mutable state variable for the username
     var currentUsername by remember { mutableStateOf("InitialUsername") }
     val onUsernameChanged: (String) -> Unit = { newUsername ->
@@ -203,7 +204,9 @@ fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValu
                 onDismiss = { navController.popBackStack() },
                 isDarkTheme = false,
                 onUsernameChanged = onUsernameChanged,
-                navController = navController
+                navController = navController,
+                theme = settingsViewModel,
+                svm = svm
             )
         }
         composable(route = Screens.Challenges.name){
