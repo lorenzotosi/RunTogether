@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a82d467cec4d3e9e974ff482590d7918",
+    "identityHash": "ad840521b1b592b3d8883c1ca3872b1d",
     "entities": [
       {
         "tableName": "User",
@@ -223,12 +223,49 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Favorite",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `trophy_id` INTEGER NOT NULL, PRIMARY KEY(`user_id`, `trophy_id`))",
+        "fields": [
+          {
+            "fieldPath": "user_id",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trophy_id",
+            "columnName": "trophy_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "user_id",
+            "trophy_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_Favorite_trophy_id",
+            "unique": false,
+            "columnNames": [
+              "trophy_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Favorite_trophy_id` ON `${TABLE_NAME}` (`trophy_id`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a82d467cec4d3e9e974ff482590d7918')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad840521b1b592b3d8883c1ca3872b1d')"
     ]
   }
 }
