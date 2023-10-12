@@ -6,11 +6,13 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,12 +22,13 @@ import com.app.runtogether.swm.SettingsViewModel
 import com.app.runtogether.ui.theme.RunTogetherTheme
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.wait
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-
+    private var clicked : Boolean = false
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -59,9 +62,13 @@ class MainActivity : ComponentActivity() {
                 isGranted.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     startLocationUpdates()
                 }
-                else -> {
-                    showSnackBar.value = true
+                isGranted.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    startLocationUpdates()
                 }
+                isGranted.getOrDefault(Manifest.permission.WRITE_CALENDAR, false) -> {
+                    startLocationUpdates()
+                }
+
             }
         }
 
@@ -85,6 +92,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val theme by settingsViewModel.theme.collectAsState(initial = "")
+            Log.e("clicked", clicked.toString())
             RunTogetherTheme(darkTheme = theme == getString(R.string.dark_theme)) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

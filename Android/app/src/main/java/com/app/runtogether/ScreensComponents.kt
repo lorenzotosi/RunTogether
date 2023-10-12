@@ -19,7 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean, settingsViewModel: String, svm : SettingsViewModel, navController: NavHostController = rememberNavController()) {
+fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean, theme: String, svm : SettingsViewModel, navController: NavHostController = rememberNavController()) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Screens.RunScreen.name
@@ -141,7 +140,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                     }
                 }
             ) {
-                NavigationGraph(navController, it, locationDetails, mygps, settingsViewModel, svm)
+                NavigationGraph(navController, it, locationDetails, mygps, theme, svm)
             }
         },
         gesturesEnabled = currentScreen != Screens.Running.name && currentScreen != Screens.EndRun.name && currentScreen != Screens.AddNewRun.name
@@ -171,7 +170,7 @@ fun NavigationGraph(
     paddingValues: PaddingValues,
     locationDetails: LocationDetails,
     b: Boolean,
-    settingsViewModel: String,
+    theme: String,
     svm : SettingsViewModel
 ){
     // Define a mutable state variable for the username
@@ -204,7 +203,7 @@ fun NavigationGraph(
                 isDarkTheme = false,
                 onUsernameChanged = onUsernameChanged,
                 navController = navController,
-                theme = settingsViewModel,
+                theme = theme,
                 svm = svm
             )
         }
