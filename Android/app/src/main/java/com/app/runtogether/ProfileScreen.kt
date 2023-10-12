@@ -26,6 +26,7 @@ import com.app.runtogether.db.user.UserViewModel
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
@@ -58,14 +59,19 @@ fun ShowProfilePage(navController: NavHostController){
     val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
         if (imageUri != null) {
             CoroutineScope(Dispatchers.IO).launch {
-            // create folder and add the image into it
+                // create folder and add the image into it
                 val userFolder = File(navController.context.filesDir, "user_$userId")
 
                 Log.e("userFolder", userFolder.toString())
                 if (!userFolder.exists()) {
                     userFolder.mkdirs()
                 }
-                val imageFile = File(userFolder, "profile_picture")
+
+                // Generate a unique image file name based on timestamp
+                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val imageFileName = "profile_picture_$timestamp"
+
+                val imageFile = File(userFolder, imageFileName)
 
                 val imageByteArray = getImageByteArrayFromUri(imageUri, navController.context)
 
@@ -73,24 +79,26 @@ fun ShowProfilePage(navController: NavHostController){
 
                 val imagePath = imageFile.absolutePath
 
+                // Update the user profile with the new image path
                 db.userDao().addPathToUser(imagePath, userId)
-
             }
         }
     }
 
+
     val profilePicturePath = db.userDao().getPathFromId(userId)
         .collectAsState(initial = "").value
 
-    val imagePainter = if (profilePicturePath.isNotBlank()) {
-        // You can set image loading options here if needed
+    val updatedProfilePicturePath = rememberUpdatedState(profilePicturePath)
+
+    val imagePainter = if (updatedProfilePicturePath.value.isNotBlank()) {
+        // Load the updated profile picture with the timestamp in the path
         rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current).data(data = profilePicturePath).apply(block = fun ImageRequest.Builder.() {
-                // You can set image loading options here if needed
+            ImageRequest.Builder(LocalContext.current).data(data = updatedProfilePicturePath.value).apply {
                 crossfade(true)
                 diskCachePolicy(CachePolicy.DISABLED)
                 memoryCachePolicy(CachePolicy.DISABLED)
-            }).build()
+            }.build()
         )
     } else {
         painterResource(id = R.drawable.image_profile)
