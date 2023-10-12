@@ -30,19 +30,25 @@ fun CreateGrid(index: Int, navController: NavHostController) {
     val userId = SessionManager.getUserDetails(navController.context)
     val trophies = database.UserWithTrophiesDao().getTrophyNotHave(userId)
         .collectAsState(initial = listOf()).value
+    val trophiesFavorite = database.FavoriteTrophyUserDao().getFavoriteTrophyUser(userId).collectAsState(
+        initial = listOf()
+    ).value
+    val trophiesNotFavorite = database.FavoriteTrophyUserDao().getNotFavoriteTrophyUser(userId).collectAsState(
+        initial = listOf()
+    ).value
 
     LazyVerticalGrid(
         modifier = Modifier.padding(top = 155.dp),
         columns = GridCells.Fixed(2),
         content = {
-            items(count = trophies.size) {
+            items(count = trophiesFavorite.size) {
                 Card(modifier = Modifier
                     .size(150.dp, 150.dp)
                     .padding(8.dp)
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     onClick = {
-                        myChallenge = trophies[it].trophy_id
+                        myChallenge = trophiesFavorite[it].trophy_id
                         navController.navigate(Screens.TrophyInfo.name)
                     }
                 ) {
@@ -53,7 +59,7 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        trophies[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
+                        trophiesFavorite[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
                             Image(
                                 painter = it2,
                                 contentDescription = "travel image",
@@ -64,7 +70,44 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                             )
                         }
                         Text(
-                            text = "Trofeo ${trophies[it].trophy_id}",
+                            text = "Trofeo ${trophiesFavorite[it].trophy_id}",
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+            items(count = trophiesNotFavorite.size) {
+                Card(modifier = Modifier
+                    .size(150.dp, 150.dp)
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
+                    onClick = {
+                        myChallenge = trophiesNotFavorite[it].trophy_id
+                        navController.navigate(Screens.TrophyInfo.name)
+                    }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(all = 12.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        trophiesNotFavorite[it].path?.let { it1 -> painterResource(id = it1) }?.let { it2 ->
+                            Image(
+                                painter = it2,
+                                contentDescription = "travel image",
+                                modifier = Modifier
+                                    .clip(shape = CircleShape)
+                                    .size(size = 50.dp),
+                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                            )
+                        }
+                        Text(
+                            text = "Trofeo ${trophiesNotFavorite[it].trophy_id}",
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             textAlign = TextAlign.Center

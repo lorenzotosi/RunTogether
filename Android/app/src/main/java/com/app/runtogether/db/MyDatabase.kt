@@ -5,6 +5,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.app.runtogether.R
+import com.app.runtogether.db.favorite.Favorite
+import com.app.runtogether.db.favorite.FavoriteTrophyUser
+import com.app.runtogether.db.favorite.FavoriteTrophyUserDao
 
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.run.RunDao
@@ -24,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, RunUserCrossRef::class, Run::class], version = 1)
+@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, RunUserCrossRef::class, Run::class, Favorite::class], version = 1)
 
 abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -32,6 +35,7 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun runDao(): RunDao
     abstract fun UserWithTrophiesDao(): UserWithTrophiesDao
     abstract fun RunWithUsersDao(): RunWithUsersDao
+    abstract fun FavoriteTrophyUserDao(): FavoriteTrophyUserDao
 
 
     companion object {
@@ -159,6 +163,12 @@ abstract class MyDatabase : RoomDatabase() {
                                 run_id = 1,
                                 user_id = 1
                             ))
+                            INSTANCE?.FavoriteTrophyUserDao()?.insertFavoriteTrophyUser(
+                                Favorite(user_id = 1, trophy_id = 2)
+                            )
+                            INSTANCE?.FavoriteTrophyUserDao()?.insertFavoriteTrophyUser(
+                                Favorite(user_id = 1, trophy_id = 3)
+                            )
                         }
                     }
                 })

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.favorite.Favorite
 import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -33,21 +34,27 @@ import java.util.*
 
 
 @Composable
-fun ShowChallengeInfo(navController: NavHostController){
+fun ShowChallengeInfo(navController: NavHostController) {
     val database = MyDatabase.getInstance(navController.context)
-    val trophy = database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
-
+    val trophy =
+        database.trophyDao().getTrophyFromId(myChallenge).collectAsState(initial = null).value
+    val favoriteNum = database.FavoriteTrophyUserDao().getFavoriteTrophyUser(SessionManager.getUserDetails(navController.context), myChallenge).collectAsState(
+        initial = null).value
+    val favorite = favoriteNum != null && favoriteNum > 0
     var completed = false
 
-    if (SessionManager.isLoggedIn(navController.context)){
-        completed = database.UserWithTrophiesDao().hasUserGotTrophy(SessionManager.getUserDetails(navController.context), myChallenge).collectAsState(
-            initial = false).value
+    if (SessionManager.isLoggedIn(navController.context)) {
+        completed = database.UserWithTrophiesDao()
+            .hasUserGotTrophy(SessionManager.getUserDetails(navController.context), myChallenge)
+            .collectAsState(
+                initial = false
+            ).value
     }
 
     Column(
         modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         if (trophy != null) {
 
             Spacer(modifier = Modifier.height(35.dp))
@@ -73,8 +80,30 @@ fun ShowChallengeInfo(navController: NavHostController){
             )
             Spacer(modifier = Modifier.height(10.dp))
             trophy.path?.let { painterResource(it) }
-                ?.let { Image(painter = it, contentDescription = trophy.description, modifier = Modifier.size(200.dp)) }
-
+                ?.let {
+                    Image(
+                        painter = it,
+                        contentDescription = trophy.description,
+                        modifier = Modifier.size(200.dp)
+                    )
+                }
+            Spacer(modifier = Modifier.height(10.dp))
+            // add to favorite button
+            Button(onClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if(!favorite){
+                        database.FavoriteTrophyUserDao().insertFavoriteTrophyUser(Favorite(SessionManager.getUserDetails(navController.context), myChallenge))
+                    }else{
+                        database.FavoriteTrophyUserDao().deleteFavoriteTrophyUser(Favorite(SessionManager.getUserDetails(navController.context), myChallenge))
+                    }
+                }
+            }) {
+                if(!favorite){
+                    Text(text = "Aggiungi ai preferiti")
+                }else{
+                    Text(text = "Rimuovi dai preferiti")
+                }
+            }
         }
     }
 }
