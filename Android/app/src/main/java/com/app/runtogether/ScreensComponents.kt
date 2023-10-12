@@ -20,10 +20,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.user.UserViewModel
 import com.app.runtogether.swm.SettingsViewModel
@@ -41,8 +44,21 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     //Log.d("uri", uriSelected.toString())
-    val imagePainter =
+    val profilePicturePath = db.userDao().getPathFromId(userId)
+        .collectAsState(initial = String).value
+    val imagePainter = if (profilePicturePath != null) {
+        // You can set image loading options here if needed
+        rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current).data(data = profilePicturePath).apply(block = fun ImageRequest.Builder.() {
+                // You can set image loading options here if needed
+                crossfade(true)
+                diskCachePolicy(CachePolicy.DISABLED)
+                memoryCachePolicy(CachePolicy.DISABLED)
+            }).build()
+        )
+    } else {
         painterResource(id = R.drawable.image_profile)
+    }
 
     // icons to mimic drawer destinations
     val items = listOf(
@@ -144,6 +160,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
         gesturesEnabled = currentScreen != Screens.Running.name && currentScreen != Screens.EndRun.name && currentScreen != Screens.AddNewRun.name
     )
 }
+
 
 @HiltAndroidApp
 class RunApp : Application() {

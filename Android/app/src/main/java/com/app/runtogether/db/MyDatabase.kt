@@ -54,7 +54,7 @@ abstract class MyDatabase : RoomDatabase() {
                                 username = "nome",
                                 email = "email@email.com",
                                 password = "password",
-                                image = null
+                                path = null
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_1",

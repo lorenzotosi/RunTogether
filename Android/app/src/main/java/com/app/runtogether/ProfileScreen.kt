@@ -1,7 +1,7 @@
 package com.app.runtogether
 
-import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -26,11 +26,15 @@ import com.app.runtogether.db.user.UserViewModel
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.app.runtogether.Util.Companion.getImageByteArrayFromUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,25 +58,44 @@ fun ShowProfilePage(navController: NavHostController){
     val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
         if (imageUri != null) {
             CoroutineScope(Dispatchers.IO).launch {
+            // create folder and add the image into it
+                val userFolder = File(navController.context.filesDir, "user_$userId")
 
-                val byteArray = getImageByteArrayFromUri(imageUri, navController.context)
-                db.userDao().addImgeToUser(byteArray, userId)
+                Log.e("userFolder", userFolder.toString())
+                if (!userFolder.exists()) {
+                    userFolder.mkdirs()
+                }
+                val imageFile = File(userFolder, "profile_picture")
+
+                val imageByteArray = getImageByteArrayFromUri(imageUri, navController.context)
+
+                imageFile.writeBytes(imageByteArray)
+
+                val imagePath = imageFile.absolutePath
+
+                db.userDao().addPathToUser(imagePath, userId)
 
             }
         }
     }
 
-    val profilePictureUri = db.userDao().getImgeFromId(userId)
-        .collectAsState(initial = Uri.EMPTY).value
-    val imagePainter = if (profilePictureUri != null) {
+    val profilePicturePath = db.userDao().getPathFromId(userId)
+        .collectAsState(initial = "").value
+
+    val imagePainter = if (profilePicturePath.isNotBlank()) {
+        // You can set image loading options here if needed
         rememberAsyncImagePainter(
-            model = profilePictureUri
+            ImageRequest.Builder(LocalContext.current).data(data = profilePicturePath).apply(block = fun ImageRequest.Builder.() {
+                // You can set image loading options here if needed
+                crossfade(true)
+                diskCachePolicy(CachePolicy.DISABLED)
+                memoryCachePolicy(CachePolicy.DISABLED)
+            }).build()
         )
     } else {
-        // Use a default image or placeholder if the user doesn't have a profile picture
-        // For example:
         painterResource(id = R.drawable.image_profile)
     }
+
 
 
 
