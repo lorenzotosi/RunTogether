@@ -17,11 +17,11 @@ interface UserDao {
     @Query("SELECT username FROM user WHERE user_id = :id")
     fun getUsernameFromId(id: Int): Flow<String>
 
-    @Query("UPDATE user SET uri = :uri WHERE user_id = :id")
-    fun addUriToUser(uri: String, id: Int)
+    @Query("UPDATE user SET image = :image WHERE user_id = :id")
+    fun addImgeToUser(image: ByteArray, id: Int)
 
-    @Query("SELECT uri FROM user WHERE user_id = :id")
-    fun getUriFromId(id: Int): Flow<String>
+    @Query("SELECT image FROM user WHERE user_id = :id")
+    fun getImgeFromId(id: Int): Flow<ByteArray>
 
     @Insert
     suspend fun insertAll(vararg users: User)

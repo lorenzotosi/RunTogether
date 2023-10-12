@@ -1,7 +1,7 @@
 package com.app.runtogether
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -26,13 +26,11 @@ import com.app.runtogether.db.user.UserViewModel
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.painter.Painter
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
+import com.app.runtogether.Util.Companion.getImageByteArrayFromUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,21 +49,32 @@ fun ShowProfilePage(navController: NavHostController){
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
     val runs : List<Run> = db.runDao().getMyRuns(userId).collectAsState(initial = listOf()).value
-    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-            myCoroutineScope.launch {
-                db.userDao().addUriToUser(uri.toString(), userId)
+
+
+    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
+        if (imageUri != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val byteArray = getImageByteArrayFromUri(imageUri, navController.context)
+                db.userDao().addImgeToUser(byteArray, userId)
+
             }
         }
     }
-    val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
-    val imagePainter = if (uriSelected != "") {
-        rememberAsyncImagePainter(model = uriSelected)
+
+    val profilePictureUri = db.userDao().getImgeFromId(userId)
+        .collectAsState(initial = Uri.EMPTY).value
+    val imagePainter = if (profilePictureUri != null) {
+        rememberAsyncImagePainter(
+            model = profilePictureUri
+        )
     } else {
+        // Use a default image or placeholder if the user doesn't have a profile picture
+        // For example:
         painterResource(id = R.drawable.image_profile)
     }
-    Log.d("db", imagePainter.toString())
+
+
 
     Box(
         modifier = Modifier
