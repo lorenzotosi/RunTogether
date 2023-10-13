@@ -59,7 +59,7 @@ fun ShowChallengeInfo(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Nome: ${trophy.name}", fontSize = 24.sp,
+                text = "Nome: Trofeo ${trophy.km}KM", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))

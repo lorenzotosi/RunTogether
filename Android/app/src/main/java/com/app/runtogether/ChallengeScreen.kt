@@ -70,7 +70,7 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                             )
                         }
                         Text(
-                            text = "Trofeo ${trophiesFavorite[it].trophy_id}",
+                            text = "Trofeo ${trophiesFavorite[it].km} KM",
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             textAlign = TextAlign.Center
@@ -107,7 +107,7 @@ fun CreateGrid(index: Int, navController: NavHostController) {
                             )
                         }
                         Text(
-                            text = "Trofeo ${trophiesNotFavorite[it].trophy_id}",
+                            text = "Trofeo ${trophiesNotFavorite[it].km} KM",
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             textAlign = TextAlign.Center
