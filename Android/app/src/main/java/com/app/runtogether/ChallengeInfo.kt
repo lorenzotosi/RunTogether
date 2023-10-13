@@ -89,19 +89,31 @@ fun ShowChallengeInfo(navController: NavHostController) {
                 }
             Spacer(modifier = Modifier.height(10.dp))
             // add to favorite button
-            Button(onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    if(!favorite){
-                        database.FavoriteTrophyUserDao().insertFavoriteTrophyUser(Favorite(SessionManager.getUserDetails(navController.context), myChallenge))
-                    }else{
-                        database.FavoriteTrophyUserDao().deleteFavoriteTrophyUser(Favorite(SessionManager.getUserDetails(navController.context), myChallenge))
+            if(!completed) {
+                Button(onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (!favorite) {
+                            database.FavoriteTrophyUserDao().insertFavoriteTrophyUser(
+                                Favorite(
+                                    SessionManager.getUserDetails(navController.context),
+                                    myChallenge
+                                )
+                            )
+                        } else {
+                            database.FavoriteTrophyUserDao().deleteFavoriteTrophyUser(
+                                Favorite(
+                                    SessionManager.getUserDetails(navController.context),
+                                    myChallenge
+                                )
+                            )
+                        }
                     }
-                }
-            }) {
-                if(!favorite){
-                    Text(text = "Aggiungi ai preferiti")
-                }else{
-                    Text(text = "Rimuovi dai preferiti")
+                }) {
+                    if (!favorite) {
+                        Text(text = "Aggiungi ai preferiti")
+                    } else {
+                        Text(text = "Rimuovi dai preferiti")
+                    }
                 }
             }
         }
