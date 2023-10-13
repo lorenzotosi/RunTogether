@@ -28,6 +28,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -66,6 +68,38 @@ fun ShowInfoRun(navController: NavHostController){
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
+            if (SessionManager.isLoggedIn(navController.context) && run.organized == false){
+                val orarioFine = run.endHour
+                val orarioInizio = run.startHour
+                val distance = run.length_km
+
+                val formatter = DateTimeFormatter.ofPattern("HH:mm")
+
+                val inizio = LocalTime.parse(orarioInizio, formatter)
+                val fine = LocalTime.parse(orarioFine, formatter)
+
+                val differenzaInMinuti = fine.toSecondOfDay() / 60 - inizio.toSecondOfDay() / 60
+
+                if (differenzaInMinuti < 0) {
+                    // Se l'orario di fine è prima di quello di inizio (es. giorno successivo), aggiungi 24 ore
+                    differenzaInMinuti + 24 * 60
+                }
+
+                var velMed = 0.0
+
+                if (differenzaInMinuti != 0) {
+                    if (distance != null) {
+                        velMed = (distance) * (60 / differenzaInMinuti)
+                    }
+                }
+
+                Text(
+                    text = "Velocitá media: ${String.format("%.2f", velMed)} km/h",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+            }
             val gson = Gson()
             val string: String = run.polyline.toString()
             val typeToken = object : TypeToken<List<LatLng>>() {}.type
