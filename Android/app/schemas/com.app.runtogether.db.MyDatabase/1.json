@@ -6,7 +6,7 @@
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `email` TEXT, `password` TEXT, `uri` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `email` TEXT, `password` TEXT, `path` TEXT)",
         "fields": [
           {
             "fieldPath": "user_id",
@@ -33,8 +33,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "uri",
-            "columnName": "uri",
+            "fieldPath": "path",
+            "columnName": "path",
             "affinity": "TEXT",
             "notNull": false
           }

@@ -27,12 +27,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.app.runtogether.Util.Companion.getImageByteArrayFromUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,21 +54,58 @@ fun ShowProfilePage(navController: NavHostController){
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
     val runs : List<Run> = db.runDao().getMyRuns(userId).collectAsState(initial = listOf()).value
-    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-            myCoroutineScope.launch {
-                db.userDao().addUriToUser(uri.toString(), userId)
+
+
+    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
+        if (imageUri != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                // create folder and add the image into it
+                val userFolder = File(navController.context.filesDir, "user_$userId")
+
+                Log.e("userFolder", userFolder.toString())
+                if (!userFolder.exists()) {
+                    userFolder.mkdirs()
+                }
+
+                // Generate a unique image file name based on timestamp
+                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val imageFileName = "profile_picture_$timestamp"
+
+                val imageFile = File(userFolder, imageFileName)
+
+                val imageByteArray = getImageByteArrayFromUri(imageUri, navController.context)
+
+                imageFile.writeBytes(imageByteArray)
+
+                val imagePath = imageFile.absolutePath
+
+                // Update the user profile with the new image path
+                db.userDao().addPathToUser(imagePath, userId)
             }
         }
     }
-    val uriSelected = db.userDao().getUriFromId(userId).collectAsState(initial = null).value
-    val imagePainter = if (uriSelected != "") {
-        rememberAsyncImagePainter(model = uriSelected)
+
+
+    val profilePicturePath = db.userDao().getPathFromId(userId)
+        .collectAsState(initial = "").value
+
+    val updatedProfilePicturePath = rememberUpdatedState(profilePicturePath)
+
+    val imagePainter = if (updatedProfilePicturePath.value.isNotBlank()) {
+        // Load the updated profile picture with the timestamp in the path
+        rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current).data(data = updatedProfilePicturePath.value).apply {
+                crossfade(true)
+                diskCachePolicy(CachePolicy.DISABLED)
+                memoryCachePolicy(CachePolicy.DISABLED)
+            }.build()
+        )
     } else {
         painterResource(id = R.drawable.image_profile)
     }
-    Log.d("db", imagePainter.toString())
+
+
+
 
     Box(
         modifier = Modifier

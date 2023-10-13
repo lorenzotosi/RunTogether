@@ -67,7 +67,7 @@ fun ShowSignUpPage(navController : NavHostController){
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                     myCoroutineScope.launch {
                         if (database.userDao().findByUsername(username) == null){
-                            database.userDao().insertAll(User(username = username, email = email, password = password, uri = ""))
+                            database.userDao().insertAll(User(username = username, email = email, password = password, path = null))
                         }else{
                             Log.d("SignUpScreen", "Username already exists")
                         }
