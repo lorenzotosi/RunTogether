@@ -19,6 +19,8 @@ interface TrophyDao {
     @Query("SELECT * FROM trophy WHERE name LIKE :first LIMIT 1")
     fun findByName(first: String): Trophy
 
+    @Query("SELECT * FROM trophy WHERE km <= :len")
+    fun getTrophiesFromKM(len: Double): Flow<List<Trophy>>
     @Insert
     fun insertAll(vararg trophies: Trophy)
 

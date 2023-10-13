@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.runToUser.RunUserCrossRef
+import com.app.runtogether.db.trophyToUser.TrophyUserCrossRef
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -38,6 +39,29 @@ fun ShowEndRunScreen(navController: NavHostController){
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
     }
+
+    if (run != null && SessionManager.isLoggedIn(navController.context)){
+        val distance = run.length_km!!
+        val trophies = db.trophyDao().getTrophiesFromKM(distance).collectAsState(initial = listOf()).value
+        val toRemove = db.UserWithTrophiesDao().getTrophyHave(SessionManager.getUserDetails(navController.context))
+            .collectAsState(initial = listOf()).value
+        LaunchedEffect(trophies.isNotEmpty()){
+            for (i in trophies){
+                if(!toRemove.contains(i)) {
+                    db.UserWithTrophiesDao()
+                        .insertTrophyUserCrossRef(
+                            TrophyUserCrossRef(
+                                SessionManager.getUserDetails(navController.context),
+                                i.trophy_id
+                            )
+                        )
+                }
+            }
+        }
+
+
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()) {
         Row(
@@ -187,9 +211,6 @@ fun ShowEndRunScreen(navController: NavHostController){
             ) {
 
                 Button(onClick = {
-                    //Log.e("clickable", "fuori $clickable")
-                    //if (clickable) {
-                    //Log.e("clickable", "dentro $clickable")
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                     myCoroutineScope.launch {
                         if (run != null) {
@@ -212,9 +233,6 @@ fun ShowEndRunScreen(navController: NavHostController){
                             }
                         }
                     }
-                    //clickable = false
-                    //Log.e("dopo false", "dentro $clickable")
-                    //}
                 }) {
                     Text(text = "Salva la corsa")
                 }
