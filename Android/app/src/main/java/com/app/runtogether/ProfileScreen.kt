@@ -1,7 +1,6 @@
 package com.app.runtogether
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -62,7 +61,7 @@ fun ShowProfilePage(navController: NavHostController){
                 // create folder and add the image into it
                 val userFolder = File(navController.context.filesDir, "user_$userId")
 
-                Log.e("userFolder", userFolder.toString())
+                //Log.e("userFolder", userFolder.toString())
                 if (!userFolder.exists()) {
                     userFolder.mkdirs()
                 }

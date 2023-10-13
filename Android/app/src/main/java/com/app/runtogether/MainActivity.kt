@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -92,7 +91,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val theme by settingsViewModel.theme.collectAsState(initial = "")
-            Log.e("clicked", clicked.toString())
+            //Log.e("clicked", clicked.toString())
             RunTogetherTheme(darkTheme = theme == getString(R.string.dark_theme)) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

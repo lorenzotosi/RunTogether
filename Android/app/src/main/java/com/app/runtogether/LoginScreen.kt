@@ -1,7 +1,6 @@
 package com.app.runtogether
 
 import SessionManager
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +45,7 @@ fun ShowLoginPage(navController: NavHostController) {
                     myCoroutineScope.launch {
                         user = database.userDao()
                             .findByUsername(username)
-                        Log.d("LoginScreen", "User: $user")
+                        //Log.d("LoginScreen", "User: $user")
                         if ((user != null) && (user?.username == username) && (user?.password == password)) {
 
                             SessionManager.createLoginSession(navController.context, user!!.user_id)

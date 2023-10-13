@@ -2,7 +2,6 @@ package com.app.runtogether
 
 import SessionManager
 import android.app.Application
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -242,7 +241,7 @@ fun NavigationGraph(
             ShowNotifyPage(navController)
         }
         composable(route = Screens.Login.name){
-            Log.d("profile", "login")
+            //Log.d("profile", "login")
             ShowLoginPage(navController)
         }
         composable(route = Screens.EndRun.name){

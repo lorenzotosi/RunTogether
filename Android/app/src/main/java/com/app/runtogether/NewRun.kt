@@ -4,7 +4,6 @@ import DateConverter
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.location.Geocoder
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button

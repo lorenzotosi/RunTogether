@@ -1,7 +1,7 @@
 package com.app.runtogether
 
 
-import android.util.Log
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -69,7 +69,7 @@ fun ShowSignUpPage(navController : NavHostController){
                         if (database.userDao().findByUsername(username) == null){
                             database.userDao().insertAll(User(username = username, email = email, password = password, path = ""))
                         }else{
-                            Log.d("SignUpScreen", "Username already exists")
+                            //Log.d("SignUpScreen", "Username already exists")
                         }
                     }
 

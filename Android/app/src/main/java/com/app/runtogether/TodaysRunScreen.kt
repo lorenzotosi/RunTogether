@@ -1,7 +1,6 @@
 package com.app.runtogether
 
 import android.location.Geocoder
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -74,7 +73,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         if(startOfDay != null && endOfDay != null){
             runs = database.runDao().getRunsFromCityForToday(city, startOfDay, endOfDay).collectAsState(initial = listOf()).value
         }
-        Log.e("corsa", runs.toString())
+        //Log.e("corsa", runs.toString())
 
         LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
                 columns = GridCells.Fixed(1), content = {
@@ -85,7 +84,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                     .fillMaxWidth(),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     onClick = { run_id = runs[it].run_id
-                                Log.e("corsa", run_id.toString())
+                                //Log.e("corsa", run_id.toString())
                                 navController.navigate(Screens.RunInfo.name)}
                 ) {
                     Column(

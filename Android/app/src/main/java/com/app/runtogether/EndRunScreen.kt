@@ -1,7 +1,6 @@
 package com.app.runtogether
 
 import SessionManager
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

@@ -2,7 +2,6 @@ package com.app.runtogether
 
 import DateConverter
 import android.location.Geocoder
-import android.util.Log
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
