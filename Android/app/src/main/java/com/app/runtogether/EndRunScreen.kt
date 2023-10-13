@@ -39,72 +39,110 @@ fun ShowEndRunScreen(navController: NavHostController){
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
     }
     Box(modifier = Modifier
-        .fillMaxSize()){
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp)){
+        .fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+        ) {
             GoogleMap(cameraPositionState = cameraPositionState) {
                 Polyline(points = points)
             }
-            LaunchedEffect(points){
+            LaunchedEffect(points) {
                 if (points.isNotEmpty())
-                    cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(points.first(), 15f))
+                    cameraPositionState.animate(
+                        CameraUpdateFactory.newLatLngZoom(
+                            points.first(),
+                            15f
+                        )
+                    )
             }
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 400.dp, start = 90.dp)){
-            Button(onClick = { cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(points.first(), 15f)) }) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 400.dp, start = 90.dp)
+        ) {
+            Button(onClick = {
+                cameraPositionState.move(
+                    CameraUpdateFactory.newLatLngZoom(
+                        points.first(),
+                        15f
+                    )
+                )
+            }) {
                 Text(text = "Torna al punto di partenza")
             }
         }
-        Row(modifier = Modifier
-            .padding(top = 450.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
+        Row(
+            modifier = Modifier
+                .padding(top = 450.dp, start = 25.dp, end = 25.dp)
+                .fillMaxWidth()
+        ) {
             if (run != null) {
-                Text(text = "Distanza percorsa: ",
+                Text(
+                    text = "Distanza percorsa: ",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
-                Text(text = "${run.length_km} KM",
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "${run.length_km} KM",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
-        Row(modifier = Modifier
-            .padding(top = 500.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
+        Row(
+            modifier = Modifier
+                .padding(top = 500.dp, start = 25.dp, end = 25.dp)
+                .fillMaxWidth()
+        ) {
             if (run != null) {
-                Text(text = "Orario di inizio ",
+                Text(
+                    text = "Orario di inizio ",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
             if (run != null) {
-                Text(text = "${run.startHour}",
+                Text(
+                    text = "${run.startHour}",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
-            }
-        }
-        Row(modifier = Modifier
-            .padding(top = 550.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
-            if (run != null) {
-                Text(text = "Orario di fine ",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
-            }
-            if (run != null) {
-                Text(text = "${run.endHour}",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
-        Row(modifier = Modifier
-            .padding(top = 600.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
+        Row(
+            modifier = Modifier
+                .padding(top = 550.dp, start = 25.dp, end = 25.dp)
+                .fillMaxWidth()
+        ) {
             if (run != null) {
-                Text(text = "Andatura media ",
+                Text(
+                    text = "Orario di fine ",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            if (run != null) {
+                Text(
+                    text = "${run.endHour}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .padding(top = 600.dp, start = 25.dp, end = 25.dp)
+                .fillMaxWidth()
+        ) {
+            if (run != null) {
+                Text(
+                    text = "Andatura media ",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
 
@@ -128,24 +166,29 @@ fun ShowEndRunScreen(navController: NavHostController){
 
                 var velMed = 0.0
 
-                if (differenzaInMinuti != 0){
+                if (differenzaInMinuti != 0) {
                     if (distance != null) {
-                        velMed = (distance)*(60/differenzaInMinuti)
+                        velMed = (distance) * (60 / differenzaInMinuti)
                     }
                 }
 
-                Text(text = " ${String.format("%.2f", velMed)} km/h",
+                Text(
+                    text = " ${String.format("%.2f", velMed)} km/h",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
-        Row(modifier = Modifier
-            .padding(top = 650.dp, start = 25.dp, end = 25.dp)
-            .fillMaxWidth()){
+        if (SessionManager.isLoggedIn(navController.context)) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 650.dp, start = 25.dp, end = 25.dp)
+                    .fillMaxWidth()
+            ) {
 
-            Button(onClick = {
-                //Log.e("clickable", "fuori $clickable")
-                //if (clickable) {
+                Button(onClick = {
+                    //Log.e("clickable", "fuori $clickable")
+                    //if (clickable) {
                     //Log.e("clickable", "dentro $clickable")
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                     myCoroutineScope.launch {
@@ -171,9 +214,10 @@ fun ShowEndRunScreen(navController: NavHostController){
                     }
                     //clickable = false
                     //Log.e("dopo false", "dentro $clickable")
-                //}
-            }) {
-                Text(text = "Salva la corsa")
+                    //}
+                }) {
+                    Text(text = "Salva la corsa")
+                }
             }
         }
     }
