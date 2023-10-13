@@ -21,11 +21,15 @@ import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.User
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,8 +49,6 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Spacer(modifier = Modifier.height(35.dp))
-        val nome = TextField(name = "Nome Corsa")
-        Spacer(modifier = Modifier.height(5.dp))
         val descrizione = TextField(name = "Descrizione")
         Spacer(modifier = Modifier.height(5.dp))
         val lunghezza = TextField(name = "Lunghezza (KM)")
@@ -106,15 +108,22 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
             Text(text = "Orario Selezionato: ${mTime.value}")
         }
         Spacer(modifier = Modifier.height(10.dp))
+        val cameraPosition = CameraPosition.fromLatLngZoom(position, 15f)
+
+        val cameraPositionState = rememberCameraPositionState {
+            CameraPosition.fromLatLngZoom(position, 15f)
+        }
+
         GoogleMap(modifier = Modifier.height(250.dp), onMapClick = {
             position = it
-        }) {
+        }, cameraPositionState = cameraPositionState) {
             Marker(position = position, title = "Punto di partenza")
+            cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(position, 15f))
         }
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
             Button(onClick = {
-                if(mDate.value!= "" && mTime.value!="" && nome != "" && descrizione != "" && lunghezza != "") {
+                if(mDate.value!= "" && mTime.value!="" && descrizione != "" && lunghezza != "") {
                     val gson = Gson()
                     val waypoints = listOf<LatLng>(position)
                     val data = DateConverter.fromDate(stringToDate(mDate.value))
