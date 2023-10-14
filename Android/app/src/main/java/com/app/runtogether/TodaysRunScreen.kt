@@ -1,6 +1,8 @@
 package com.app.runtogether
 
+import SessionManager
 import android.location.Geocoder
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -8,8 +10,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +23,10 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,14 +73,47 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         calendar.set(Calendar.MILLISECOND, 999)
         val endOfDay = DateConverter.fromDate(calendar.time) // End of the day (23:59)
 
-        var runs = listOf<Run>()
-
+        var runs  by remember { mutableStateOf<List<Run>>(value = listOf()) }
         if(startOfDay != null && endOfDay != null){
-            runs = database.runDao().getRunsFromCityForToday(city, startOfDay, endOfDay).collectAsState(initial = listOf()).value
+            runs = database.runDao().getRunsFromCityForToday(city, startOfDay, endOfDay).collectAsState(
+                initial = listOf()
+            ).value
         }
-        //Log.e("corsa", runs.toString())
+        Row(modifier = Modifier.padding(top = 155.dp)) {
+            Button(onClick = {
+                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                myCoroutineScope.launch {
+                    if(startOfDay != null && endOfDay != null){
+                        runs = database.runDao().getRunsFromCityForTodayNoFlow(city, startOfDay, endOfDay)
+                    }
+                }
+            }) {
+                Text(text = "Oggi")
+            }
+            Button(onClick = {
+                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                myCoroutineScope.launch {
+                    runs = database.runDao().getAllFutureOrganizedRuns(startOfDay!!)
+                }
+            }) {
+                Text(text = "Future")
+            }
+            Button(onClick = {
+                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+                myCoroutineScope.launch {
+                    runs = database.runDao().getAllOrganizedRuns()
+                }
+            }) {
+                Text(text = "Tutte")
+            }
+        }
 
-        LazyVerticalGrid(modifier = Modifier.padding(top = 155.dp),
+
+
+
+
+
+        LazyVerticalGrid(modifier = Modifier.padding(top = 0.dp),
                 columns = GridCells.Fixed(1), content = {
             items(count = runs.size) {
                 Card(modifier = Modifier
@@ -85,7 +123,8 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     onClick = { run_id = runs[it].run_id
                                 //Log.e("corsa", run_id.toString())
-                                navController.navigate(Screens.RunInfo.name)}
+                                navController.navigate(Screens.RunInfo.name)},
+                    enabled = runs[it].day!! >= startOfDay!!
                 ) {
                     Column(
                         modifier = Modifier

@@ -15,6 +15,16 @@ interface RunDao {
 
     @Query("SELECT * FROM run WHERE city = :city AND day BETWEEN :startOfDay AND :endOfDay AND organized = true")
     fun getRunsFromCityForToday(city: String, startOfDay: Long, endOfDay: Long): Flow<List<Run>>
+
+    @Query("SELECT * FROM run WHERE city = :city AND day BETWEEN :startOfDay AND :endOfDay AND organized = true")
+    fun getRunsFromCityForTodayNoFlow(city: String, startOfDay: Long, endOfDay: Long): List<Run>
+
+    @Query("Select * from run where organized = true order by day asc")
+    fun getAllOrganizedRuns(): List<Run>
+
+    @Query("Select * from run where organized = true and day > :startOfDay order by day asc")
+    fun getAllFutureOrganizedRuns(startOfDay: Long): List<Run>
+
     @Insert
     suspend fun insertRun(run: Run)
 
