@@ -90,6 +90,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
             }) {
                 Text(text = "Oggi")
             }
+            Spacer(modifier = Modifier.width(5.dp))
             Button(onClick = {
                 val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                 myCoroutineScope.launch {
@@ -98,6 +99,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
             }) {
                 Text(text = "Future")
             }
+            Spacer(modifier = Modifier.width(5.dp))
             Button(onClick = {
                 val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                 myCoroutineScope.launch {
