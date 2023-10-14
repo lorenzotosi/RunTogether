@@ -89,7 +89,7 @@ fun ShowChallengeInfo(navController: NavHostController) {
                 }
             Spacer(modifier = Modifier.height(10.dp))
             // add to favorite button
-            if(!completed) {
+            if(!completed && SessionManager.isLoggedIn(navController.context)) {
                 Button(onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         if (!favorite) {
