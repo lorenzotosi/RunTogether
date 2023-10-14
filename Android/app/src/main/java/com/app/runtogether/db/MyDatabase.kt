@@ -56,7 +56,6 @@ abstract class MyDatabase : RoomDatabase() {
                         CoroutineScope(Dispatchers.IO).launch {
                             INSTANCE?.userDao()?.insertAll(User(
                                 username = "nome",
-                                email = "email@email.com",
                                 password = "password",
                                 path = ""
                             ))

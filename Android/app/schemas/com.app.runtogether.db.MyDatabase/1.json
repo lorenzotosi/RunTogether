@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ad840521b1b592b3d8883c1ca3872b1d",
+    "identityHash": "8b0a2920edbcbacabab0f68fb56dca65",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `email` TEXT, `password` TEXT, `path` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `password` TEXT, `path` TEXT)",
         "fields": [
           {
             "fieldPath": "user_id",
@@ -17,12 +17,6 @@
           {
             "fieldPath": "username",
             "columnName": "username",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "email",
-            "columnName": "email",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -265,7 +259,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad840521b1b592b3d8883c1ca3872b1d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8b0a2920edbcbacabab0f68fb56dca65')"
     ]
   }
 }
