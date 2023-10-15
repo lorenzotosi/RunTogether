@@ -26,7 +26,7 @@ fun ShowNotifyPage(navController: NavHostController) {
     val notifies = database.NotifyDao().findByUid(SessionManager.getUserDetails(navController.context)).collectAsState(
         initial = emptyList()
     ).value
-    
+
     Log.e("Notify", notifies.toString())
     Log.e("NotifySize", "Size: ${notifies.size}")
 

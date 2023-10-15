@@ -157,7 +157,7 @@ abstract class MyDatabase : RoomDatabase() {
                                 path = R.drawable.trophy_15,
                                 km = 15
                             ))
-                            INSTANCE?.runDao()?.insertRun(Run(city="Riccione",
+                            INSTANCE?.runDao()?.insertRun(Run(user_id = 1, city="Riccione",
                                 description = "la corsa di riccione", length_km = 10.0,
                                 day = 1698697400000,
                             polyline = "[{\"latitude\":44.0648167,\"longitude\":12.5709333},{\"latitude\":44.0655745,\"longitude\":12.5699331},{\"latitude\":44.0657251,\"longitude\":12.5697331}]",

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Run")
 data class Run(
     @PrimaryKey(autoGenerate = true) val run_id: Int = 0,
+    @ColumnInfo(name = "user_id") val user_id: Int?,
     @ColumnInfo(name = "city") val city: String?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "length_km") val length_km: Double?,

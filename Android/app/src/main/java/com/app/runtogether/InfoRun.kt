@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.notify.Notify
 import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -36,6 +37,7 @@ import java.util.*
 fun ShowInfoRun(navController: NavHostController){
     val database = MyDatabase.getInstance(navController.context)
     val run = database.runDao().getRunFromId(run_id).collectAsState(initial = null).value
+    val username = database.userDao().getUsernameFromId(SessionManager.getUserDetails(navController.context)).collectAsState(initial = null).value
 
     Column(
         modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp),
@@ -148,6 +150,11 @@ fun ShowInfoRun(navController: NavHostController){
                     Button(onClick = {
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
+                            database.NotifyDao().insert(Notify(
+                                uid_sent = SessionManager.getUserDetails(navController.context),
+                                uid_received = run.user_id,
+                                text = "L'utente $username si è iscritto alla tua corsa",
+                            ))
                             database.RunWithUsersDao()
                                 .insertRunUserCrossRef(
                                     RunUserCrossRef(

@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 import DateConverter
+import SessionManager
 import android.location.Geocoder
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
@@ -144,6 +145,7 @@ fun ShowRunScreen(
                                 val db = MyDatabase.getInstance(navController.context)
                                 db.runDao().insertRun(
                                     Run(
+                                        user_id = SessionManager.getUserDetails(navController.context),
                                         city = x,
                                         description = "descrizione prova",
                                         length_km = calculateTotalDistance(waypoints),

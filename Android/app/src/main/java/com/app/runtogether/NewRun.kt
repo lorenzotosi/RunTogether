@@ -1,6 +1,7 @@
 package com.app.runtogether
 
 import DateConverter
+import SessionManager
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.location.Geocoder
@@ -137,6 +138,7 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
                     myCoroutineScope.launch {
                         database.runDao().insertRun(
                             Run(
+                                user_id = SessionManager.getUserDetails(navController.context),
                                 description = descrizione,
                                 length_km = lunghezza.toDouble(),
                                 startHour = ora,
