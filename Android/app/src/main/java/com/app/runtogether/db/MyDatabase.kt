@@ -19,6 +19,8 @@ import com.app.runtogether.db.trophy.Trophy
 import com.app.runtogether.db.trophy.TrophyDao
 import com.app.runtogether.db.trophyToUser.TrophyUserCrossRef
 import com.app.runtogether.db.trophyToUser.UserWithTrophiesDao
+import com.app.runtogether.db.notify.Notify
+import com.app.runtogether.db.notify.NotifyDao
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserDao
 import com.google.android.gms.maps.model.LatLng
@@ -27,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, RunUserCrossRef::class, Run::class, Favorite::class], version = 1)
+@Database(entities = [User::class, Trophy::class, TrophyUserCrossRef::class, RunUserCrossRef::class, Run::class, Favorite::class, Notify::class], version = 1)
 
 abstract class MyDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -36,6 +38,7 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun UserWithTrophiesDao(): UserWithTrophiesDao
     abstract fun RunWithUsersDao(): RunWithUsersDao
     abstract fun FavoriteTrophyUserDao(): FavoriteTrophyUserDao
+    abstract fun NotifyDao(): NotifyDao
 
 
     companion object {
@@ -57,6 +60,11 @@ abstract class MyDatabase : RoomDatabase() {
                             INSTANCE?.userDao()?.insertAll(User(
                                 username = "nome",
                                 password = "password",
+                                path = ""
+                            ))
+                            INSTANCE?.userDao()?.insertAll(User(
+                                username = "nome2",
+                                password = "password2",
                                 path = ""
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
@@ -168,6 +176,11 @@ abstract class MyDatabase : RoomDatabase() {
                             INSTANCE?.FavoriteTrophyUserDao()?.insertFavoriteTrophyUser(
                                 Favorite(user_id = 1, trophy_id = 3)
                             )
+                            INSTANCE?.NotifyDao()?.insert(Notify(
+                                uid_sent = 2,
+                                uid_received = 1,
+                                text = "ciao",
+                            ))
                         }
                     }
                 })

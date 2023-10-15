@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8b0a2920edbcbacabab0f68fb56dca65",
+    "identityHash": "3b1fd033559a6411c779e1fe1f974563",
     "entities": [
       {
         "tableName": "User",
@@ -254,12 +254,50 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Notify",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`notify_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uid_sent` INTEGER, `uid_received` INTEGER, `text` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "notify_id",
+            "columnName": "notify_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid_sent",
+            "columnName": "uid_sent",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uid_received",
+            "columnName": "uid_received",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "notify_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8b0a2920edbcbacabab0f68fb56dca65')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b1fd033559a6411c779e1fe1f974563')"
     ]
   }
 }
