@@ -31,6 +31,8 @@ fun ShowNotifyPage(navController: NavHostController) {
     Log.e("NotifySize", "Size: ${notifies.size}")
 
     LazyVerticalGrid(
+        modifier = Modifier
+            .padding(top = 75.dp),
         columns = GridCells.Fixed(1)
     ) {
         items(count = notifies.size) {
