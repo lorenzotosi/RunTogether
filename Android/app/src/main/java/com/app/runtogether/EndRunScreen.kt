@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
+import com.app.runtogether.db.notify.Notify
 import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.app.runtogether.db.trophyToUser.TrophyUserCrossRef
@@ -38,6 +39,7 @@ fun ShowEndRunScreen(navController: NavHostController){
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(0.0, 0.0), 15f)
     }
+    val user = SessionManager.getUserDetails(navController.context)
 
     if (run != null && SessionManager.isLoggedIn(navController.context)){
         val distance = run.length_km!!
@@ -54,6 +56,7 @@ fun ShowEndRunScreen(navController: NavHostController){
                                 i.trophy_id
                             )
                         )
+                    db.NotifyDao().insert(Notify(uid_received = user, uid_sent = user, text = "You have unlocked a new trophy! ${i.name}"))
                 }
             }
         }
