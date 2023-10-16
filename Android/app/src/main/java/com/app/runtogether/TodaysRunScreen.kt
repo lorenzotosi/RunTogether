@@ -29,6 +29,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.app.runtogether.db.MyDatabase
 import com.app.runtogether.db.run.Run
+import com.app.runtogether.db.runToUser.RunUserCrossRef
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -78,6 +79,13 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         calendar.set(Calendar.MILLISECOND, 999)
         val endOfDay = DateConverter.fromDate(calendar.time) // End of the day (23:59)
         var runs  by remember { mutableStateOf<List<Run>>(value = listOf()) }
+
+        var userRun = listOf<Int>()
+        if (SessionManager.isLoggedIn(navController.context))
+            userRun = database.RunWithUsersDao().getRunsIdFromUserId(SessionManager.getUserDetails(navController.context)).collectAsState(
+                initial = listOf()
+            ).value
+
         LaunchedEffect(Unit){
             runs = database.runDao().getRunsFromCityForTodayNoFlowS(city, startOfDay!!, endOfDay!!)
         }
@@ -142,7 +150,14 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                             val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                             TextCard(title = "${formatter.format(runs[it].day)}, ${runs[it].startHour}", fontSize = 15)
                         }
-
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                            var string = "Fai il Log-In per Partecipare!"
+                            if (SessionManager.isLoggedIn(navController.context)){
+                                string = if (userRun.contains(runs[it].run_id)) "Partecipando" else "Non partecipando"
+                            }
+                            TextCard(title = string, fontSize = 15)
+                        }
                     }
                 }
             }
