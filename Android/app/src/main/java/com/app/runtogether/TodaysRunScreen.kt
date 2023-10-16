@@ -56,7 +56,6 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
     Column(modifier = Modifier
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-
         val x = Geocoder(navController.context, Locale.getDefault())
             .getFromLocation(location.latitude, location.longitude, 1)
         var city = ""
@@ -78,42 +77,34 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         calendar.set(Calendar.SECOND, 59)
         calendar.set(Calendar.MILLISECOND, 999)
         val endOfDay = DateConverter.fromDate(calendar.time) // End of the day (23:59)
-
         var runs  by remember { mutableStateOf<List<Run>>(value = listOf()) }
-        if(startOfDay != null && endOfDay != null){
-            runs = database.runDao().getRunsFromCityForToday(city, startOfDay, endOfDay).collectAsState(
-                initial = listOf()
-            ).value
+        LaunchedEffect(Unit){
+            runs = database.runDao().getRunsFromCityForTodayNoFlowS(city, startOfDay!!, endOfDay!!)
         }
+        val myCoroutineScope = CoroutineScope(Dispatchers.IO)
         Row(modifier = Modifier.padding(top = 155.dp)) {
-            Button(onClick = {
-                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                myCoroutineScope.launch {
-                    if(startOfDay != null && endOfDay != null){
-                        runs = database.runDao().getRunsFromCityForTodayNoFlow(city, startOfDay, endOfDay)
+            val buttons = listOf<String>("Oggi", "Future", "Tutte")
+            SegmentedControl(items = buttons, onItemSelection = {
+                when (it){
+                    (0) -> {
+                        myCoroutineScope.launch {
+                            if(startOfDay != null && endOfDay != null){
+                                runs = database.runDao().getRunsFromCityForTodayNoFlow(city, startOfDay, endOfDay)
+                            }
+                        }
+                    }
+                    1 -> {
+                        myCoroutineScope.launch {
+                            runs = database.runDao().getAllFutureOrganizedRuns(startOfDay!!)
+                        }
+                    }
+                    2 -> {
+                        myCoroutineScope.launch {
+                            runs = database.runDao().getAllOrganizedRuns()
+                        }
                     }
                 }
-            }) {
-                Text(text = "Oggi")
-            }
-            Spacer(modifier = Modifier.width(5.dp))
-            Button(onClick = {
-                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                myCoroutineScope.launch {
-                    runs = database.runDao().getAllFutureOrganizedRuns(startOfDay!!)
-                }
-            }) {
-                Text(text = "Future")
-            }
-            Spacer(modifier = Modifier.width(5.dp))
-            Button(onClick = {
-                val myCoroutineScope = CoroutineScope(Dispatchers.IO)
-                myCoroutineScope.launch {
-                    runs = database.runDao().getAllOrganizedRuns()
-                }
-            }) {
-                Text(text = "Tutte")
-            }
+            })
         }
 
 
@@ -194,7 +185,7 @@ fun SegmentedControl(
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 10,
-    @ColorRes color : Int = R.color.teal_200,
+    @ColorRes color : Int = R.color.teal_700,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
     val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
