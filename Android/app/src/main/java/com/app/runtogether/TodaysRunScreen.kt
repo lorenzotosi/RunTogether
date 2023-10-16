@@ -164,30 +164,32 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         })
 
     }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(bottom = 20.dp, end = 20.dp),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        IconButton(
-            onClick = { navController.navigate(Screens.AddNewRun.name) },
+    if (SessionManager.isLoggedIn(navController.context)) {
+        Box(
             modifier = Modifier
-                .size(80.dp)
-                .zIndex(10f)
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(bottom = 20.dp, end = 20.dp),
+            contentAlignment = Alignment.BottomEnd
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_add_24),
-                contentDescription = "Start run",
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            IconButton(
+                onClick = { navController.navigate(Screens.AddNewRun.name) },
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Black, CircleShape)
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .padding(8.dp)
-            )
+                    .size(80.dp)
+                    .zIndex(10f)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_add_24),
+                    contentDescription = "Start run",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.Black, CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(8.dp)
+                )
+            }
         }
     }
 }
