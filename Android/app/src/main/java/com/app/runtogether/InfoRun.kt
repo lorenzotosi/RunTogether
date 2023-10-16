@@ -151,7 +151,8 @@ fun ShowInfoRun(navController: NavHostController){
                         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
                         myCoroutineScope.launch {
                             database.NotifyDao().insert(Notify(
-                                uid_sent = SessionManager.getUserDetails(navController.context),
+                                challenge_id = null,
+                                run_id = run.run_id,
                                 uid_received = run.user_id,
                                 text = "L'utente $username si è iscritto alla tua corsa",
                             ))

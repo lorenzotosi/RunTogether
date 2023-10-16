@@ -23,6 +23,7 @@ import com.app.runtogether.db.notify.Notify
 import com.app.runtogether.db.notify.NotifyDao
 import com.app.runtogether.db.user.User
 import com.app.runtogether.db.user.UserDao
+import com.app.runtogether.run_id
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -177,7 +178,8 @@ abstract class MyDatabase : RoomDatabase() {
                                 Favorite(user_id = 1, trophy_id = 3)
                             )
                             INSTANCE?.NotifyDao()?.insert(Notify(
-                                uid_sent = 2,
+                                challenge_id = null,
+                                run_id = 1,
                                 uid_received = 1,
                                 text = "ciao",
                             ))

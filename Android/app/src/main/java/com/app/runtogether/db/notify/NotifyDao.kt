@@ -15,8 +15,8 @@ interface NotifyDao {
     @Delete
     suspend fun delete(notify: Notify)
 
-    @Query("SELECT text FROM Notify WHERE uid_received = :uid_received")
-    fun findByUid(uid_received: Int): Flow<List<String>>
+    @Query("SELECT * FROM Notify WHERE uid_received = :uid_received")
+    fun findByUid(uid_received: Int): Flow<List<Notify>>
 
 
 }

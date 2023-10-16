@@ -56,7 +56,7 @@ fun ShowEndRunScreen(navController: NavHostController){
                                 i.trophy_id
                             )
                         )
-                    db.NotifyDao().insert(Notify(uid_received = user, uid_sent = user, text = "You have unlocked a new trophy! ${i.name}"))
+                    db.NotifyDao().insert(Notify(uid_received = user, run_id = null, challenge_id = i.trophy_id, text = "You have unlocked a new trophy! ${i.name}"))
                 }
             }
         }

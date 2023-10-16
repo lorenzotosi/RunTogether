@@ -36,14 +36,26 @@ fun ShowNotifyPage(navController: NavHostController) {
         columns = GridCells.Fixed(1)
     ) {
         items(count = notifies.size) {
-            Log.e("NotifyItem", "Item: ${notifies[it]}")
+            val isRun = notifies[it].run_id != null
+            val isChallenge = notifies[it].challenge_id != null
+
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { navController.navigate(Screens.Profile.name) }
+                    .clickable {
+                        if(isRun){
+                            run_id = notifies[it].run_id!!
+                            navController.navigate(Screens.RunInfo.name)
+                        }
+                        else if(isChallenge){
+                            myChallenge = notifies[it].challenge_id!!
+                            navController.navigate(Screens.TrophyInfo.name)
+                        }
+                    }
                     .padding(8.dp)
             ) {
-                Text(text = notifies[it])
+                notifies[it].text?.let { it1 -> Text(text = it1) }
             }
         }
     }

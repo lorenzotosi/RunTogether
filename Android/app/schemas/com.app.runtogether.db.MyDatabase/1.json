@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "71f338ca09904f16ea5e9f5404b78dcd",
+    "identityHash": "18425eb0504210e4d203ab5f08b23160",
     "entities": [
       {
         "tableName": "User",
@@ -263,7 +263,7 @@
       },
       {
         "tableName": "Notify",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`notify_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uid_sent` INTEGER, `uid_received` INTEGER, `text` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`notify_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `challenge_id` INTEGER, `run_id` INTEGER, `uid_received` INTEGER, `text` TEXT)",
         "fields": [
           {
             "fieldPath": "notify_id",
@@ -272,8 +272,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "uid_sent",
-            "columnName": "uid_sent",
+            "fieldPath": "challenge_id",
+            "columnName": "challenge_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "run_id",
+            "columnName": "run_id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -303,7 +309,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '71f338ca09904f16ea5e9f5404b78dcd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18425eb0504210e4d203ab5f08b23160')"
     ]
   }
 }
