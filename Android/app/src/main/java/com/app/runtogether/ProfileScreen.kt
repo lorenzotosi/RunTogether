@@ -46,13 +46,13 @@ fun ShowProfilePage(navController: NavHostController){
     val userId = SessionManager.getUserDetails(navController.context)
     val numberOfTrophies = db.UserWithTrophiesDao().getNumberOfTrophies(userId)
         .collectAsState(initial = Int).value
-    val numberOfRuns = db.RunWithUsersDao().getNumberOfRunsJoined(userId)
-        .collectAsState(initial = Int).value
+
     val username = db.userDao().getUsernameFromId(userId)
         .collectAsState(initial = String).value
     val trophies = db.UserWithTrophiesDao().getTrophyHave(userId)
         .collectAsState(initial = listOf()).value
     val runs : List<Run> = db.runDao().getMyRuns(userId).collectAsState(initial = listOf()).value
+    val numberOfRuns = runs.size
 
 
     val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
