@@ -7,7 +7,7 @@ import com.app.runtogether.db.run.Run
 import com.app.runtogether.db.user.User
 
 data class RunWithUsers(
-    @Embedded val user: Run,
+    @Embedded val run: Run,
     @Relation(
         parentColumn = "run_id",
         entityColumn = "user_id",

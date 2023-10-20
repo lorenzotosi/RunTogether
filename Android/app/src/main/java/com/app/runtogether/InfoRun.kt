@@ -5,6 +5,7 @@ import SessionManager
 import android.content.Intent
 import android.provider.CalendarContract
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -211,6 +212,35 @@ fun ShowInfoRun(navController: NavHostController){
                     Text(text = "Add to calendar")
                 }
 
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            // add a list of people that joined the run
+            val users = database.RunWithUsersDao().getUsersFromRun(run.run_id)
+                .collectAsState(initial = listOf()).value
+            if (users.isNotEmpty()) {
+                Text(
+                    text = "Number of users that joined the run: ${users.size}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Users that joined the run:",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                LazyColumn {
+                    items(users.size) { it ->
+                        users[it].username?.let { it1 ->
+                            Text(
+                                text = it1,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    }
+                }
             }
         }
 

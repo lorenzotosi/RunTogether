@@ -2,6 +2,7 @@ package com.app.runtogether.db.runToUser
 
 import androidx.room.*
 import com.app.runtogether.db.run.Run
+import com.app.runtogether.db.user.User
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,8 +12,8 @@ interface RunWithUsersDao {
     fun doesRunUserCrossRefExist(runId: Int, userId: Int): Boolean
 
     @Transaction
-    @Query("SELECT * FROM User, RunUserCrossRef WHERE User.user_id = RunUserCrossRef.user_id and RunUserCrossRef.run_id = :runId")
-    fun getUsersFromRun(runId: Int): Flow<List<RunWithUsers>>
+    @Query("SELECT * FROM RunUserCrossRef as ru, User as u where ru.run_id = :runId and ru.user_id = u.user_id")
+    fun getUsersFromRun(runId: Int): Flow<List<User>>
 
     @Transaction
     @Query("SELECT count(*) FROM RunUserCrossRef group by user_id having user_id = :userId")
