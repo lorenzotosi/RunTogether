@@ -47,22 +47,22 @@ fun ShowInfoRun(navController: NavHostController){
             val formatter = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Citta: ${run.city}", fontSize = 24.sp,
+                text = "City: ${run.city}", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Descrizione: ${run.description}", fontSize = 24.sp,
+                text = "Description: ${run.description}", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Distanza: ${run.length_km} KM", fontSize = 24.sp,
+                text = "Distance: ${run.length_km} KM", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Giorno e ora: ${
+                text = "Day and hour: ${
                     DateConverter.toDate(run.day)?.let { formatter.format(it) }
                 } ${run.startHour}",
                 fontSize = 24.sp,
@@ -95,7 +95,7 @@ fun ShowInfoRun(navController: NavHostController){
                 }
 
                 Text(
-                    text = "Velocitá media: ${String.format("%.2f", velMed)} km/h",
+                    text = "Average speed: ${String.format("%.2f", velMed)} km/h",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -144,7 +144,7 @@ fun ShowInfoRun(navController: NavHostController){
                                 )
                         }
                     }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                        Text(text = "Disiscriviti")
+                        Text(text = "Unsubscribe")
                     }
                 } else {
                     Button(onClick = {
@@ -154,7 +154,7 @@ fun ShowInfoRun(navController: NavHostController){
                                 challenge_id = null,
                                 run_id = run.run_id,
                                 uid_received = run.user_id,
-                                text = "L'utente $username si è iscritto alla tua corsa",
+                                text = "The user $username has joined your run!",
                             ))
                             database.RunWithUsersDao()
                                 .insertRunUserCrossRef(
@@ -165,7 +165,7 @@ fun ShowInfoRun(navController: NavHostController){
                                 )
                         }
                     }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                        Text(text = "Partecipa!")
+                        Text(text = "Join")
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -202,13 +202,13 @@ fun ShowInfoRun(navController: NavHostController){
                     val intent = Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
-                        .putExtra(CalendarContract.Events.TITLE, "Corsa RunTogether")
+                        .putExtra(CalendarContract.Events.TITLE, "Run RunTogether")
                         .putExtra(CalendarContract.Events.DESCRIPTION, run.description)
                     startActivity(navController.context, intent, null)
 
 
                 }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                    Text(text = "Aggiungi l'evento al calendario!")
+                    Text(text = "Add to calendar")
                 }
 
             }

@@ -49,9 +49,9 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Spacer(modifier = Modifier.height(35.dp))
-        val descrizione = TextField(name = "Descrizione")
+        val descrizione = TextField(name = "Description")
         Spacer(modifier = Modifier.height(5.dp))
-        val lunghezza = TextField(name = "Lunghezza (KM)")
+        val lunghezza = TextField(name = "Distance (KM)")
         Spacer(modifier = Modifier.height(5.dp))
         val mYear: Int
         val mMonth: Int
@@ -76,9 +76,9 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         Button(onClick = {
             mDatePickerDialog.show()
         }) {
-            Text(text = "Scegli la data!", color = Color.White)
+            Text(text = "Choose the date!", color = Color.White)
         }
-        Text(text = "Data Scelta: ${stringToDate(mDate.value)}")
+        Text(text = "Chosen date: ${stringToDate(mDate.value)}")
         Spacer(modifier = Modifier.height(5.dp))
 
         val mHour = mCalendar[Calendar.HOUR_OF_DAY]
@@ -100,12 +100,12 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         Column(modifier = Modifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
             Button(onClick = { mTimePickerDialog.show() }) {
-                Text(text = "Scegli l'orario!", color = Color.White)
+                Text(text = "Choose the hour!", color = Color.White)
             }
 
             Spacer(modifier = Modifier.size(5.dp))
 
-            Text(text = "Orario Selezionato: ${mTime.value}")
+            Text(text = "Hour selected: ${mTime.value}")
         }
         Spacer(modifier = Modifier.height(10.dp))
         val cameraPosition = CameraPosition.fromLatLngZoom(position, 15f)
@@ -117,7 +117,7 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         GoogleMap(modifier = Modifier.height(250.dp), onMapClick = {
             position = it
         }, cameraPositionState = cameraPositionState) {
-            Marker(position = position, title = "Punto di partenza")
+            Marker(position = position, title = "Starting point")
             cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(position, 15f))
         }
 
@@ -154,10 +154,10 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
                 }
             },
                 modifier = Modifier.padding(end = 9.dp)) {
-                Text(text = "Crea!")
+                Text(text = "Create")
             }
             Button(onClick = { navController.navigate(Screens.TodaysRun.name) }) {
-                Text(text = "Annulla")
+                Text(text = "Cancel")
             }
         }
     }

@@ -147,7 +147,7 @@ fun ShowRunScreen(
                                     Run(
                                         user_id = SessionManager.getUserDetails(navController.context),
                                         city = x,
-                                        description = "descrizione prova",
+                                        description = "description",
                                         length_km = calculateTotalDistance(waypoints),
                                         day = DateConverter.fromDate(Date()),
                                         polyline = gson.toJson(waypoints),

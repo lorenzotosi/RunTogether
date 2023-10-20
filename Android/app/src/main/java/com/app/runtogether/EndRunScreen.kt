@@ -97,7 +97,7 @@ fun ShowEndRunScreen(navController: NavHostController){
                     )
                 )
             }) {
-                Text(text = "Torna al punto di partenza")
+                Text(text = "return to the starting point")
             }
         }
         Row(
@@ -107,7 +107,7 @@ fun ShowEndRunScreen(navController: NavHostController){
         ) {
             if (run != null) {
                 Text(
-                    text = "Distanza percorsa: ",
+                    text = "Distance traveled: ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -125,7 +125,7 @@ fun ShowEndRunScreen(navController: NavHostController){
         ) {
             if (run != null) {
                 Text(
-                    text = "Orario di inizio ",
+                    text = "Hour of start ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -145,7 +145,7 @@ fun ShowEndRunScreen(navController: NavHostController){
         ) {
             if (run != null) {
                 Text(
-                    text = "Orario di fine ",
+                    text = "Hour of end ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -165,7 +165,7 @@ fun ShowEndRunScreen(navController: NavHostController){
         ) {
             if (run != null) {
                 Text(
-                    text = "Andatura media ",
+                    text = "Medium gait ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -236,7 +236,7 @@ fun ShowEndRunScreen(navController: NavHostController){
                         }
                     }
                 }) {
-                    Text(text = "Salva la corsa")
+                    Text(text = "Save the run")
                 }
             }
         }

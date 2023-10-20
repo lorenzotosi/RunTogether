@@ -59,22 +59,22 @@ fun ShowChallengeInfo(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Nome: Trofeo ${trophy.km}KM", fontSize = 24.sp,
+                text = "Name: Trophy ${trophy.km}KM", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Descrizione: ${trophy.description}", fontSize = 24.sp,
+                text = "Description: ${trophy.description}", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Obiettivo: ${trophy.km} KM", fontSize = 24.sp,
+                text = "Target: ${trophy.km} KM", fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Completata: ${if (completed) "SI" else "NO"}",
+                text = "Completed: ${if (completed) "YES" else "NO"}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -110,9 +110,9 @@ fun ShowChallengeInfo(navController: NavHostController) {
                     }
                 }) {
                     if (!favorite) {
-                        Text(text = "Aggiungi ai preferiti")
+                        Text(text = "Add to favorites")
                     } else {
-                        Text(text = "Rimuovi dai preferiti")
+                        Text(text = "Remove from favorites")
                     }
                 }
             }

@@ -91,7 +91,7 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
         }
         val myCoroutineScope = CoroutineScope(Dispatchers.IO)
         Row(modifier = Modifier.padding(top = 155.dp)) {
-            val buttons = listOf<String>("Oggi", "Future", "Tutte")
+            val buttons = listOf<String>("Today", "Future", "All")
             SegmentedControl(items = buttons, onItemSelection = {
                 when (it){
                     (0) -> {
@@ -152,9 +152,9 @@ fun CardRun(navController: NavHostController, location : LocationDetails){
                         }
                         Spacer(modifier = Modifier.height(5.dp))
                         Row ( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                            var string = "Fai il Log-In per Partecipare!"
+                            var string = "Login to partecipate!"
                             if (SessionManager.isLoggedIn(navController.context)){
-                                string = if (userRun.contains(runs[it].run_id)) "Partecipando" else "Non partecipando"
+                                string = if (userRun.contains(runs[it].run_id)) "Participating" else "Not participating"
                             }
                             TextCard(title = string, fontSize = 15)
                         }

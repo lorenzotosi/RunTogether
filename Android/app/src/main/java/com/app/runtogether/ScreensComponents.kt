@@ -85,7 +85,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
         drawerContent = {
             ModalDrawerSheet {
                 Image(painter = imagePainter,
-                    contentDescription = "Immagine profilo",
+                    contentDescription = "profile image",
                     modifier = Modifier
                         .padding(16.dp)
                         .size(150.dp, 150.dp))
