@@ -39,6 +39,8 @@ import java.util.*
 @Composable
 fun NewRunScreen(navController : NavHostController, locationDetails: LocationDetails){
     val database = MyDatabase.getInstance(navController.context)
+    // Step 1: Create a variable to hold the error message
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -78,7 +80,7 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
         }) {
             Text(text = "Choose the date!", color = Color.White)
         }
-        Text(text = "Chosen date: ${stringToDate(mDate.value)}")
+        Text(text = "Chosen date: ${ if (stringToDate(mDate.value) == null) "" else stringToDate(mDate.value) }")
         Spacer(modifier = Modifier.height(5.dp))
 
         val mHour = mCalendar[Calendar.HOUR_OF_DAY]
@@ -151,6 +153,8 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
                         )
                     }
                     navController.navigate(Screens.TodaysRun.name)
+                } else {
+                    errorMessage = "All fields are necessary"
                 }
             },
                 modifier = Modifier.padding(end = 9.dp)) {
@@ -159,6 +163,15 @@ fun NewRunScreen(navController : NavHostController, locationDetails: LocationDet
             Button(onClick = { navController.navigate(Screens.TodaysRun.name) }) {
                 Text(text = "Cancel")
             }
+
+        }
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Red, // You can choose an appropriate color
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }
