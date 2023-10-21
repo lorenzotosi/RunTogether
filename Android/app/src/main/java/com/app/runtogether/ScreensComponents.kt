@@ -42,11 +42,16 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
     val db = MyDatabase.getInstance(navController.context)
     val userId = SessionManager.getUserDetails(navController.context)
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    //if (SessionManager.isLoggedIn(navController.context))
+    val username = db.userDao().getUsernameFromId(userId)
+        .collectAsState(initial = String).value
+
     val scope = rememberCoroutineScope()
     //Log.d("uri", uriSelected.toString())
     val profilePicturePath = db.userDao().getPathFromId(userId)
-        .collectAsState(initial = String).value
-    val imagePainter = if (profilePicturePath != null) {
+        .collectAsState(initial = "").value
+    /*val imagePainter = if (profilePicturePath != null) {
         // You can set image loading options here if needed
         rememberAsyncImagePainter(
             ImageRequest.Builder(LocalContext.current).data(data = profilePicturePath).apply(block = fun ImageRequest.Builder.() {
@@ -55,6 +60,21 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                 diskCachePolicy(CachePolicy.DISABLED)
                 memoryCachePolicy(CachePolicy.DISABLED)
             }).build()
+        )
+    } else {
+        painterResource(id = R.drawable.image_profile)
+    }*/
+
+    val updatedProfilePicturePath = rememberUpdatedState(profilePicturePath)
+
+    val imagePainter = if (updatedProfilePicturePath.value!=null && updatedProfilePicturePath.value.isNotBlank()) {
+        // Load the updated profile picture with the timestamp in the path
+        rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current).data(data = updatedProfilePicturePath.value).apply {
+                crossfade(true)
+                diskCachePolicy(CachePolicy.DISABLED)
+                memoryCachePolicy(CachePolicy.DISABLED)
+            }.build()
         )
     } else {
         painterResource(id = R.drawable.image_profile)
@@ -89,7 +109,7 @@ fun ModalNavigationDrawerSample(locationDetails: LocationDetails, mygps: Boolean
                     modifier = Modifier
                         .padding(16.dp)
                         .size(150.dp, 150.dp))
-                Text("RUN",
+                Text(if (SessionManager.isLoggedIn(navController.context)) "Hello $username!" else "User not logged in",
                     modifier = Modifier.padding(16.dp),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold

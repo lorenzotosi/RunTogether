@@ -39,10 +39,6 @@ fun ShowLoginPage(navController: NavHostController) {
         val password = TextField(name = "Password", true)
         Spacer(modifier = Modifier.height(5.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(onClick = { navController.navigate(Screens.SignUp.name) }) {
-                Text(text = "Go to Sign Up")
-            }
-            Spacer(modifier = Modifier.width(10.dp))
             Button(
                 onClick = {
                     val myCoroutineScope = CoroutineScope(Dispatchers.IO)
@@ -64,6 +60,10 @@ fun ShowLoginPage(navController: NavHostController) {
                 modifier = Modifier.padding(end = 9.dp)
             ) {
                 Text(text = "Login")
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(onClick = { navController.navigate(Screens.SignUp.name) }) {
+                Text(text = "Sign Up")
             }
         }
 

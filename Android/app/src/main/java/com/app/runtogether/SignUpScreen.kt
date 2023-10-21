@@ -64,6 +64,11 @@ fun ShowSignUpPage(navController : NavHostController){
         Spacer(modifier = Modifier.height(35.dp))
         val errorMessage = remember { mutableStateOf<String?>(null) }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Button(onClick = { navController.navigate(Screens.Login.name) },
+                modifier = Modifier.padding(end = 9.dp)) {
+                Text(text = "Login")
+            }
+            Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = {
                 if (password == reTypedPassword){
                     val myCoroutineScope = MainScope()
@@ -82,10 +87,7 @@ fun ShowSignUpPage(navController : NavHostController){
                 Text(text = "Sign Up")
             }
         }
-        Button(onClick = { navController.navigate(Screens.Login.name) },
-            modifier = Modifier.padding(end = 9.dp)) {
-            Text(text = "Go to Login")
-        }
+
         if (errorMessage.value != null) {
             Text(
                 text = errorMessage.value!!,
