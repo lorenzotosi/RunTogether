@@ -235,6 +235,7 @@ fun ShowEndRunScreen(navController: NavHostController){
                             }
                         }
                     }
+                    navController.navigate(Screens.Profile.name)
                 }) {
                     Text(text = "Save the run")
                 }

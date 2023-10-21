@@ -64,9 +64,6 @@ class MainActivity : ComponentActivity() {
                 isGranted.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                     startLocationUpdates()
                 }
-                isGranted.getOrDefault(Manifest.permission.WRITE_CALENDAR, false) -> {
-                    startLocationUpdates()
-                }
 
             }
         }
@@ -153,8 +150,7 @@ class MainActivity : ComponentActivity() {
                 locationPermissionRequest.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.WRITE_CALENDAR)
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
                 )
             }
         }

@@ -112,7 +112,7 @@ fun ShowInfoRun(navController: NavHostController){
             }
             GoogleMap(
                 modifier = Modifier
-                    .height(250.dp)
+                    .height(150.dp)
                     .padding(start = 10.dp, end = 10.dp),
                 cameraPositionState = cameraPositionState
             ) {
@@ -211,37 +211,37 @@ fun ShowInfoRun(navController: NavHostController){
                 }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                     Text(text = "Add to calendar")
                 }
-
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            // add a list of people that joined the run
-            val users = database.RunWithUsersDao().getUsersFromRun(run.run_id)
-                .collectAsState(initial = listOf()).value
-            if (users.isNotEmpty()) {
-                Text(
-                    text = "Number of users that joined the run: ${users.size}",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Users that joined the run:",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                LazyColumn {
-                    items(users.size) { it ->
-                        users[it].username?.let { it1 ->
-                            Text(
-                                text = it1,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
+                // add a list of people that joined the run
+                val users = database.RunWithUsersDao().getUsersFromRun(run.run_id)
+                    .collectAsState(initial = listOf()).value
+                if (users.isNotEmpty()) {
+                    Text(
+                        text = "Number of users that joined the run: ${users.size}",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "Users that joined the run:",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    LazyColumn {
+                        items(users.size) { it ->
+                            users[it].username?.let { it1 ->
+                                Text(
+                                    text = it1,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
                         }
                     }
                 }
             }
+
         }
 
     }
