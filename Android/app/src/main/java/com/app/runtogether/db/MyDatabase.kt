@@ -70,91 +70,91 @@ abstract class MyDatabase : RoomDatabase() {
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_1",
-                                description = "descrizione",
+                                description = "Trofeo 1 KM",
                                 path = R.drawable.trophy_1,
                                 km = 1
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_2",
-                                description = "descrizione",
+                                description = "Trofeo 2 KM",
                                 path = R.drawable.trophy_2,
                                 km = 2
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_3",
-                                description = "descrizione",
+                                description = "Trofeo 3 KM",
                                 path = R.drawable.trophy_3,
                                 km = 3
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_4",
-                                description = "descrizione",
+                                description = "Trofeo 4 KM",
                                 path = R.drawable.trophy_4,
                                 km = 4
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_5",
-                                description = "descrizione",
+                                description = "Trofeo 5 KM",
                                 path = R.drawable.trophy_5,
                                 km = 5
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_6",
-                                description = "descrizione",
+                                description = "Trofeo 6 KM",
                                 path = R.drawable.trophy_6,
                                 km = 6
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_7",
-                                description = "descrizione",
+                                description = "Trofeo 7 KM",
                                 path = R.drawable.trophy_7,
                                 km = 7
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_8",
-                                description = "descrizione",
+                                description = "Trofeo 8 KM",
                                 path = R.drawable.trophy_8,
                                 km = 8
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_9",
-                                description = "descrizione",
+                                description = "Trofeo 9 KM",
                                 path = R.drawable.trophy_9,
                                 km = 9
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_10",
-                                description = "descrizione",
+                                description = "Trofeo 10 KM",
                                 path = R.drawable.trophy_10,
                                 km = 10
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_11",
-                                description = "descrizione",
+                                description = "Trofeo 11 KM",
                                 path = R.drawable.trophy_11,
                                 km = 11
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_12",
-                                description = "descrizione",
+                                description = "Trofeo 12 KM",
                                 path = R.drawable.trophy_12,
                                 km = 12
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_13",
-                                description = "descrizione",
+                                description = "Trofeo 13 KM",
                                 path = R.drawable.trophy_13,
                                 km = 13
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_14",
-                                description = "descrizione",
+                                description = "Trofeo 14 KM",
                                 path = R.drawable.trophy_14,
                                 km = 14
                             ))
                             INSTANCE?.trophyDao()?.insertAll(Trophy(
                                 name = "trophy_15",
-                                description = "descrizione",
+                                description = "Trofeo 15 KM",
                                 path = R.drawable.trophy_15,
                                 km = 15
                             ))
@@ -181,7 +181,7 @@ abstract class MyDatabase : RoomDatabase() {
                                 challenge_id = null,
                                 run_id = 1,
                                 uid_received = 1,
-                                text = "ciao",
+                                text = "Benvenuto! Grazie per esserti registrato!",
                             ))
                         }
                     }
